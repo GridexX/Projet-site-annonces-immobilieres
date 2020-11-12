@@ -41,6 +41,7 @@ CREATE TABLE IF NOT EXISTS `T_annonce`
 (
     A_idannonce int PRIMARY KEY NOT NULL AUTO_INCREMENT,
     A_datePost DATETIME NOT NULL,
+    A_etat ENUM('en cours','publiée','archivée'),
     A_titre varchar(50) NOT NULL,
     A_cout_loyer numeric(7,2) NOT NULL,
     A_cout_charges numeric(5,2) NOT NULL,
