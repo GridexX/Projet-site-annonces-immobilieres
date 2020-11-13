@@ -6,7 +6,7 @@ class Pages extends Controller
 {
     public function index()
     {
-        return view('welcome_message');
+        return service('SmartyEngine')->view('templates/home.tpl');
     }
 
     public function view($page = 'home')
