@@ -6,7 +6,9 @@ class Pages extends Controller
 {
     public function index()
     {
-        return service('SmartyEngine')->view('templates/home.tpl');
+        service('SmartyEngine')->assign('titre','Accueil - Site petites annonces');
+        //echo view('templates/footer');
+        return service('SmartyEngine')->view('inscription.tpl');
     }
 
     public function view($page = 'home')
