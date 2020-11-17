@@ -2,14 +2,14 @@
 {block name="titre_form"}Connexion{/block}
 {block name="formulaire"}
     
-    <form>
+    <form class="formulaire ">
         <div>
         <label for="mail">Mail : </label>
-        <input type="text" name="mail" required placeholder="xxx@domain_name.com" pattern=".*@.*\..*"/>
+        <input class="champs" type="text" name="mail" required placeholder="xxx@domain_name.com" pattern=".*@.*\..*"/>
         </div>
         <div>
         <label for="mdp">Mot de passe : </label>
-        <input type="password" name="password" required />
+        <input class="champs" type="password" name="password" required />
         </div>
         <div>
         <input class="btn--primary" type="submit" value="Valider" name="inscription"/>

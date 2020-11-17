@@ -14,14 +14,31 @@
     --red-dark: #681c1c;
 }
 
+html, body {
+	height: 100%;
+	margin: 0; padding: 0;
+}
+
+body
+{
+    display : table;
+	width: 100%;
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+
 footer
 {
+    display : table-row;
     background-color: var(--purple);
     text-align: center;
     color: white;
     width: 100%;
     padding: 2rem;
-    position: fixed;
+    margin-top: 3rem;
+    position: absolute;
     bottom: 0;
 }
 
@@ -33,17 +50,34 @@ footer
 
 .formulaire-container
 {
-
-    border-radius: 3rem;
+    border-radius: 2rem;
     border-style: solid;
     border-color: black;
     background-color: lightgrey;
-    padding: 3rem;
+    padding: 3rem;    
 }
 
-input
+.formulaire input.champs
 {
     background-color: var(--purple-dark);
-    border-radius: 1rem;
-    
+    color: lightgray;
+    margin: 0.5%;
+    border-radius: 1rem;    
+}
+
+.annonce 
+{
+    border-radius: 2rem;
+    border-width: 2px;
+    border-style: solid;
+    border-color: var(--green-dark);
+    background-color: whitesmoke;
+    margin: 1.5em;
+    padding: 2em;
+    text-align: left;
+}
+
+.liste_annonce
+{
+    margin: 1em;
 }

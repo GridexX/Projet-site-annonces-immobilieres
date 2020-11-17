@@ -20,11 +20,9 @@
             {block name="output_area"}
                 zone_principale
             {/block}
-
-            <footer class="item-fluid">
-
-                <p>&copy; 2020 Andréa Duhamel & Arsène Fougerouse, IUT D'Aix-Marseille campus d'Arles</p>
-            </footer>
         </div>
     </body>
+    <footer class="item-fluid">
+        <p>&copy; 2020 Andréa Duhamel & Arsène Fougerouse, IUT D'Aix-Marseille campus d'Arles</p>
+    </footer>
 </html>
