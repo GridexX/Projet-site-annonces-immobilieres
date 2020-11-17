@@ -1,3 +1,2 @@
-<em>&copy; 2019</em>
-</body>
-</html>
+
+<img src="<? base_url() ?>/Images/house_logo.png" alt="House logo">

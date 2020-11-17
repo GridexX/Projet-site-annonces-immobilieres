@@ -1,0 +1,49 @@
+:root
+{
+    --purple-light: #D980FA;
+    --purple : #56199c;
+    --purple-dark: #3f1a55;
+    --orange-light: #F79F1F;
+    --orange: #EE5A24;
+    --orange-dark: #7e1900;
+    --green-light: #53c227;
+    --green: #009432;
+    --green-dark: #1b5d3c;
+    --red-light: #df4d40;
+    --red: #EA2027;
+    --red-dark: #681c1c;
+}
+
+footer
+{
+    background-color: var(--purple);
+    text-align: center;
+    color: white;
+    width: 100%;
+    padding: 2rem;
+    position: fixed;
+    bottom: 0;
+}
+
+.navbar
+{
+    background-color: var(--purple);
+}
+
+
+.formulaire-container
+{
+
+    border-radius: 3rem;
+    border-style: solid;
+    border-color: black;
+    background-color: lightgrey;
+    padding: 3rem;
+}
+
+input
+{
+    background-color: var(--purple-dark);
+    border-radius: 1rem;
+    
+}
