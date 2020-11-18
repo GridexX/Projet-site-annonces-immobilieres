@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.34-dev-7, created on 2020-11-17 10:09:51
+/* Smarty version 3.1.34-dev-7, created on 2020-11-18 02:48:15
   from 'C:\xampp\htdocs\Projet-site-annonces-immobilieres\app\Views\templates\main.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.34-dev-7',
-  'unifunc' => 'content_5fb3f5cf029131_86469010',
+  'unifunc' => 'content_5fb4dfcfeac4b4_61747818',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '89f698ab1e74bb8faa7de6fb5ad75ce92808e377' => 
     array (
       0 => 'C:\\xampp\\htdocs\\Projet-site-annonces-immobilieres\\app\\Views\\templates\\main.tpl',
-      1 => 1605629387,
+      1 => 1605689174,
       2 => 'file',
     ),
   ),
@@ -21,7 +21,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:header.tpl' => 1,
   ),
 ),false)) {
-function content_5fb3f5cf029131_86469010 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5fb4dfcfeac4b4_61747818 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_loadInheritance();
 $_smarty_tpl->inheritance->init($_smarty_tpl, false);
 ?>
@@ -41,13 +41,12 @@ $_smarty_tpl->inheritance->init($_smarty_tpl, false);
         <title><?php echo $_smarty_tpl->tpl_vars['titre']->value;?>
 </title>
 	</head>
-
     <body>
         <?php $_smarty_tpl->_subTemplateRender("file:header.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 ?>
         <div class="container">
             <?php 
-$_smarty_tpl->inheritance->instanceBlock($_smarty_tpl, 'Block_6634086105fb3f5cf028355_36077638', "output_area");
+$_smarty_tpl->inheritance->instanceBlock($_smarty_tpl, 'Block_6432873275fb4dfcfeab6f6_12031300', "output_area");
 ?>
 
         </div>
@@ -57,12 +56,12 @@ $_smarty_tpl->inheritance->instanceBlock($_smarty_tpl, 'Block_6634086105fb3f5cf0
     </footer>
 </html><?php }
 /* {block "output_area"} */
-class Block_6634086105fb3f5cf028355_36077638 extends Smarty_Internal_Block
+class Block_6432873275fb4dfcfeab6f6_12031300 extends Smarty_Internal_Block
 {
 public $subBlocks = array (
   'output_area' => 
   array (
-    0 => 'Block_6634086105fb3f5cf028355_36077638',
+    0 => 'Block_6432873275fb4dfcfeab6f6_12031300',
   ),
 );
 public function callBlock(Smarty_Internal_Template $_smarty_tpl) {

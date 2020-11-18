@@ -13,7 +13,6 @@
         <link rel="icon" type="image/png" href="/Images/logo_site.png" />
         <title>{$titre}</title>
 	</head>
-
     <body>
         {include file="header.tpl"}
         <div class="container">

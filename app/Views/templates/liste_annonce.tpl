@@ -1,7 +1,7 @@
 {extends 'main.tpl'}
 {block name="output_area"}
 <div class="liste_annonce flex-container w75 center">
-    <div class="annonce flex-container center w45">
+    <a href="" class="annonce flex-container center w45">
         <div class="w35">
             <img class="w90 center" src="/Images/logo_site.png" alt="House logo">
         </div> 
@@ -10,8 +10,8 @@
             <p> Ville / CP </p>
             <p> Date annonce : 8 juin 2018, 20h07</p> 
         </div>   
-    </div>
-    <div class="annonce flex-container center w45">
+    </a>
+    <a href="" class="annonce flex-container center w45">
         <div class="w35">
             <img class="w90 center" src="/Images/logo_site.png" alt="House logo">
         </div> 
@@ -20,8 +20,8 @@
             <p> Ville / CP </p>
             <p> Date annonce : 8 juin 2018, 20h07</p> 
         </div>   
-    </div> 
-    <div class="annonce flex-container center w45">
+    </a>
+    <a href="" class="annonce flex-container center w45">
         <div class="w35">
             <img class="w90 center" src="/Images/logo_site.png" alt="House logo">
         </div> 
@@ -30,8 +30,8 @@
             <p> Ville / CP </p>
             <p> Date annonce : 8 juin 2018, 20h07</p> 
         </div>   
-    </div>
-    <div class="annonce flex-container center w45">
+    </a>
+    <a href="" class="annonce flex-container center w45">
         <div class="w35">
             <img class="w90 center" src="/Images/logo_site.png" alt="House logo">
         </div> 
@@ -40,8 +40,8 @@
             <p> Ville / CP </p>
             <p> Date annonce : 8 juin 2018, 20h07</p> 
         </div>   
-    </div>
-    <div class="annonce flex-container center w45">
+    </a>
+    <a href="" class="annonce flex-container center w45">
         <div class="w35">
             <img class="w90 center" src="/Images/logo_site.png" alt="House logo">
         </div> 
@@ -50,8 +50,8 @@
             <p> Ville / CP </p>
             <p> Date annonce : 8 juin 2018, 20h07</p> 
         </div>   
-    </div>
-    <div class="annonce flex-container center w45">
+    </a>
+    <a href="" class="annonce flex-container center w45">
         <div class="w35">
             <img class="w90 center" src="/Images/logo_site.png" alt="House logo">
         </div> 
@@ -60,7 +60,7 @@
             <p> Ville / CP </p>
             <p> Date annonce : 8 juin 2018, 20h07</p> 
         </div>   
-    </div>
+    </a>
 </div>
 
 {/block}

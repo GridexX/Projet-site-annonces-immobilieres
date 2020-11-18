@@ -19,13 +19,11 @@ html, body {
 	margin: 0; padding: 0;
 }
 
-body
+.container
 {
     display : table;
-	width: 100%;
-    min-height: 100%;
-    margin: 0;
-    padding: 0;
+    width: 100%;
+    height: 75%;
     position: relative;
 }
 
@@ -38,7 +36,7 @@ footer
     width: 100%;
     padding: 2rem;
     margin-top: 3rem;
-    position: absolute;
+    position: relative;
     bottom: 0;
 }
 
@@ -67,6 +65,7 @@ footer
 
 .annonce 
 {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     border-radius: 2rem;
     border-width: 2px;
     border-style: solid;
@@ -75,9 +74,21 @@ footer
     margin: 1.5em;
     padding: 2em;
     text-align: left;
+    text-decoration: none;
+    box-shadow: .2em .2em .15em rgba(44, 44, 44, 0.5);
+    transition-duration: .4s;
+}
+
+.annonce:hover
+{
+    background-color: #ffbe76;
+    text-decoration: none;
+    transform: translate(-.2em,-.2em) scale(1.15);
+    box-shadow: .4em .4em .9em rgba(44, 44, 44, 0.35); 
 }
 
 .liste_annonce
 {
     margin: 1em;
 }
+
