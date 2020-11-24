@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.34-dev-7, created on 2020-11-14 07:40:47
+/* Smarty version 3.1.34-dev-7, created on 2020-11-18 03:21:52
   from '/var/www/html/app/Views/templates/main.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.34-dev-7',
-  'unifunc' => 'content_5fafde5f0d6b03_75019532',
+  'unifunc' => 'content_5fb4e7b0bc11a4_92416211',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '4f634e2dff1467347bbeea3353db8a17b370be7f' => 
     array (
       0 => '/var/www/html/app/Views/templates/main.tpl',
-      1 => 1605360626,
+      1 => 1605691106,
       2 => 'file',
     ),
   ),
@@ -21,7 +21,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:header.tpl' => 1,
   ),
 ),false)) {
-function content_5fafde5f0d6b03_75019532 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5fb4e7b0bc11a4_92416211 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_loadInheritance();
 $_smarty_tpl->inheritance->init($_smarty_tpl, false);
 ?>
@@ -36,35 +36,31 @@ $_smarty_tpl->inheritance->init($_smarty_tpl, false);
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
 		<link rel="stylesheet" href="/Css/stylesheet.css" />
         <link rel="stylesheet" href="/Css/knacss.css" />
-        <link rel="stylesheet" href="/Css/knacss.css" />
         <link rel="icon" type="image/png" href="/Images/logo_site.png" />
         <title><?php echo $_smarty_tpl->tpl_vars['titre']->value;?>
 </title>
 	</head>
-
     <body>
         <?php $_smarty_tpl->_subTemplateRender("file:header.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 ?>
         <div class="container">
             <?php 
-$_smarty_tpl->inheritance->instanceBlock($_smarty_tpl, 'Block_16483432925fafde5f0d6336_95991010', "output_area");
+$_smarty_tpl->inheritance->instanceBlock($_smarty_tpl, 'Block_12164789475fb4e7b0bc07e4_33067465', "output_area");
 ?>
 
-
-            <footer class="item-fluid">
-
-                <p>&copy; 2020 Andréa Duhamel & Arsène Fougerouse, IUT D'Aix-Marseille campus d'Arles</p>
-            </footer>
         </div>
     </body>
+    <footer class="item-fluid">
+        <p>&copy; 2020 Andréa Duhamel & Arsène Fougerouse, IUT D'Aix-Marseille campus d'Arles</p>
+    </footer>
 </html><?php }
 /* {block "output_area"} */
-class Block_16483432925fafde5f0d6336_95991010 extends Smarty_Internal_Block
+class Block_12164789475fb4e7b0bc07e4_33067465 extends Smarty_Internal_Block
 {
 public $subBlocks = array (
   'output_area' => 
   array (
-    0 => 'Block_16483432925fafde5f0d6336_95991010',
+    0 => 'Block_12164789475fb4e7b0bc07e4_33067465',
   ),
 );
 public function callBlock(Smarty_Internal_Template $_smarty_tpl) {

@@ -2,7 +2,7 @@
 {block name="titre_form"}Inscription{/block}
 {block name="formulaire"}
     
-    <form class="formulaire ">
+    <form class="formulaire" action="/Utilisateur/create" method="post">
         <div>
         <label for="pseudo">Pseudo : </label>
         <input class="champs" type="text" name="pseudo" required placeholder="MomoDu69"/>

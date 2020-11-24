@@ -12,6 +12,7 @@
     --red-light: #df4d40;
     --red: #EA2027;
     --red-dark: #681c1c;
+    --blue: #5758BB;
 }
 
 html, body {
@@ -46,22 +47,108 @@ footer
 }
 
 
-.formulaire-container
+.formulaire-container, .annonce-container
 {
-    border-radius: 2rem;
+    border-radius: 1rem ;
     border-style: solid;
     border-color: black;
-    background-color: lightgrey;
+    background-color: rgb(255, 255, 255);
     padding: 3rem;    
 }
 
-.formulaire input.champs
+label
+{
+
+    text-align: start;
+    width: 15rem;
+    padding: 1rem;
+    padding-left: 2rem;
+    background-color: rgb(194, 194, 194);
+    border-top-left-radius: 1rem;
+    border-bottom-left-radius: 1rem;
+}
+
+.div-input div
+{
+    margin-top: 1rem;
+}
+
+.formulaire input.champs, .formulaire select.champs
+{
+    margin-top: -.4rem;
+    margin-left: -.5rem;
+    background-color: var(--blue);
+    color: lightgray;
+    padding: 1rem;
+    padding-left: 2rem;
+    border-top-right-radius: 1rem;
+    border-bottom-right-radius: 1rem; 
+    border-style: none; 
+    transition-duration: .5s;
+    outline-style: none;
+    width: 50%;
+}
+
+.formulaire select.champs:hover
 {
     background-color: var(--purple-dark);
-    color: lightgray;
-    margin: 0.5%;
-    border-radius: 1rem;    
 }
+
+.formulaire select.champs::selection
+{
+    font-style: italic;
+}
+
+.formulaire select.champs:target
+{
+    background-color: var(--purple-light);
+}
+
+.formulaire .input-icon-end
+{
+    margin-left: -2rem;
+    margin-right: 1rem;
+    color: lightgray;
+    /*background-color: red; */
+
+}
+
+.text-description
+{
+    background-color: var(--blue);
+    color: lightgray;
+}
+
+.text-description:focus
+{
+    border-color: #009432;
+    outline-color: var(--purple-light);
+}
+
+.label-cp
+{
+    width: 15rem;
+}
+
+.champs-cp
+{
+    width: 15rem;
+}
+
+::placeholder{
+    color:red;
+}
+::-webkit-input-placeholder 
+{
+    color:red;
+}
+
+.formulaire input.champs:focus
+{
+    background-color: var(--purple-dark);
+    outline-style: none;
+}
+
 
 .annonce 
 {
@@ -92,3 +179,65 @@ footer
     margin: 1em;
 }
 
+.ligne-footer
+{ 
+    display: block; 
+    height: 0.1rem;
+    border: 0; 
+    border-top: 0.1rem solid black;
+    margin: 1em 0; 
+    padding: 0; 
+}
+
+.texte-orange
+{
+    color : var(--orange);
+    font-size: 2.5rem;
+}
+
+.critere-energie
+{
+    color:white;
+    padding: .1rem;
+    margin: -.1rem;
+}
+
+.energie-courante
+{
+    padding: .5rem 0.2rem ;
+}
+
+.critere-A
+{
+    background-color: #009432;
+}
+
+.critere-B
+{
+    background-color: #00bd3f; 
+}
+
+.critere-C
+{
+    background-color: #00e44c; 
+}
+
+.critere-D
+{
+    background-color: #f6f208; 
+}
+
+.critere-E
+{
+    background-color: #f5d02a;  
+}
+
+.critere-F
+{
+    background-color: #f5962a;  
+}
+
+.critere-G
+{
+    background-color: #eb0a0a;  
+}

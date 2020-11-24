@@ -2,7 +2,7 @@
 {block name="titre_form"}Connexion{/block}
 {block name="formulaire"}
     
-    <form class="formulaire ">
+    <form class="formulaire" action="/Utilisateur/connect" method="post">
         <div>
         <label for="mail">Mail : </label>
         <input class="champs" type="text" name="mail" required placeholder="xxx@domain_name.com" pattern=".*@.*\..*"/>
