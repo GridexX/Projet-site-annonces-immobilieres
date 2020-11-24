@@ -56,7 +56,7 @@ footer{
 }
 
 
-.formulaire-container
+.formulaire-container, .annonce-container
 {
     border-radius: 2rem;
     border-style: solid;
@@ -169,3 +169,65 @@ footer{
     display: block;
 }
 
+.ligne-footer
+{ 
+    display: block; 
+    height: 0.1rem;
+    border: 0; 
+    border-top: 0.1rem solid black;
+    margin: 1em 0; 
+    padding: 0; 
+}
+
+.texte-orange
+{
+    color : var(--orange);
+    font-size: 2.5rem;
+}
+
+.critere-energie
+{
+    color:white;
+    padding: .1rem;
+    margin: -.1rem;
+}
+
+.energie-courante
+{
+    padding: .5rem 0.2rem ;
+}
+
+.critere-A
+{
+    background-color: #009432;
+}
+
+.critere-B
+{
+    background-color: #00bd3f; 
+}
+
+.critere-C
+{
+    background-color: #00e44c; 
+}
+
+.critere-D
+{
+    background-color: #f6f208; 
+}
+
+.critere-E
+{
+    background-color: #f5d02a;  
+}
+
+.critere-F
+{
+    background-color: #f5962a;  
+}
+
+.critere-G
+{
+    background-color: #eb0a0a;  
+}
