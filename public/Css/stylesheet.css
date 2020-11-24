@@ -14,31 +14,41 @@
     --red-dark: #681c1c;
 }
 
-html, body {
-	height: 100%;
-	margin: 0; padding: 0;
+html{
+ height:100%;
 }
 
-.container
-{
-    display : table;
-    width: 100%;
-    height: 75%;
+body{
+height:100%;
+position: relative;
+
+}
+
+.wrap{
+    min-height:100%;
     position: relative;
 }
 
-footer
-{
+header{
+    position: relative;
+}
+
+.container{
+    position: relative;
+    padding-bottom: 5em;
+}
+
+footer{
+    position: absolute;
+    bottom: 0;
     display : table-row;
+    width: 100%;
     background-color: var(--purple);
     text-align: center;
     color: white;
-    width: 100%;
     padding: 2rem;
-    margin-top: 3rem;
-    position: relative;
-    bottom: 0;
 }
+
 
 .navbar
 {
@@ -63,6 +73,11 @@ footer
     border-radius: 1rem;    
 }
 
+.formulaire input.champs:focus
+{
+    outline-style: none;
+}
+
 .annonce 
 {
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
@@ -79,9 +94,11 @@ footer
     transition-duration: .4s;
 }
 
+
 .annonce:hover
 {
-    background-color: #ffbe76;
+    color: var(--orange-light);
+    font-weight: bold;
     text-decoration: none;
     transform: translate(-.2em,-.2em) scale(1.15);
     box-shadow: .4em .4em .9em rgba(44, 44, 44, 0.35); 
@@ -90,5 +107,65 @@ footer
 .liste_annonce
 {
     margin: 1em;
+}
+
+.dropdown {
+    position: relative;
+    display: inline;
+}
+
+
+.dropdown-button{
+    background-color: orange;
+    position: relative;
+    color: white;
+    display: block;
+    min-width: 8em;
+    border-radius: 2rem 2rem 2rem 2rem;  
+}
+
+.dropped-button    {
+    font-weight: bold;
+    background-color: var(--red);
+    border-radius: 2rem 2rem 0rem 0rem; 
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    left: 30%;
+    background-color: lightgray;
+    min-width: 8em;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    border-radius: 0rem 0rem 2rem 2rem;    
+}
+
+.dropdown-content a:hover {
+    display: block;
+    background-color: whitesmoke;
+    border-radius: 2rem; 
+    width: 95%;
+    margin: auto;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.dropdown-content a.red:hover  {
+    color: white;
+    background-color: red;
+}
+
+
+
+.show {
+    display: block;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
 }
 
