@@ -6,7 +6,7 @@
             <img class="w90 center" src="/Images/logo_site.png" alt="House logo">
         </div> 
         <div class="w65"> 
-            <p> Titre : Loyer </p>
+            <p class="title"> Titre : Loyer </p>
             <p> Ville / CP </p>
             <p> Date annonce : 8 juin 2018, 20h07</p> 
         </div>   
@@ -16,7 +16,7 @@
             <img class="w90 center" src="/Images/logo_site.png" alt="House logo">
         </div> 
         <div class="w65"> 
-            <p> Titre : Loyer </p>
+            <p class="title"> Titre : Loyer </p>
             <p> Ville / CP </p>
             <p> Date annonce : 8 juin 2018, 20h07</p> 
         </div>   
@@ -26,7 +26,7 @@
             <img class="w90 center" src="/Images/logo_site.png" alt="House logo">
         </div> 
         <div class="w65"> 
-            <p> Titre : Loyer </p>
+            <p class="title"> Titre : Loyer </p>
             <p> Ville / CP </p>
             <p> Date annonce : 8 juin 2018, 20h07</p> 
         </div>   
@@ -36,7 +36,7 @@
             <img class="w90 center" src="/Images/logo_site.png" alt="House logo">
         </div> 
         <div class="w65"> 
-            <p> Titre : Loyer </p>
+            <p class="title"> Titre : Loyer </p>
             <p> Ville / CP </p>
             <p> Date annonce : 8 juin 2018, 20h07</p> 
         </div>   
@@ -46,7 +46,7 @@
             <img class="w90 center" src="/Images/logo_site.png" alt="House logo">
         </div> 
         <div class="w65"> 
-            <p> Titre : Loyer </p>
+            <p class="title"> Titre : Loyer </p>
             <p> Ville / CP </p>
             <p> Date annonce : 8 juin 2018, 20h07</p> 
         </div>   
@@ -56,7 +56,7 @@
             <img class="w90 center" src="/Images/logo_site.png" alt="House logo">
         </div> 
         <div class="w65"> 
-            <p> Titre : Loyer </p>
+            <p class="title"> Titre : Loyer </p>
             <p> Ville / CP </p>
             <p> Date annonce : 8 juin 2018, 20h07</p> 
         </div>   

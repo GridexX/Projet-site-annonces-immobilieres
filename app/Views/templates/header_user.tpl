@@ -1,7 +1,7 @@
 <div class="navbar navbar-fixed_top">
     <div class="flex-container">
         <div class="w33 navbar-div item-center txtcenter">
-            <button class="btn--primary">Afficher les annonces</button>
+            <button class="bouton w40 center"><a class="lien" href="/pages/view/liste_annonce">Afficher les annonces</a></button>
         </div>
         <div class="w33 navbar-div item-center txtcenter">
             <img src="/Images/logo_house.png" class="center" alt="House logo">
