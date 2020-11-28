@@ -8,6 +8,7 @@
 {block name="nv_mdp"}
 <div>
     <label style="width:24rem;" for="confirmation">Nouveau mot de passe : </label>
-    <input class="champs" type="password" name="new-password" required />
+    <input class="champs" type="password" name="new-password" />
     </div>
 {/block}
+{block name="mdp-required"}{/block}

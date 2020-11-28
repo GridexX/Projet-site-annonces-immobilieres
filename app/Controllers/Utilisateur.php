@@ -41,15 +41,19 @@ class Utilisateur extends Controller
 
             if($this->sontMdpEgaux($mdp,$confirmation))
             {
-                $mail = $this->request->getVar('mail');
+                $data['mail'] = $this->request->getVar('mail');
                 $model = new utilisateurModel();
-                if(!$model->getUtilisateur($mail))
+                if(!$model->getUtilisateur($data['mail']))
                 {
-                    $pseudo = $this->request->getVar('pseudo');
-                    $nom = $this->request->getVar('nom');
-                    $prenom = $this->request->getVar('prenom');
+                    $data['pseudo'] = $this->request->getVar('pseudo');
+                    $data['nom'] = $this->request->getVar('nom');
+                    $data['prenom'] = $this->request->getVar('prenom');
                     
-                    $model->insertUtilisateur($mail, $mdp, $pseudo, $nom, $prenom);
+                    $model->insertUtilisateur($data['mail'], $mdp, $data['pseudo'], $data['nom'], $data['prenom']);
+
+                    $session = \Config\Services::session();
+                    $session->set($data);
+                    service('SmartyEngine')->assign('session',$session);
                     return service('SmartyEngine')->view('liste_annonce.tpl');
                 }
                 else
@@ -116,9 +120,7 @@ class Utilisateur extends Controller
             'nom' => 'required',
             'prenom' => 'required',
             'pseudo' => 'required',
-            'password' => 'required',
-            'new-password' => 'required',
-            'confirmation' => 'required'
+            'password' => 'required'
             ]);
 
         $session = \Config\Services::session();   
@@ -129,30 +131,23 @@ class Utilisateur extends Controller
             $newMdp = $this->request->getVar('new-password');
             $model = new utilisateurModel();
             $res = $model->getUtilisateur($session->get("mail"));
-            if($newMdp == $mdp) $this->returnError('Le nouveau mot de passe ressemble trop à l\'ancien','edition_profil');
-
-            
-
-            else if( sha1($mdp) !== $res["U_mdp"]) $this->returnError('Le mot de passe est incorrect','edition_profil');
-
-            else if($this->sontMdpEgaux($newMdp,$confirmation))
+            if(! $this->sontMdpEgaux(sha1($mdp),$res["U_mdp"])) $this->returnError('Le mot de passe est incorrect','edition_profil');
+            else if(! $this->sontMdpEgaux($confirmation,$newMdp)) $this->returnError('Le nouveau mot de passe n\'a pas été bien ressaisit','edition_profil');
+            else if($this->sontMdpEgaux($mdp,$newMdp)) $this->returnError('Le nouveau mot de passe ressemble trop à l\'ancien','edition_profil');
+            else  if($this->sontMdpEgaux(sha1($mdp),$res["U_mdp"]) && $this->sontMdpEgaux($confirmation,$newMdp)) //Le mdp est bon et les 2 nouveaux mots de passes sont égaux
             {
                 $data['pseudo'] = $this->request->getVar('pseudo'); 
                 $data['nom'] = $this->request->getVar('nom');
                 $data['prenom'] = $this->request->getVar('prenom');
                 
-
-                $model->updateUtilisateur($session->get("mail"), $newMdp, $data['pseudo'], $data['nom'] , $data['prenom']);
+                if(! empty($newMdp)) $mdp = $newMdp; //Pour garder le même mdp quand on enregistre le formulaire
+                $model->updateUtilisateur($session->get("mail"), $mdp, $data['pseudo'], $data['nom'] , $data['prenom']);
                 $session->set($data); 
                 service('SmartyEngine')->assign('succes','Profil mis à jour !');
                 service('SmartyEngine')->assign('session',$session);
                 service('SmartyEngine')->view('edition_profil.tpl');
             }
-            else
-            {
-                service('SmartyEngine')->assign('error','Les mots de passes ne sont pas identiques');
-                return service('SmartyEngine')->view('edition_profil.tpl');
-            }
+
         }
         else
         {
