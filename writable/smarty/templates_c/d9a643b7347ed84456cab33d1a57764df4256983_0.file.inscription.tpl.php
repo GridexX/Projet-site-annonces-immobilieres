@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.34-dev-7, created on 2020-11-22 07:30:44
+/* Smarty version 3.1.34-dev-7, created on 2020-11-27 10:11:06
   from '/var/www/html/app/Views/templates/inscription.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.34-dev-7',
-  'unifunc' => 'content_5fba6804785c95_85352608',
+  'unifunc' => 'content_5fc1251ac7c594_98843867',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'd9a643b7347ed84456cab33d1a57764df4256983' => 
     array (
       0 => '/var/www/html/app/Views/templates/inscription.tpl',
-      1 => 1606051838,
+      1 => 1606493465,
       2 => 'file',
     ),
   ),
@@ -20,26 +20,62 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5fba6804785c95_85352608 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5fc1251ac7c594_98843867 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_loadInheritance();
 $_smarty_tpl->inheritance->init($_smarty_tpl, true);
 ?>
 
+
 <?php 
-$_smarty_tpl->inheritance->instanceBlock($_smarty_tpl, 'Block_17401236785fba6804783550_10516221', "titre_form");
+$_smarty_tpl->inheritance->instanceBlock($_smarty_tpl, 'Block_18291793845fc1251ac6b3f2_56920227', "titre_onglet");
 ?>
 
 <?php 
-$_smarty_tpl->inheritance->instanceBlock($_smarty_tpl, 'Block_5735954015fba6804784b79_74493189', "formulaire");
-$_smarty_tpl->inheritance->endChild($_smarty_tpl, 'formulaire.tpl');
+$_smarty_tpl->inheritance->instanceBlock($_smarty_tpl, 'Block_5445823445fc1251ac6cb39_36336272', "titre_form");
+?>
+
+<?php 
+$_smarty_tpl->inheritance->instanceBlock($_smarty_tpl, 'Block_15415189925fc1251ac6d9e3_93823912', "action_form");
+?>
+
+
+<?php 
+$_smarty_tpl->inheritance->instanceBlock($_smarty_tpl, 'Block_9439153275fc1251ac6e762_49370321', "input_inscription");
+?>
+
+        
+
+<?php 
+$_smarty_tpl->inheritance->instanceBlock($_smarty_tpl, 'Block_9538543025fc1251ac79e87_13562228', "input_inscription_confirmation");
+?>
+
+
+<?php 
+$_smarty_tpl->inheritance->instanceBlock($_smarty_tpl, 'Block_11821535285fc1251ac7bc60_22041484', "proposition_inscription");
+$_smarty_tpl->inheritance->endChild($_smarty_tpl, 'connexion.tpl');
 }
+/* {block "titre_onglet"} */
+class Block_18291793845fc1251ac6b3f2_56920227 extends Smarty_Internal_Block
+{
+public $subBlocks = array (
+  'titre_onglet' => 
+  array (
+    0 => 'Block_18291793845fc1251ac6b3f2_56920227',
+  ),
+);
+public function callBlock(Smarty_Internal_Template $_smarty_tpl) {
+?>
+Inscription<?php
+}
+}
+/* {/block "titre_onglet"} */
 /* {block "titre_form"} */
-class Block_17401236785fba6804783550_10516221 extends Smarty_Internal_Block
+class Block_5445823445fc1251ac6cb39_36336272 extends Smarty_Internal_Block
 {
 public $subBlocks = array (
   'titre_form' => 
   array (
-    0 => 'Block_17401236785fba6804783550_10516221',
+    0 => 'Block_5445823445fc1251ac6cb39_36336272',
   ),
 );
 public function callBlock(Smarty_Internal_Template $_smarty_tpl) {
@@ -48,51 +84,100 @@ Inscription<?php
 }
 }
 /* {/block "titre_form"} */
-/* {block "formulaire"} */
-class Block_5735954015fba6804784b79_74493189 extends Smarty_Internal_Block
+/* {block "action_form"} */
+class Block_15415189925fc1251ac6d9e3_93823912 extends Smarty_Internal_Block
 {
 public $subBlocks = array (
-  'formulaire' => 
+  'action_form' => 
   array (
-    0 => 'Block_5735954015fba6804784b79_74493189',
+    0 => 'Block_15415189925fc1251ac6d9e3_93823912',
+  ),
+);
+public function callBlock(Smarty_Internal_Template $_smarty_tpl) {
+?>
+create<?php
+}
+}
+/* {/block "action_form"} */
+/* {block "input_inscription"} */
+class Block_9439153275fc1251ac6e762_49370321 extends Smarty_Internal_Block
+{
+public $subBlocks = array (
+  'input_inscription' => 
+  array (
+    0 => 'Block_9439153275fc1251ac6e762_49370321',
   ),
 );
 public function callBlock(Smarty_Internal_Template $_smarty_tpl) {
 ?>
 
-    
-    <form class="formulaire" action="/Utilisateur/create" method="post">
-        <div>
-        <label for="pseudo">Pseudo : </label>
-        <input class="champs" type="text" name="pseudo" required placeholder="MomoDu69"/>
-        </div>
-        <div>
-        <label for="prenom">Prénom : </label>
-        <input class="champs" type="text" name="prenom" required placeholder="Momo"/>
-        </div>
-        <div>
-        <label for="nom">Nom : </label>
-        <input class="champs" type="text" name="nom" required placeholder="Durant"/>
-        </div>
-        <div>
-        <label for="mail">Mail : </label>
-        <input class="champs" type="text" name="mail" required placeholder="xxx@domain_name.com" pattern=".*@.*\..*"/>
-        </div>
-        <div>
-        <label for="mdp">Mot de passe : </label>
-        <input class="champs" type="password" name="password" required />
-        </div>
-        <div>
-        <label for="confirmation">Confirmation mot de passe : </label>
-        <input class="champs" type="password" name="confirmation" required />
-        </div>
-        <div>
-        <input class="btn--primary" type="submit" value="Valider" name="inscription"/>
-        <input class="btn--danger" type="reset" value="Effacer"/>
-        </div>
-    </form>
+    <div>
+    <label for="pseudo">Pseudo : </label>
+    <input class="champs" type="text" name="pseudo" required value="<?php echo ((($tmp = @$_SESSION['pseudo'])===null||$tmp==='' ? '' : $tmp));?>
+" placeholder="MomoDu69" />
+    </div>
+    <div>
+    <label for="prenom">Prénom : </label>
+    <input class="champs" type="text" name="prenom" required value="<?php echo ((($tmp = @$_SESSION['prenom'])===null||$tmp==='' ? '' : $tmp));?>
+" placeholder="Momo"/>
+    </div>
+    <div>
+    <label for="nom">Nom : </label>
+    <input class="champs" type="text" name="nom" required value="<?php echo ((($tmp = @$_SESSION['nom'])===null||$tmp==='' ? '' : $tmp));?>
+" placeholder="Durant"/>
+    </div>
+
 <?php
 }
 }
-/* {/block "formulaire"} */
+/* {/block "input_inscription"} */
+/* {block "nv_mdp"} */
+class Block_8853243505fc1251ac7aa57_26120776 extends Smarty_Internal_Block
+{
+public function callBlock(Smarty_Internal_Template $_smarty_tpl) {
+}
+}
+/* {/block "nv_mdp"} */
+/* {block "input_inscription_confirmation"} */
+class Block_9538543025fc1251ac79e87_13562228 extends Smarty_Internal_Block
+{
+public $subBlocks = array (
+  'input_inscription_confirmation' => 
+  array (
+    0 => 'Block_9538543025fc1251ac79e87_13562228',
+  ),
+  'nv_mdp' => 
+  array (
+    0 => 'Block_8853243505fc1251ac7aa57_26120776',
+  ),
+);
+public function callBlock(Smarty_Internal_Template $_smarty_tpl) {
+?>
+
+    <?php 
+$_smarty_tpl->inheritance->instanceBlock($_smarty_tpl, 'Block_8853243505fc1251ac7aa57_26120776', "nv_mdp", $this->tplIndex);
+?>
+
+    <div>
+    <label style="width:24rem;" for="confirmation">Confirmation mot de passe : </label>
+    <input class="champs" type="password" name="confirmation" required />
+    </div>
+
+<?php
+}
+}
+/* {/block "input_inscription_confirmation"} */
+/* {block "proposition_inscription"} */
+class Block_11821535285fc1251ac7bc60_22041484 extends Smarty_Internal_Block
+{
+public $subBlocks = array (
+  'proposition_inscription' => 
+  array (
+    0 => 'Block_11821535285fc1251ac7bc60_22041484',
+  ),
+);
+public function callBlock(Smarty_Internal_Template $_smarty_tpl) {
+}
+}
+/* {/block "proposition_inscription"} */
 }

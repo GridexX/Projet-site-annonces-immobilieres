@@ -83,7 +83,7 @@ label
     margin-top: 1rem;
 }
 
-.formulaire input.champs, .formulaire select.champs
+.formulaire input.champs, .formulaire select.champs, .formulaire span.champs
 {
     margin-top: -.4rem;
     margin-left: -.5rem;
@@ -97,6 +97,11 @@ label
     transition-duration: .5s;
     outline-style: none;
     width: 50%;
+}
+
+.formulaire span.champs
+{
+    
 }
 
 .formulaire select.champs:hover
@@ -275,18 +280,21 @@ label
 .critere-energie
 {
     color:white;
-    padding: .1rem;
-    margin: -.1rem;
+    padding: .3rem;
+    margin: -.2rem;
 }
 
 .energie-courante
 {
-    padding: .5rem 0.2rem ;
+    padding: .8rem 0.8rem ;
+    border-radius: .3rem;
 }
 
 .critere-A
 {
     background-color: #009432;
+    border-top-left-radius: .3rem;
+    border-bottom-left-radius: .3rem;
 }
 
 .critere-B
@@ -317,4 +325,6 @@ label
 .critere-G
 {
     background-color: #eb0a0a;  
+    border-top-right-radius: .3rem;
+    border-bottom-right-radius: .3rem;
 }

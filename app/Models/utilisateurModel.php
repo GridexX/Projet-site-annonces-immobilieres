@@ -27,11 +27,18 @@ class utilisateurModel extends Model
         return $this->simpleQuery($requete);
     }
 
-    public function getUtilisateur($mail, $mdp)
+    public function getUtilisateur($mail)
+    {
+        return $this->asArray()->where(['U_mail' => $mail])->first();
+    }
+
+    public function updateUtilisateur($mail, $mdp, $pseudo, $nom, $prenom)
     {
         $mdp = sha1($mdp);
-        return $this->asArray()->where(['U_mail' => $mail])->where(['U_mdp' => $mdp])->first();
+        $requete = 'UPDATE '.$this->table.' SET U_mdp = "'.$mdp.'", U_pseudo = "'.$pseudo.'", U_nom = "'.$nom.'", U_prenom = "'.$prenom.'"WHERE U_mail = "'.$mail.'";';
+        return $this->simpleQuery($requete);
     }
+
 }
 
 ?>

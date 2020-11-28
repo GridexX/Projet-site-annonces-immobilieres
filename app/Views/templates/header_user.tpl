@@ -1,7 +1,7 @@
 <div class="navbar navbar-fixed_top">
     <div class="flex-container">
         <div class="w33 navbar-div item-center txtcenter">
-            <button class="btn--primary">Afficher les annonces</button>
+            <button class="btn--primary"><a href="/pages/view/liste_annonce">Afficher les annonces</a></button>
         </div>
         <div class="w33 navbar-div item-center txtcenter">
             <img src="/Images/logo_house.png" class="center" alt="House logo">
@@ -9,10 +9,10 @@
         <div class="w33 navbar-div item-center dropdown txtcenter">
                 <button onclick="myFunction()" id="dropdown-button" class="dropdown-button center w40">Mon Profil</button>
                 <div id="dropdown-content" class="dropdown-content w40">
-                    <a href="#">Pseudo</a>
-                    <a href="#">Gérer le Profil</a>
+                    <a href="#">{$smarty.session.pseudo|default:'Pseudo'}</a>
+                    <a href="/pages/view/edition_profil">Gérer le Profil</a>
                     <a href="#">Editer les annonces</a>
-                    <a class="red" href="#">Déconnexion</a>
+                    <a class="red" href="/pages/deconnexion">Déconnexion</a>
                 </div>                
         </div>
     </div>

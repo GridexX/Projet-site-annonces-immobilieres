@@ -1,4 +1,5 @@
 {extends 'main.tpl'}
+{block name="titre_onglet"}Accueil{/block}
 {block name="output_area"}
 <div class="liste_annonce flex-container w75 center">
     <a href="" class="annonce flex-container center w45">

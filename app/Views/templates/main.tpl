@@ -10,12 +10,19 @@
 		<link rel="stylesheet" href="/Css/stylesheet.css" />
         <link rel="stylesheet" href="/Css/knacss.css" />
         <link rel="icon" type="image/png" href="/Images/logo_site.png" />
-        <title>{$titre}</title>
+        <title>{block name="titre_onglet"}{/block} - Site de petites annonces</title>
 	</head>
     <body>
         <div class="wrap">
-            {include file="header_user.tpl"}
+            
+            {* HEADER *}
+            {if isset($smarty.session.mail) }
+                {include file="header_user.tpl"}
+            {else}
+                {include file="header.tpl"}
+            {/if}
             <div class="container">
+                
                 {block name="output_area"}
                     zone_principale
                 {/block}

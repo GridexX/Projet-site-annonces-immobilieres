@@ -1,4 +1,5 @@
 {extends 'main.tpl'}
+{block name="titre_onglet"}Annonce{/block}
 {block name="output_area"}
     
     <div class="flex-container w75 item-center">
