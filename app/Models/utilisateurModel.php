@@ -27,11 +27,6 @@ class utilisateurModel extends Model
         return $this->simpleQuery($requete);
     }
 
-    public function getUtilisateur($mail)
-    {
-        return $this->asArray()->where(['U_mail' => $mail])->first();
-    }
-
     public function updateUtilisateur($mail, $mdp, $pseudo, $nom, $prenom)
     {
         $mdp = sha1($mdp);
