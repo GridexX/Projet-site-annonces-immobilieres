@@ -5,18 +5,45 @@
         <div class="annonce-container w60 item-center">
             <div class="img-annonce">
                 <div class="flex-container item-center">
-                    <div class="w10 item-center txtcenter">
-                        <button class="btn--primary"><i class="icon-arrow--left"></i></button>
-                    </div>
-                    <div class="slider">
-                        <div class="slides">
-                            <div class="slide"> <img src="/Images/logo_house.png" alt="Maison"/></div>
-                            <div class="slide"> <img src="/Images/logo_house.png" alt="Maison"/></div>
-                            <div class="slide"> <img src="/Images/logo_house.png" alt="Maison"/></div>
+                    <div class="slider">                        
+                        <input type="radio" id="i1" name="images" checked />
+                        <input type="radio" id="i2" name="images" />
+                        <input type="radio" id="i3" name="images" />
+                        <input type="radio" id="i4" name="images" />
+                        <input type="radio" id="i5" name="images" />                       
+                        <div class="slide_img" id="one">                                
+                                <img src="/Images/logo_house.png">                                
+                                    <label class="prev" for="i5"><span>&#x2039;</span></label>
+                                    <label class="next" for="i2"><span>&#x203a;</span></label>	                            
+                        </div>                        
+                        <div class="slide_img" id="two">                            
+                                <img src="/Images/logo_site.png" >                                
+                                    <label class="prev" for="i1"><span>&#x2039;</span></label>
+                                    <label class="next" for="i3"><span>&#x203a;</span></label>                            
+                        </div>                                
+                        <div class="slide_img" id="three">
+                                <img src="/Images/logo_house.png">	                                
+                                    <label class="prev" for="i2"><span>&#x2039;</span></label>
+                                    <label class="next" for="i4"><span>&#x203a;</span></label>
                         </div>
-                    </div>
-                    <div class="w10 item-center txtcenter">
-                        <button class="btn--primary"><i class="icon-arrow--right"></i></button>
+                        <div class="slide_img" id="four">
+                                <img src="/Images/logo_site.png">                                
+                                    <label class="prev" for="i3"><span>&#x2039;</span></label>
+                                    <label class="next" for="i5"><span>&#x203a;</span></label>
+                        </div>
+                        <div class="slide_img" id="five">
+                                <img src="/Images/logo_house.png">                                
+                                    <label class="prev" for="i4"><span>&#x2039;</span></label>
+                                    <label class="next" for="i1"><span>&#x203a;</span></label>
+                        </div>
+                        <div id="nav_slide">
+                            <label for="i1" class="dots" id="dot1"></label>
+                            <label for="i2" class="dots" id="dot2"></label>
+                            <label for="i3" class="dots" id="dot3"></label>
+                            <label for="i4" class="dots" id="dot4"></label>
+                            <label for="i5" class="dots" id="dot5"></label>
+                        </div>
+                            
                     </div>
                 </div>
             </div>

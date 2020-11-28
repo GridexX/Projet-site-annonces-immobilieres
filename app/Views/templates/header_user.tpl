@@ -9,9 +9,9 @@
         <div class="w33 navbar-div item-center dropdown txtcenter">
                 <button onclick="myFunction()" id="dropdown-button" class="dropdown-button center w40">Mon Profil</button>
                 <div id="dropdown-content" class="dropdown-content w40">
-                    <a href="#">Pseudo</a>
                     <a href="#">Gérer le Profil</a>
                     <a href="#">Editer les annonces</a>
+                    <a href="#">Messagerie</a>
                     <a class="red" href="#">Déconnexion</a>
                 </div>                
         </div>
