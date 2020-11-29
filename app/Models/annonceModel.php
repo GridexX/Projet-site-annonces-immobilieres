@@ -24,9 +24,9 @@ class annonceModel extends Model
         'T_type' ,
         'E_id_engie' ];
 
-    public function insertAnnonce($id, $date, $etat, $titre, $loyer, $charges, $chauffage, $perf, $meuble, $superficie, $desc, $adresse, $ville, $cp, $type, $engie=false)
+    public function insertAnnonce($date, $etat, $titre, $loyer, $charges, $chauffage, $perf, $meuble, $superficie, $desc, $adresse, $ville, $cp, $type, $engie=false)
     {
-        $requete = 'INSERT INTO '.$this->table.' VALUES ("'.$id.'","'.$date.'","'.$etat.'","'.$titre.'","'.$loyer.'","'.$charges.'","'.$chauffage.'","'.$perf.'","'.$meuble.'","'.$superficie.'","'.$desc.'","'.$adress.'","'.$ville.'","'.$cp.'","'.$type ;
+        $requete = 'INSERT INTO '.$this->table.' VALUES (DEFAULT,"'.$date.'","'.$etat.'","'.$titre.'","'.$loyer.'","'.$charges.'","'.$chauffage.'","'.$perf.'","'.$meuble.'","'.$superficie.'","'.$desc.'","'.$adress.'","'.$ville.'","'.$cp.'","'.$type ;
         if($engie !== false)    //Ajout de l'id de l'énergie si elle à été définite dans le controlleur (chauffage individuel)
             $requete .= '","'.$engie ;
         $requete .= '");';

@@ -9,7 +9,7 @@
         <div class="w33 navbar-div item-center dropdown txtcenter">
                 <button onclick="myFunction()" id="dropdown-button" class="dropdown-button center w40">Mon Profil</button>
                 <div id="dropdown-content" class="dropdown-content w40">
-                    <a href="#">{$smarty.session.pseudo|default:'Pseudo'}</a>
+                    <a href="/pages/view/nouvelle_annonce">Créer une annonce</a>
                     <a href="/pages/view/edition_profil">Gérer le Profil</a>
                     <a href="#">Editer les annonces</a>
                     <a class="red" href="/pages/deconnexion">Déconnexion</a>

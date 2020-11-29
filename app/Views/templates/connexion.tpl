@@ -14,12 +14,12 @@
             <form class="formulaire" action="/Utilisateur/{block name="action_form"}connect{/block}" method="post">
             <div>
             <label for="mail">Mail : </label>
-            <input class="champs" type="text" name="mail" required placeholder="xxx@domain_name.com" pattern=".*@.*\..*" value="{($smarty.session.mail|default:'')}" {block name="disable_mail"}{/block} />
+            <input class="champs" type="text" name="mail" required placeholder="xxx@domaine.extension" pattern=".*@.*\..*" value="{($smarty.session.mail|default:'')}" oninvalid="this.setCustomValidity('L\'email doit être sous la forme xxx@domaine.alias')" {block name="disable_mail"}{/block} />
             </div>
             {block name="input_inscription"}{/block}
             <div>
             <label for="mdp"{block name="for_mdp"}>M{/block}ot de passe : </label>
-            <input class="champs" type="password" name="password" required />
+            <input class="champs" type="password" name="password" oninvalid="this.setCustomValidity('Le mot de passe doit contenir au moins 6 caractères')" required {*minlength="6"*} />
             </div>
             {block name="input_inscription_confirmation"}{/block}
             <div>

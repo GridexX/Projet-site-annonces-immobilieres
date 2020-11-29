@@ -8,6 +8,6 @@
 {block name="nv_mdp"}
 <div>
     <label style="width:24rem;" for="confirmation">Nouveau mot de passe : </label>
-    <input class="champs" type="password" name="new-password" required />
+    <input class="champs" type="password" name="new-password" required oninvalid="this.setCustomValidity('Doit être identique au mot de passe')" />
     </div>
 {/block}
