@@ -2,7 +2,10 @@ INSERT INTO `T_energie`
 VALUES
 (1,"Chauffage au fioul"),
 (2,"Chauffage électrique"),
-(3,"Chauffage solaire");
+(3,"Poêle à bois"),
+(4,"Pompe à chaleur"),
+(5,"Chaudière gaz"),
+(6,"Chauffage solaire");
 
 INSERT INTO `T_typeMaison`
 VALUES    
