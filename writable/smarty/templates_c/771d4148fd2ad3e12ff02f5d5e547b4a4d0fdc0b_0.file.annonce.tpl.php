@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.34-dev-7, created on 2020-11-28 07:31:35
+/* Smarty version 3.1.34-dev-7, created on 2020-12-02 13:53:42
   from 'C:\xampp\htdocs\Projet-site-annonces-immobilieres\app\Views\templates\annonce.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.34-dev-7',
-  'unifunc' => 'content_5fc251379cb980_21888840',
+  'unifunc' => 'content_5fc7f0c691c2b9_57510480',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '771d4148fd2ad3e12ff02f5d5e547b4a4d0fdc0b' => 
     array (
       0 => 'C:\\xampp\\htdocs\\Projet-site-annonces-immobilieres\\app\\Views\\templates\\annonce.tpl',
-      1 => 1606570293,
+      1 => 1606572517,
       2 => 'file',
     ),
   ),
@@ -20,22 +20,22 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5fc251379cb980_21888840 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5fc7f0c691c2b9_57510480 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_loadInheritance();
 $_smarty_tpl->inheritance->init($_smarty_tpl, true);
 ?>
 
 <?php 
-$_smarty_tpl->inheritance->instanceBlock($_smarty_tpl, 'Block_734780975fc251379ca991_78971369', "output_area");
+$_smarty_tpl->inheritance->instanceBlock($_smarty_tpl, 'Block_15366129345fc7f0c6918a08_66973426', "output_area");
 $_smarty_tpl->inheritance->endChild($_smarty_tpl, 'main.tpl');
 }
 /* {block "output_area"} */
-class Block_734780975fc251379ca991_78971369 extends Smarty_Internal_Block
+class Block_15366129345fc7f0c6918a08_66973426 extends Smarty_Internal_Block
 {
 public $subBlocks = array (
   'output_area' => 
   array (
-    0 => 'Block_734780975fc251379ca991_78971369',
+    0 => 'Block_15366129345fc7f0c6918a08_66973426',
   ),
 );
 public function callBlock(Smarty_Internal_Template $_smarty_tpl) {
