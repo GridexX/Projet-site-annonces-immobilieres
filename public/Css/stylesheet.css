@@ -72,7 +72,6 @@ label
     text-align: start;
     width: 15rem;
     padding: 1rem;
-    background-color: rgb(194, 194, 194);
 }
 
 .div-input div
@@ -390,22 +389,21 @@ body, html{
 .prev, .next{
     width: 12%;
     position: absolute;
-    background-color: rgba(88, 88, 88,.2);
-    color:rgba(244, 244, 244,.9);
+    color:orange;
     z-index: 99;
     transition: .45s;
     cursor: pointer;
     text-align: center;
     height: 30%;
+    padding-top: auto;
+    padding-bottom: auto;
     bottom: 0px;
 }
 
 .next{
-    border-radius: 0em 2em 2em 0em;
     right:0;
 }
 .prev{
-    border-radius: 2em 0em 0em 2em;
     left:0;
 }
 
@@ -425,9 +423,7 @@ label span{
 }
 
 .prev:hover, .next:hover{
-    transition: .3s;
-    background-color: rgba(88, 88, 89,.8);
-    color: #ffffff; 
+    color: orangered; 
 }
 
 .slider #nav_slide{
@@ -499,58 +495,6 @@ label span{
 }
 @media screen  and(min-width: 970px){
 	.me{ display: none;}
-}
-
-.correpondant, .user {
-    width: 100%;
-}
-
-.info_user {
-    text-align: right;
-}
-
-.correspondant_image, .user_image
-{
-    border-radius: 3rem;
-    height: 10rem;
-    height: 10rem;
-    right: 0;
-}
-
-.correspondant_name, .user_name
-{
-    font-size: large;
-    font-weight: bold;
-}
-
-.correspondant_message {
-    text-align: left;
-    background-color: lightgrey;
-    border-radius: 2em;
-    padding: 1em;
-}
-
-.user_message {
-    right: 0;
-    float: right;
-    text-align: right;
-    background-color: lightgreen;
-    border-radius: 2em;
-    padding: 1em;
-}
-
-.user_image {
-    right: 0;
-}
-
-.message_hour_user {
-    margin-right: 1em;
-    text-align: right;
-}
-
-.message::placeholder {
-    color: var(--blue);
-    text-align: right;    
 }
 
 
