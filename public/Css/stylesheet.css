@@ -212,11 +212,18 @@ label
 }
 
 .bouton{
-    background-color: #2e86de;
     position: relative;
     display: block;
-    min-width: 12em;
+    width: auto;
     border-radius: 2rem 2rem 2rem 2rem;  
+}
+
+.btn-bleu{
+    background-color: #2e86de; 
+}
+
+.btn-vert{
+    background-color: var(--green-light); 
 }
 
 .lien, .lien:hover {
@@ -224,7 +231,16 @@ label
 }
 
 .bouton:hover{
+    font-weight: bold;
+}
+
+.btn-bleu:hover{
     background-color: #2467aa;
+    font-weight: bold;
+}
+
+.btn-vert:hover{
+    background-color: var(--green);
     font-weight: bold;
 }
 
