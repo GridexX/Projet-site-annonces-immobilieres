@@ -22,12 +22,12 @@ html{
 body{
 height:100%;
 position: relative;
-
 }
 
 .wrap{
     min-height:100%;
     position: relative;
+    background-color: var(--purple);
 }
 
 header{
@@ -288,6 +288,7 @@ label
 {
     padding: .8rem 0.8rem ;
     border-radius: .3rem;
+    font-weight: bold;
 }
 
 .critere-A

@@ -51,8 +51,10 @@ CREATE TABLE IF NOT EXISTS `T_annonce`
     A_CP int(5) NOT NULL,
     T_type ENUM('T1','T2','T3','T4','T5','T6'),
     E_id_engie int,
+    U_mail varchar(40),
     CONSTRAINT FK_ANNONCE_MAISON FOREIGN KEY (T_type) REFERENCES T_typeMaison(T_type),
-    CONSTRAINT FK_ANNONCE_ENERGIE FOREIGN KEY (E_id_engie) REFERENCES T_energie(E_id_engie)
+    CONSTRAINT FK_ANNONCE_ENERGIE FOREIGN KEY (E_id_engie) REFERENCES T_energie(E_id_engie),
+    CONSTRAINT FK_ANNONCE_UTI FOREIGN KEY (U_mail) REFERENCES T_utilisateur(U_mail)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- Structure de la table T_photo
