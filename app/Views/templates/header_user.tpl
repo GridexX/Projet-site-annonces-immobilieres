@@ -11,7 +11,7 @@
                 <div id="dropdown-content" class="dropdown-content w40">
                     <a href="#">Gérer le Profil</a>
                     <a href="#">Editer les annonces</a>
-                    <a href="#">Messagerie</a>
+                    <a href="/pages/view/messagerie">Messagerie</a>
                     <a class="red" href="#">Déconnexion</a>
                 </div>                
         </div>

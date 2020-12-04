@@ -22,13 +22,14 @@ html{
 body{
 height:100%;
 position: relative;
-
 }
 
 .wrap{
     min-height:100%;
     position: relative;
 }
+
+
 
 header{
     position: relative;
@@ -39,6 +40,7 @@ header{
     padding-bottom: 5em;
     padding-top: 1em;
 }
+
 
 footer{
     position: absolute;
@@ -527,8 +529,18 @@ label span{
     transition: background 0.23s;
     height: 100%;
 }
+
+.send {
+    text-align: right;
+}
+
 .msger-send-btn:hover {
     background:  #FFA500;
+}
+
+.msg_name_user {
+    color: orange;
+    font-weight: bold;
 }
 
 body {
@@ -545,7 +557,7 @@ body {
 }
 
 img {max-width: 100%;}
-    .inbox_msg {
+.inbox_msg {
     clear: both;
     overflow: hidden;
 }
@@ -584,11 +596,11 @@ img {max-width: 100%;}
 .inbox_chat { height: 550px; overflow-y: scroll;}
 
 .active_chat{ background:#ebebeb;}
-
+/*
 .incoming_msg_img {
 display: inline-block;
 width: 6%;
-}
+}*/
 .received_msg {
 display: inline-block;
 padding: 0 0 0 10px;
@@ -655,7 +667,7 @@ width: 100%;
 }
 .messaging { background: #fff;}
 .msg_history {
-    max-height: 516px;
+    max-height: 20em;
     overflow-y: auto;
     }
   
@@ -670,4 +682,4 @@ width: 100%;
     letter-spacing: 2px;
     border-bottom: dotted 1px;
   }
-  
+
