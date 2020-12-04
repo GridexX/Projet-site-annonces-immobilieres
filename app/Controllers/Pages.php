@@ -34,9 +34,7 @@ class Pages extends Controller
     {
         $session = \Config\Services::session();
         $session->destroy();
-        //$this->view('liste_annonce');
-        return redirect()->to('/pages/view/liste_annonce');
-        //return service('SmartyEngine')->view('liste_annonce.tpl');
+        return redirect()->to('/');
     }
     
 }

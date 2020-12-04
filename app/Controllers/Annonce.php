@@ -239,7 +239,7 @@ class Annonce extends Controller
             $dateFormat = substr($annonce[$i]['A_date_maj'],8,2).' '.$tabMois[$numMois-1].' à '.substr($annonce[$i]['A_date_maj'],11,2).'h'.substr($annonce[$i]['A_date_maj'],14,2);
             $annonce[$i]['A_date_maj'] = $dateFormat;
         }
-        //service('SmartyEngine')->assign('dateFormat',$dateFormat);
+        service('SmartyEngine')->assign('dateFormat',$dateFormat);
         service('SmartyEngine')->assign('liste_annonce',$annonce);
         service('SmartyEngine')->assign('session',$session);
         return service('SmartyEngine')->view('liste_annonce.tpl');

@@ -99,7 +99,7 @@ class Utilisateur extends Controller
                 $session = \Config\Services::session();
                 $session->set($data);
                 service('SmartyEngine')->assign('session',$session);
-                return service('SmartyEngine')->view('liste_annonce.tpl');
+                return redirect()->to('/');
             }
             else
             {
