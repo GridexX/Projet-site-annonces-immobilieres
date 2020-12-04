@@ -18,9 +18,9 @@
                 </div>
             </div>
             <div class="txt-annnonce-container">
-                <h3 class="titre_annonce">Titre</h3>
-                <p class="h6-like"><span class="texte-orange">xxxx€ </span>Charges comprises</p>
-                <small><i>Le ... à Xh</i></small>
+                <h3 class="titre_annonce">{$annonce.A_titre}</h3>
+                <p class="h6-like"><span class="texte-orange">{$annonce.A_cout_loyer+$annonce.A_cout_charges}€ </span>Charges comprises</p>
+                <small><i>Le {$dateFormat}</i></small>
                 <hr class="ligne-footer">
                 <p class="h6-like">Criteres</p>
                 <div class=critères>
@@ -31,7 +31,7 @@
                             </div>
                             <span class="w80 txt-critere">
                                 <p>Localisation :</p>
-                                <p><b>Paris</b></p>
+                                <p><b>{$annonce.A_adresse} {$annonce.A_ville} {$annonce.A_CP}</b></p>
                             </span>
                         </div>
                         <div class="w33 critere-annonce flex-container">
@@ -40,7 +40,7 @@
                             </div>
                             <span class="w80 txt-critere">
                                 <p>Surface : </p>
-                                <p><b>100 m²</b></p>
+                                <p><b>{$annonce.A_superficie} m²</b></p>
                             </span>
                         </div>
                         <div class="w33  critere-annonce flex-container">
@@ -49,7 +49,7 @@
                             </div>
                             <span class="w60 txt-critere">
                                 <p>Pièces : </p>
-                                <p><b>2</b></p>
+                                <p><b>{$annonce.T_type|substr:1:2}</b></p>
                             </span>
                         </div>
                     </div>
@@ -62,7 +62,7 @@
                             </div>
                             <span class="w80 txt-critere">
                                 <p>Meublé :</p>
-                                <p><b>Non meublé</b></p>
+                                <p><b>{($annonce.A_est_meuble)?'Meublé':'Non Meublé'}</b></p>
                             </span>
                         </div>
                         <div class="w33 critere-annonce flex-container">
@@ -73,13 +73,13 @@
                                 <p>Classe énergie : </p>
 
                                 <p>
-                                    <span class="critere-energie critere-A">A</span>
-                                    <b><span class="critere-energie energie-courante critere-B">B</span></b>
-                                    <span class="critere-energie critere-C">C</span>
-                                    <span class="critere-energie critere-D">D</span>
-                                    <span class="critere-energie critere-E">E</span>
-                                    <span class="critere-energie critere-F">F</span>
-                                    <span class="critere-energie critere-G">G</span>
+                                    <span class="critere-energie {if $annonce.A_perf_energie le 50 } energie-courante {/if} critere-A">A</span>
+                                    <span class="critere-energie {if $annonce.A_perf_energie ge 51 && $annonce.A_perf_energie le 90} energie-courante {/if} critere-B">B</span>
+                                    <span class="critere-energie {if $annonce.A_perf_energie ge 91 && $annonce.A_perf_energie le 150} energie-courante {/if} critere-C">C</span>
+                                    <span class="critere-energie {if $annonce.A_perf_energie ge 151 && $annonce.A_perf_energie le 230} energie-courante {/if} critere-D">D</span>
+                                    <span class="critere-energie {if $annonce.A_perf_energie ge 231 && $annonce.A_perf_energie le 330} energie-courante {/if} critere-E">E</span>
+                                    <span class="critere-energie {if $annonce.A_perf_energie ge 331 && $annonce.A_perf_energie le 450} energie-courante {/if} critere-F">F</span>
+                                    <span class="critere-energie {if $annonce.A_perf_energie ge 451 } energie-courante {/if} critere-G">G</span>
 
                                 </p>
                             </span>
@@ -90,7 +90,7 @@
                             </div>
                             <span class="w80 txt-critere">
                                 <p>Chauffage :</p>
-                                <p><b>Collectif</b></p>
+                                <p><b>{$annonce.A_type_chauffage|capitalize}</b></p>
                             </span>
                         </div>
                     </div>
@@ -98,19 +98,19 @@
                 </div>
                 <hr class="ligne-footer">
                 <p class="h6-like">Description</p>
-                <pre>dazdaz azdazd zad zdaa zdza dazd 
-                dzadza
-                
-                dazdadaz</pre>
+                <pre>{$annonce.A_description}</pre>
                 <br><br>
                 <hr class="ligne-footer">
             </div>
 
             <div class="utilisateur_container">
-                <p>Utilisateur | <i>Nb annonces : </i></p>
-                <button class="btn--primary">
-                <i class="fas fa-comments"></i> Envoyer un message
-                </button>
+                {*Si l'annonce appartient à l'utilisateur il peut l'éditer*}
+                {if isset($smarty.session.mail) && $smarty.session.mail===$annonce.U_mail}
+                    <a href="/annonce/view/edition_annonce/{$annonce.A_idannonce}"><button class="btn--primary"><i class="fas fa-comments"></i> Editer l'annonce</button></a>
+                {else}{*Sinon on propose de prendre contact avec le propriétaire*}
+                    <p>{$proprio.U_pseudo} | <i>Nb annonces : </i></p>
+                <button class="btn--primary"><i class="fas fa-comments"></i> Envoyer un message</button>
+                {/if}
             </div>
         </div>
         

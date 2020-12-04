@@ -22,27 +22,29 @@ class annonceModel extends Model
         'A_ville',
         'A_CP' ,
         'T_type' ,
-        'E_id_engie' ];
+        'E_id_engie',
+        'U_mail' ];
 
-    public function insertAnnonce($date, $etat, $titre, $loyer, $charges, $chauffage, $perf, $meuble, $superficie, $desc, $adresse, $ville, $cp, $type, $engie=false)
+    public function insertAnnonce(array $annonce)
     {
-        $requete = 'INSERT INTO '.$this->table.' VALUES (DEFAULT,"'.$date.'","'.$etat.'","'.$titre.'","'.$loyer.'","'.$charges.'","'.$chauffage.'","'.$perf.'","'.$meuble.'","'.$superficie.'","'.$desc.'","'.$adress.'","'.$ville.'","'.$cp.'","'.$type ;
-        if($engie !== false)    //Ajout de l'id de l'énergie si elle à été définite dans le controlleur (chauffage individuel)
-            $requete .= '","'.$engie ;
-        $requete .= '");';
-        return $this->simpleQuery($requete);
-            
+        $db = \Config\Database::connect();
+        return $db->table($this->table)->insert($annonce);
     }
 
-    public function updateAnnonce($annonce:array)
+    public function updateAnnonce(array $annonce)
     {
-        $requete = 'UPDATE '.$this->table.' SET ';
-        for( $i=0 ; $i<count($annonce) ; ++$i)
+        $db      = \Config\Database::connect();
+        $db->table($this->table)->where(['A_idannonce' => $annonce['A_idannonce']])->update($annonce);
+    }
+
+    public function getAnnonce($id=false)
+    {
+        if ($id === false)
         {
-            $requete .= $this->allowedField[$i].'='.$annonce[$i].", ";
+            return $this->findAll();
         }
-        $requete.=');';
-        return $this->simpleQuery($requete);
+        
+        return $this->asArray()->where(['A_idannonce' => $id])->first();
     }
     
 }
