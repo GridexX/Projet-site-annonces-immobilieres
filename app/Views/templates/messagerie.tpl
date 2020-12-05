@@ -74,7 +74,7 @@
         </div>
       </div>    
   </div>
-  <div class="right">
+  <div class="right send">
       <input type="text" class="msger-input" placeholder="Enter your message...">
       <button type="submit" class="msger-send-btn">Send</button>
   </div>

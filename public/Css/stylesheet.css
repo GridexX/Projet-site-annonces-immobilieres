@@ -530,10 +530,6 @@ label span{
     height: 100%;
 }
 
-.send {
-    text-align: right;
-}
-
 .msger-send-btn:hover {
     background:  #FFA500;
 }
@@ -667,6 +663,7 @@ width: 100%;
 }
 .messaging { background: #fff;}
 .msg_history {
+    margin-top: 1em;
     max-height: 20em;
     overflow-y: auto;
     }
