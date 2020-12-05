@@ -1,6 +1,46 @@
-{extends 'main.tpl'}
-{block name="titre_onglet"}Annonce{/block}
-{block name="output_area"}
+<?php
+/* Smarty version 3.1.34-dev-7, created on 2020-12-02 13:53:42
+  from 'C:\xampp\htdocs\Projet-site-annonces-immobilieres\app\Views\templates\annonce.tpl' */
+
+/* @var Smarty_Internal_Template $_smarty_tpl */
+if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
+  'version' => '3.1.34-dev-7',
+  'unifunc' => 'content_5fc7f0c691c2b9_57510480',
+  'has_nocache_code' => false,
+  'file_dependency' => 
+  array (
+    '771d4148fd2ad3e12ff02f5d5e547b4a4d0fdc0b' => 
+    array (
+      0 => 'C:\\xampp\\htdocs\\Projet-site-annonces-immobilieres\\app\\Views\\templates\\annonce.tpl',
+      1 => 1606572517,
+      2 => 'file',
+    ),
+  ),
+  'includes' => 
+  array (
+  ),
+),false)) {
+function content_5fc7f0c691c2b9_57510480 (Smarty_Internal_Template $_smarty_tpl) {
+$_smarty_tpl->_loadInheritance();
+$_smarty_tpl->inheritance->init($_smarty_tpl, true);
+?>
+
+<?php 
+$_smarty_tpl->inheritance->instanceBlock($_smarty_tpl, 'Block_15366129345fc7f0c6918a08_66973426', "output_area");
+$_smarty_tpl->inheritance->endChild($_smarty_tpl, 'main.tpl');
+}
+/* {block "output_area"} */
+class Block_15366129345fc7f0c6918a08_66973426 extends Smarty_Internal_Block
+{
+public $subBlocks = array (
+  'output_area' => 
+  array (
+    0 => 'Block_15366129345fc7f0c6918a08_66973426',
+  ),
+);
+public function callBlock(Smarty_Internal_Template $_smarty_tpl) {
+?>
+
     
     <div class="flex-container w75 item-center">
         <div class="annonce-container w60 item-center">
@@ -49,9 +89,9 @@
                 </div>
             </div>
             <div class="txt-annnonce-container">
-                <h3 class="titre_annonce">{$annonce.A_titre}</h3>
-                <p class="h6-like"><span class="texte-orange">{$annonce.A_cout_loyer+$annonce.A_cout_charges}€ </span>Charges comprises</p>
-                <small><i>Le {$dateFormat}</i></small>
+                <h3 class="titre_annonce">Titre</h3>
+                <p class="h6-like"><span class="texte-orange">xxxx€ </span>Charges comprises</p>
+                <small><i>Le ... à Xh</i></small>
                 <hr class="ligne-footer">
                 <p class="h6-like">Criteres</p>
                 <div class=critères>
@@ -62,7 +102,7 @@
                             </div>
                             <span class="w80 txt-critere">
                                 <p>Localisation :</p>
-                                <p><b>{$annonce.A_adresse} {$annonce.A_ville} {$annonce.A_CP}</b></p>
+                                <p><b>Paris</b></p>
                             </span>
                         </div>
                         <div class="w33 critere-annonce flex-container">
@@ -71,7 +111,7 @@
                             </div>
                             <span class="w80 txt-critere">
                                 <p>Surface : </p>
-                                <p><b>{$annonce.A_superficie} m²</b></p>
+                                <p><b>100 m²</b></p>
                             </span>
                         </div>
                         <div class="w33  critere-annonce flex-container">
@@ -80,7 +120,7 @@
                             </div>
                             <span class="w60 txt-critere">
                                 <p>Pièces : </p>
-                                <p><b>{$annonce.T_type|substr:1:2}</b></p>
+                                <p><b>2</b></p>
                             </span>
                         </div>
                     </div>
@@ -93,7 +133,7 @@
                             </div>
                             <span class="w80 txt-critere">
                                 <p>Meublé :</p>
-                                <p><b>{($annonce.A_est_meuble)?'Meublé':'Non Meublé'}</b></p>
+                                <p><b>Non meublé</b></p>
                             </span>
                         </div>
                         <div class="w33 critere-annonce flex-container">
@@ -104,13 +144,13 @@
                                 <p>Classe énergie : </p>
 
                                 <p>
-                                    <span class="critere-energie {if $annonce.A_perf_energie le 50 } energie-courante {/if} critere-A">A</span>
-                                    <span class="critere-energie {if $annonce.A_perf_energie ge 51 && $annonce.A_perf_energie le 90} energie-courante {/if} critere-B">B</span>
-                                    <span class="critere-energie {if $annonce.A_perf_energie ge 91 && $annonce.A_perf_energie le 150} energie-courante {/if} critere-C">C</span>
-                                    <span class="critere-energie {if $annonce.A_perf_energie ge 151 && $annonce.A_perf_energie le 230} energie-courante {/if} critere-D">D</span>
-                                    <span class="critere-energie {if $annonce.A_perf_energie ge 231 && $annonce.A_perf_energie le 330} energie-courante {/if} critere-E">E</span>
-                                    <span class="critere-energie {if $annonce.A_perf_energie ge 331 && $annonce.A_perf_energie le 450} energie-courante {/if} critere-F">F</span>
-                                    <span class="critere-energie {if $annonce.A_perf_energie ge 451 } energie-courante {/if} critere-G">G</span>
+                                    <span class="critere-energie critere-A">A</span>
+                                    <b><span class="critere-energie energie-courante critere-B">B</span></b>
+                                    <span class="critere-energie critere-C">C</span>
+                                    <span class="critere-energie critere-D">D</span>
+                                    <span class="critere-energie critere-E">E</span>
+                                    <span class="critere-energie critere-F">F</span>
+                                    <span class="critere-energie critere-G">G</span>
 
                                 </p>
                             </span>
@@ -121,7 +161,7 @@
                             </div>
                             <span class="w80 txt-critere">
                                 <p>Chauffage :</p>
-                                <p><b>{$annonce.A_type_chauffage|capitalize}</b></p>
+                                <p><b>Collectif</b></p>
                             </span>
                         </div>
                     </div>
@@ -129,21 +169,25 @@
                 </div>
                 <hr class="ligne-footer">
                 <p class="h6-like">Description</p>
-                <pre>{$annonce.A_description}</pre>
+                <pre>dazdaz azdazd zad zdaa zdza dazd 
+                dzadza
+                
+                dazdadaz</pre>
                 <br><br>
                 <hr class="ligne-footer">
             </div>
 
             <div class="utilisateur_container">
-                {*Si l'annonce appartient à l'utilisateur il peut l'éditer*}
-                {if isset($smarty.session.mail) && $smarty.session.mail===$annonce.U_mail}
-                    <a href="/annonce/view/edition_annonce/{$annonce.A_idannonce}"><button class="btn--primary"><i class="fas fa-comments"></i> Editer l'annonce</button></a>
-                {else}{*Sinon on propose de prendre contact avec le propriétaire*}
-                    <p>{$proprio.U_pseudo} | <i>Nb annonces : </i></p>
-                <button class="btn--primary"><i class="fas fa-comments"></i> Envoyer un message</button>
-                {/if}
+                <p>Utilisateur | <i>Nb annonces : </i></p>
+                <button class="btn--primary">
+                <i class="fas fa-comments"></i> Envoyer un message
+                </button>
             </div>
         </div>
         
     </div>
-{/block}
+<?php
+}
+}
+/* {/block "output_area"} */
+}
