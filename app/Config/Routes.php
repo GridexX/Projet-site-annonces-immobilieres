@@ -30,7 +30,7 @@ $routes->setAutoRoute(true);
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
-$routes->get('/', 'Annonce::viewListe'); //Page accueil par défaut
+$routes->get('/', 'Annonce::accueil'); //Page accueil par défaut
 
 /**
  * --------------------------------------------------------------------

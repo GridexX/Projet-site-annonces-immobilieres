@@ -1,13 +1,16 @@
 <div class="navbar navbar-fixed_top">
     <div class="flex-container">
         <div class="w33 navbar-div item-center txtcenter">
-            <button class="bouton btn-bleu center"><a class="lien" href="/pages/view/liste_annonce">Afficher les annonces</a></button>
+            {if isset($estAccueil)}<button class="bouton btn-bleu center"><a class="lien" href="/annonce/viewListe">Afficher toutes les annonces</a></button>{/if}
         </div>
         <span class="w33 navbar-div item-center txtcenter">
-            <img src="/Images/logo_house.png" alt="House logo">
+            <a href="/"><img src="/Images/logo_house.png" alt="House logo"></a>
         </span>
+        {block name="divBtnConnexion"}
         <span class="w33 navbar-div item-center txtcenter">
-            <button class="bouton btn-vert center"><a class="lien" href="/pages/view/connexion">Connexion</a></button>
+            <button class="bouton btn-vert center"><a class="lien" href="/pages/view/connexion">Conexion</a></button>
         </span>
+        {/block}
     </div>
 </div>
+{block name="script"}{/block}

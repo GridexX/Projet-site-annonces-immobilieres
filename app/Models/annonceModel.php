@@ -34,14 +34,17 @@ class annonceModel extends Model
     public function updateAnnonce(array $annonce)
     {
         $db      = \Config\Database::connect();
-        $db->table($this->table)->where(['A_idannonce' => $annonce['A_idannonce']])->update($annonce);
+        return $db->table($this->table)->where(['A_idannonce' => $annonce['A_idannonce']])->update($annonce);
     }
 
     public function getAnnonce($id=false)
     {
+        
         if ($id === false)
         {
-            return $this->findAll();
+            $db = \Config\Database::connect();
+            return $db->table($this->table)->select('*')->orderBy("A_date_maj", "desc")->get()->getResultArray();
+            //return $db->table($this->table)->findAll()->orderBy("A_date_maj", "desc");
         }
         
         return $this->asArray()->where(['A_idannonce' => $id])->first();

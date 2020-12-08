@@ -1,11 +1,6 @@
-<div class="navbar navbar-fixed_top">
-    <div class="flex-container">
-        <div class="w33 navbar-div item-center txtcenter">
-            <button class="bouton btn-bleu center"><a class="lien" href="/pages/view/liste_annonce">Afficher les annonces</a></button>
-        </div>
-        <div class="w33 navbar-div item-center txtcenter">
-            <img src="/Images/logo_house.png" class="center" alt="House logo">
-        </div>
+{extends 'header.tpl'}
+{block name="divBtnConnexion"}
+
         <div class="w33 navbar-div item-center dropdown txtcenter">
                 <button onclick="myFunction()" id="dropdown-button" class="dropdown-button center w40">{$smarty.session.pseudo}</button>
                 <div id="dropdown-content" class="dropdown-content w40">
@@ -16,8 +11,9 @@
                     <a class="red" href="/pages/deconnexion">Déconnexion</a>
                 </div>                
         </div>
-    </div>
-</div>
+
+{/block}
+{block name="script"}
 <script>
 /* When the user clicks on the button, 
 toggle between hiding and showing the dropdown content */
@@ -48,3 +44,4 @@ window.onclick = function(e) {
   }
 }
 </script>
+{/block}

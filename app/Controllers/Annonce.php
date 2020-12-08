@@ -224,25 +224,60 @@ class Annonce extends Controller
         
     }
 
-    public function viewListe($id_debut=false,$nbAnnonces=false)
+    public function viewListe(int $id_debut=0,int $nbAnnonces=15)
     {
         $session = \Config\Services::session();
         $modelA = new annonceModel();
-        $annonce = $modelA->getAnnonce();
-
+        $lAnnonces = $modelA->getAnnonce();
+        //return $this->returnError($nbAnnonces.' '.count($lAnnonces).' '.$id_debut,'connexion');
+        //if($id_debut) $id_debut = 0;
+        if($id_debut>count($lAnnonces) - count($lAnnonces)%$nbAnnonces ) $id_debut = count($lAnnonces) - count($lAnnonces)%$nbAnnonces;
+        //$nbAnnonces = ( $nbAnnonces+$id_debut >= count($lAnnonces) ) ? count($lAnnonces)-$id_debut : $nbAnnonces ;
+        //$nbAnnonces = ($id_debut+$nbAnnonces > count($lAnnonces)) ? count($lAnnonces)-$id_debut : $nbAnnonces ;
+        //return $this->returnError($nbAnnonces.' '.count($lAnnonces).' '.$id_debut,'connexion');
+        
+        if($nbAnnonces!==6)  //Pas page accueil : Setup des boutons
+        { 
+            $lBoutons = [] ;
+            $debut = 0;
+            //$tranche = intVal(count($lAnnonces)/$nbAnnonces);
+            $tranche = ceil(8.1);
+            //return $this->returnError($nbAnnonces.' '.count($lAnnonces).' '.$tranche,'connexion');
+            for($i=0; $i<ceil(count($lAnnonces)/$nbAnnonces); ++$i)
+            {
+                $lBoutons[$i]["numPage"] = $i;
+                $lBoutons[$i]["numAnnDeb"] = $debut;
+                $lBoutons[$i]["numAnnFin"] = ($nbAnnonces*($i+1) > count($lAnnonces)) ? count($lAnnonces)-$nbAnnonces*($i)+$debut : $nbAnnonces+$debut;
+                $debut += $nbAnnonces;
+            }
+            service('SmartyEngine')->assign('lBoutons',$lBoutons);
+            service('SmartyEngine')->assign('bSelect',$id_debut);
+            service('SmartyEngine')->assign('nbAnnonces',$nbAnnonces);
+        }
         //Gestion des dates
         $tabMois = array("Janvier","Févrirer","Mars","Avril","Mai","Juin",'Juillet','Août','Septembre','Octobre','Novembre','Décembre');
-            
-        for($i=0; $i<count($annonce); ++$i)
+        $lConcatAnn = [] ;
+        for($i=0; $i<$nbAnnonces && $i+$id_debut<count($lAnnonces); ++$i)
         {
-            $numMois =  substr($annonce[$i]['A_date_maj'],5,2);
-            $dateFormat = substr($annonce[$i]['A_date_maj'],8,2).' '.$tabMois[$numMois-1].' à '.substr($annonce[$i]['A_date_maj'],11,2).'h'.substr($annonce[$i]['A_date_maj'],14,2);
-            $annonce[$i]['A_date_maj'] = $dateFormat;
+            $numMois =  substr($lAnnonces[$i]['A_date_maj'],5,2);
+            $dateFormat = substr($lAnnonces[$i]['A_date_maj'],8,2).' '.$tabMois[$numMois-1].' '.substr($lAnnonces[$i]['A_date_maj'],0,4).' à '.substr($lAnnonces[$i]['A_date_maj'],11,2).'h'.substr($lAnnonces[$i]['A_date_maj'],14,2);
+            $lAnnonces[$i]['A_date_maj'] = $dateFormat;
+            $lConcatAnn[$i] = $lAnnonces[$i+$id_debut];
+
         }
         service('SmartyEngine')->assign('dateFormat',$dateFormat);
-        service('SmartyEngine')->assign('liste_annonce',$annonce);
+        service('SmartyEngine')->assign('liste_annonce',$lConcatAnn);
         service('SmartyEngine')->assign('session',$session);
         return service('SmartyEngine')->view('liste_annonce.tpl');
+    }
+
+    public function accueil()
+    {
+        $session = \Config\Services::session();
+        $modelA = new annonceModel();
+        $lAnnonces = $modelA->getAnnonce();
+        service('SmartyEngine')->assign('estAccueil',true);
+        $this->viewListe(0,6);
     }
 }
 ?>
