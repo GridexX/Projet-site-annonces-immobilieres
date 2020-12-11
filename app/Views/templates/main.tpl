@@ -22,7 +22,10 @@
                 {include file="header.tpl"}
             {/if}
             <div class="container">
-                
+            
+                {if isset($notification)}
+                    {include file="notifications.tpl"}
+                {/if}
                 {block name="output_area"}
                     zone_principale
                 {/block}

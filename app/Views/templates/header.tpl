@@ -8,7 +8,7 @@
         </span>
         {block name="divBtnConnexion"}
         <span class="w33 navbar-div item-center txtcenter">
-            <button class="bouton btn-vert center"><a class="lien" href="/pages/view/connexion">Conexion</a></button>
+            <button class="bouton btn-vert center"><a class="lien" href="/pages/view/connexion">Connexion</a></button>
         </span>
         {/block}
     </div>

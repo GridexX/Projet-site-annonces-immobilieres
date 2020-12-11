@@ -15,7 +15,7 @@
         </select>
     </div>
 {/if}
-
+{if isset($liste_annonce)}
 <div class="liste_annonce flex-container w75 center">
 
     {foreach from=$liste_annonce item=annonce}
@@ -31,5 +31,5 @@
     </a>
     {/foreach}
 </div>
-
+{/if}
 {/block}
