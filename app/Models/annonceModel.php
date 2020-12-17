@@ -49,7 +49,24 @@ class annonceModel extends Model
         
         return $this->asArray()->where(['A_idannonce' => $id])->first();
     }
+
+    public function getLastAnnonce($mail)
+    {
+        $db = \Config\Database::connect();
+        $dateMax = $db->table($this->table)->select('MAX(A_date_maj)')->where(['U_mail' => $mail])->get()->getResultArray();
+        //return $dateMax;//[0]["MAX(A_date_maj)"];
+        $res = $db->table($this->table)->where(['A_date_maj' => $dateMax[0]["MAX(A_date_maj)"]])->get()->getResultArray();
+        return $res[0];
+        
+        $query = 'SELECT MAX(A_idannonce) FROM '.$this->table.' WHERE U_mail like "'.$mail.'"';
+        return $result = $this->simpleQuery($query);
+    } 
     
+    public function getAnnonceUti($mail)
+    {
+        $db = \Config\Database::connect();
+        return $db->table($this->table)->select('*')->where(['U_mail' => $mail])->orderBy("A_date_maj", "desc")->get()->getResultArray();
+    }
 }
 
 ?>

@@ -3,6 +3,8 @@
 use App\Models\annonceModel;
 use App\Models\energieModel;
 use App\Models\utilisateurModel;
+use App\Models\photoModel;
+use App\Controllers\Pages;
 use CodeIgniter\Controller;
 
 class Annonce extends Controller
@@ -100,8 +102,17 @@ class Annonce extends Controller
 
     }
 
+    public function test()
+    {
+        $session = \Config\Services::session();
+        $model = new annonceModel();
+        $res = $model->getLastAnnonce($session->get("mail"));
+        $this->returnError(var_dump($res['A_idannonce']),"connexion");
+    }
+
     public function create()
     {
+        //return service('SmartyEngine')->view('connexion.tpl');  
         helper(['form', 'url']);
 
         $annonceVal = $this->validate([
@@ -119,8 +130,8 @@ class Annonce extends Controller
                    'cp' => 'required'
                 ]);
         $session = \Config\Services::session();
-        //return $this->returnError($session->get("mail"),'nouvelle_annonce');
-        if($annonceVal['U_mail'] !== $session->get("mail") || $session->get("mail") === null ) return $this->returnError('Vous n\'avez pa le droit d\'éditer cette annonce','nouvelle_annonce');
+        //return $this->returnError($session->get("mail").gettype($session->get("mail")),'nouvelle_annonce');
+        if($session->get("mail") === null ) return $this->returnError('Vous devez être connecté pour créer une annonce','connexion');
         else if($annonceVal) //Verifier l'utilisateur est connecté et qu'il modifie son annonce
         {
             $annonce = [];
@@ -143,7 +154,7 @@ class Annonce extends Controller
             date_default_timezone_set('Europe/Paris');
             $annonce['A_date_maj'] = date('Y-m-d H:i:s');
             $model = new annonceModel();
-            
+            $model->insertAnnonce($annonce);
             if($annonce['A_type_chauffage'] === 'individuel')
             {
                 $annonce['E_id_engie'] = $this->request->getVar('engie');
@@ -162,7 +173,6 @@ class Annonce extends Controller
                         {
                             return $this->returnError('L\'energie entrée existe déjà dans la BDD','edition_annonce');
                         }
-                        # code...
                     }   
                     
                     $modelE->insertEnergie($energie);
@@ -170,7 +180,37 @@ class Annonce extends Controller
 
                 }
             }  
-            $model->insertAnnonce($annonce);
+
+            //Gestion des photos de l'annonce
+            
+            $lImage = $this->request->getFiles();
+            if(!empty($lImage) && count($lImage)<6 )
+            {
+                $modelP = new photoModel();
+                $lastAnnonce = $model->getLastAnnonce($session->get("mail"));
+                return $this->returnError(count($lImage),'connexion');
+
+                foreach($lImage as $img)
+                {
+                    if ($img->isValid() && ! $img->hasMoved())
+                    {
+                        $photo = array(
+                            "P_nom" => $img->getName(),
+                            "P_titre" => $img->getRandomName(),
+                            "A_idannonce" => $lastAnnonce["A_idannonce"]
+                        );
+                        $img->move('uploads/', $photo["P_titre"]);
+                        $modelP->insertPhoto($photo);
+                    }
+                }
+            }
+            else if(!empty($lImage))//génère une erreur si plus de 5 photos envoyées
+            {
+                $controller = new Pages();
+                return $controller->showNotif("erreur","Vous pouvez ajouter au maximum 5 photos","nouvelle_annonce");
+            }
+
+            $this->returnError(gettype($photo),'connexion');
             service('SmartyEngine')->assign('succes','Annonce insérée avec succes');
             return service('SmartyEngine')->view('connexion.tpl');  
         }
@@ -180,16 +220,18 @@ class Annonce extends Controller
         }
     }
 
+
+
+
+
     public function view($page,$id_annonce=false)
     {        
         $modelA = new annonceModel();
         $annonce = $modelA->getAnnonce($id_annonce);
-        
         if( $page!=='nouvelle_annonce' && !($id_annonce!==false && gettype($annonce)==='array' && empty($annonce['A_idannonce'])!==1)) //Lance une erreur si annonce n'existe pas pour édition où la vue
             return $this->returnError('L\'annonce n\'a pas été trouvée','connexion');
              
         $session = \Config\Services::session();
-        service('SmartyEngine')->assign('session',$session);
         if($page === 'edition_annonce' && $session->get('mail')!==$annonce['U_mail'])  //Vérifie que l'annonce appartient à l'utilisateur
             return $this->returnError('Vous n\'étes pas autorisé à modifier cette annonce','connexion');
         
@@ -203,9 +245,7 @@ class Annonce extends Controller
         if($page==='annonce')
         {
             //Gestion de la date
-            $numMois =  substr($annonce['A_date_maj'],5,2);
-            $tabMois = array("Janvier","Févrirer","Mars","Avril","Mai","Juin",'Juillet','Août','Septembre','Octobre','Novembre','Décembre');
-            $dateFormat = substr($annonce['A_date_maj'],8,2).' '.$tabMois[$numMois-1].' à '.substr($annonce['A_date_maj'],11,2).'h'.substr($annonce['A_date_maj'],14,2);
+            $dateFormat = $this->dateFormat($annonce['A_date_maj']);
             service('SmartyEngine')->assign('dateFormat',$dateFormat);
 
             //Gestion du propriétaire 
@@ -223,7 +263,6 @@ class Annonce extends Controller
         return service('SmartyEngine')->view($page.'.tpl');   
     }
 
-    
     public function getAnnoncesPubliees(array $lAnnonces):array
     {
         $lAnnPub = [];
@@ -232,20 +271,35 @@ class Annonce extends Controller
             if($annonce["A_etat"]==="publiée")
                 array_push($lAnnPub,$annonce);
         }
-       
         return $lAnnPub;
     }
 
-    public function viewListe(int $id_debut=0,int $nbAnnonces=15)
+    public function dateFormat(string $date):string
+    {
+        $tabMois = array("Janvier","Févrirer","Mars","Avril","Mai","Juin",'Juillet','Août','Septembre','Octobre','Novembre','Décembre');
+        $numMois =  substr($date,5,2);
+        return substr($date,8,2).' '.$tabMois[$numMois-1].' '.substr($date,0,4).' à '.substr($date,11,2).'h'.substr($date,14,2);  
+    }
+
+
+    public function viewListe(int $id_debut=0,int $nbAnnonces=15, bool $annUti=false)
     {
         $session = \Config\Services::session();
         $modelA = new annonceModel();
-        $lAnnonces = $modelA->getAnnonce();
+        if(!$annUti)
+
+            $lAnnonces = $modelA->getAnnonce();
+
+        else
+        {
+            $lAnnonces = $modelA->getAnnonceUti($session->get("mail"));
+            $nbAnnonces = count($lAnnonces);
+        }
         $lAnnonces = $this->getAnnoncesPubliees($lAnnonces);
 
         //Modification de la variable id_debut si dépassement du nombre d'annonce ou borne trop petite
         if($id_debut>count($lAnnonces) - count($lAnnonces)%$nbAnnonces ) $id_debut = count($lAnnonces) - count($lAnnonces)%$nbAnnonces;
-
+        //return $this->returnError("$nbAnnonces $id_debut ",'connexion');
         if($nbAnnonces === 0)  //Affichage du message de warning si pas d'annonces dans la BDD
         {
             $notification = array( 
@@ -257,7 +311,7 @@ class Annonce extends Controller
             return service('SmartyEngine')->view('liste_annonce.tpl');
         }
 
-        if($nbAnnonces!==6)  //On considère qu'on affiche 6 annonces sur la page d'accueil, Autrement on est sur la page qui affiche toutes les annonces
+        if($nbAnnonces!==6 && !$annUti)  //On considère qu'on affiche 6 annonces sur la page d'accueil, Autrement on est sur la page qui affiche toutes les annonces
         { 
             $lBoutons = [] ;
             $debut = 0;
@@ -275,16 +329,12 @@ class Annonce extends Controller
             service('SmartyEngine')->assign('nbAnnonces',$nbAnnonces);
         }
         //Gestion des dates pour chaque annonce
-        $tabMois = array("Janvier","Févrirer","Mars","Avril","Mai","Juin",'Juillet','Août','Septembre','Octobre','Novembre','Décembre');
         $lConcatAnn = [] ;
         //affichage des annonces avec bornes passées en paramètres
         for($i=0; $i<$nbAnnonces && $i+$id_debut<count($lAnnonces); ++$i)
         {
-            $numMois =  substr($lAnnonces[$i]['A_date_maj'],5,2);
-            $dateFormat = substr($lAnnonces[$i]['A_date_maj'],8,2).' '.$tabMois[$numMois-1].' '.substr($lAnnonces[$i]['A_date_maj'],0,4).' à '.substr($lAnnonces[$i]['A_date_maj'],11,2).'h'.substr($lAnnonces[$i]['A_date_maj'],14,2);
-            $lAnnonces[$i]['A_date_maj'] = $dateFormat;
+            $dateFormat = $this->dateFormat($lAnnonces[$i]['A_date_maj']);
             $lConcatAnn[$i] = $lAnnonces[$i+$id_debut];
-
         }
         service('SmartyEngine')->assign('dateFormat',$dateFormat);
         service('SmartyEngine')->assign('liste_annonce',$lConcatAnn);
@@ -299,6 +349,16 @@ class Annonce extends Controller
         $lAnnonces = $modelA->getAnnonce();
         service('SmartyEngine')->assign('estAccueil',true);
         $this->viewListe(0,6);
+    }
+
+    public function mesAnnonces()
+    {
+        $session = \Config\Services::session();
+        if( !empty($session->get("mail")))  
+        {
+            return $this->viewListe(0,0,true);
+        }
+        return $this->accueil();
     }
 }
 ?>

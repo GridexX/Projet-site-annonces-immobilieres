@@ -5,21 +5,21 @@ use CodeIgniter\Controller;
 class Pages extends Controller
 {
 
-    /*
-    $data = [
-                'mail' => $session->get('mail'),
-                'pseudo' => $session->get('pseudo'),
-                'nom' => $session->get('nom'),
-                'prenom' => $session->get('prenom') 
-            ];
-            if session.getMail != null //connecté
-    */
-    public function index()
+    public function returnError($error,$view)
     {
-        $session = \Config\Services::session();
-        service('SmartyEngine')->assign('session',$session);
-        //echo view('templates/footer');
-        return service('SmartyEngine')->view('connexion.tpl');
+        service('SmartyEngine')->assign('error',$error);
+        return service('SmartyEngine')->view($view.'.tpl');
+    }
+
+    public function showNotif(string $type, string $message, string $page)
+    {
+        $notification = array( 
+            "type" => $type,
+            "titre" => ucfirst($type),
+            "message" => $message
+        );
+        service('SmartyEngine')->assign('notification',$notification);
+        return service('SmartyEngine')->view("$page.tpl");
     }
 
     public function view($page = 'home')
