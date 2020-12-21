@@ -6,6 +6,7 @@ use App\Models\utilisateurModel;
 use App\Models\photoModel;
 use App\Controllers\Pages;
 use CodeIgniter\Controller;
+use App\Controllers\Photo;
 
 class Annonce extends Controller
 {
@@ -78,7 +79,6 @@ class Annonce extends Controller
                         {
                             return $this->returnError('L\'energie entrée existe déjà dans la BDD','edition_annonce');
                         }
-                        # code...
                     }   
                     
                     $modelE->insertEnergie($energie);
@@ -109,6 +109,15 @@ class Annonce extends Controller
         $res = $model->getLastAnnonce($session->get("mail"));
         $this->returnError(var_dump($res['A_idannonce']),"connexion");
     }
+
+    public function getFiles()
+    {
+        if (is_null($this->files))
+        {
+            $this->files = new FileCollection();
+        }
+        return $this->files->all();
+    } 
 
     public function create()
     {
@@ -153,8 +162,22 @@ class Annonce extends Controller
 
             date_default_timezone_set('Europe/Paris');
             $annonce['A_date_maj'] = date('Y-m-d H:i:s');
+
+            //Gestion des photos de l'annonce  
+            $controllerP = new Photo();
             $model = new annonceModel();
-            $model->insertAnnonce($annonce);
+            $lastAnnonce = $model->getLastAnnonce($session->get("mail"));  //Récupère la dernière annonce insérée par l'utilisateur
+            $imagefile = $this->request->getFiles();
+            $notif = $controllerP->create($imagefile, $lastAnnonce["A_idannonce"]);
+            //$this->returnError(gettype($notif),'connexion');
+            if(gettype($notif)!==NULL)
+            {
+                $this->returnError(var_dump($notif),'connexion');
+                service('SmartyEngine')->assign('notification',$notif);
+                return service('SmartyEngine')->view('nouvelle_annonce.tpl');   
+            }
+            
+            //gestion du chauffage
             if($annonce['A_type_chauffage'] === 'individuel')
             {
                 $annonce['E_id_engie'] = $this->request->getVar('engie');
@@ -176,43 +199,20 @@ class Annonce extends Controller
                     }   
                     
                     $modelE->insertEnergie($energie);
-                    
-
+                
                 }
-            }  
-
-            //Gestion des photos de l'annonce
+            }
             
-            $lImage = $this->request->getFiles();
-            if(!empty($lImage) && count($lImage)<6 )
-            {
-                $modelP = new photoModel();
-                $lastAnnonce = $model->getLastAnnonce($session->get("mail"));
-                return $this->returnError(count($lImage),'connexion');
+            $model->insertAnnonce($annonce);
+            $notification = array( 
+                "type" => "success",
+                "titre" => "Success",
+                "message" => "Votre annonce à été insérée dans la BDD"
+            );
+            service('SmartyEngine')->assign('notification',$notification);
+            return $this->accueil();
+            return service('SmartyEngine')->view("connexion.tpl");
 
-                foreach($lImage as $img)
-                {
-                    if ($img->isValid() && ! $img->hasMoved())
-                    {
-                        $photo = array(
-                            "P_nom" => $img->getName(),
-                            "P_titre" => $img->getRandomName(),
-                            "A_idannonce" => $lastAnnonce["A_idannonce"]
-                        );
-                        $img->move('uploads/', $photo["P_titre"]);
-                        $modelP->insertPhoto($photo);
-                    }
-                }
-            }
-            else if(!empty($lImage))//génère une erreur si plus de 5 photos envoyées
-            {
-                $controller = new Pages();
-                return $controller->showNotif("erreur","Vous pouvez ajouter au maximum 5 photos","nouvelle_annonce");
-            }
-
-            $this->returnError(gettype($photo),'connexion');
-            service('SmartyEngine')->assign('succes','Annonce insérée avec succes');
-            return service('SmartyEngine')->view('connexion.tpl');  
         }
         else
         {
@@ -252,6 +252,24 @@ class Annonce extends Controller
             $modelU = new utilisateurModel();
             $proprio = $modelU->getUtilisateur($annonce['U_mail']);
             service('SmartyEngine')->assign('proprio',$proprio);
+
+            //Gestion des photos
+            $modelP = new photoModel();
+            $lPhotos = $modelP->getPhoto($annonce["A_idannonce"]);
+            $i=0;
+            $lDivID = array("one", "two", "three", "four", "five");
+            $nbPhotos = count($lPhotos);
+            
+            //$this->returnError(var_dump($lPhotos),'connexion');
+            foreach($lPhotos as $photo)  //ajout des attributs html pour l'affichage
+            {
+                $photo["prev"] = ( $i==0 ) ?  $nbPhotos : $i ;
+                $photo["next"] = ( $i==$nbPhotos-1) ? 1 : $i+2;
+                $photo["lDivID"]=$lDivID[$i];
+                $photo["index"]=$i+1;
+                $lPhotos[$i++] = $photo;
+            }
+            service('SmartyEngine')->assign('liste_photo',$lPhotos);
         }
         
         if($page==='edition_annonce')
@@ -331,10 +349,16 @@ class Annonce extends Controller
         //Gestion des dates pour chaque annonce
         $lConcatAnn = [] ;
         //affichage des annonces avec bornes passées en paramètres
+        $modelP = new photoModel();
         for($i=0; $i<$nbAnnonces && $i+$id_debut<count($lAnnonces); ++$i)
         {
             $dateFormat = $this->dateFormat($lAnnonces[$i]['A_date_maj']);
             $lConcatAnn[$i] = $lAnnonces[$i+$id_debut];
+            $photo = [];
+            array_push( $photo , $modelP->getPhoto($lConcatAnn[$i]['A_idannonce']));
+            if(isset($photo[0][0]))
+                $lConcatAnn[$i]["P_photo"] = $photo[0][0];
+            //return $this->returnError((gettype($photo[0][0])) , 'connexion');
         }
         service('SmartyEngine')->assign('dateFormat',$dateFormat);
         service('SmartyEngine')->assign('liste_annonce',$lConcatAnn);

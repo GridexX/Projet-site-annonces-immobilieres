@@ -1,12 +1,11 @@
-{extends 'main.tpl'}
-{block name="output_area"}
+
   <div class="flex-container w75 item-center">
     <div class="annonce-container formulaire w60 item-center">
-    <form method="post" enctype="multipart/form-data" action="/photo/create/1">
+    <form method="post" enctype="multipart/form-data" action="/photo/create/16509">
       <div>
         <label class="btn--success" for="image_uploads" style="width:auto;">Sélectionner des images à uploader (PNG, JPG)</label>
         
-        <input type="file" id="image_uploads" style="cursor:default;" name="image_uploads" {*accept=".jpg, .jpeg, .png"*} multiple value="Sélectionner des images à uploader (PNG, JPG)" >
+        <input type="file" id="image_uploads" style="cursor:default;" name="images[]" {*accept=".jpg, .jpeg, .png"*} multiple value="Sélectionner des images à uploader (PNG, JPG)" >
       </div>
         <div class="preview flex-container item-center txt-center">
           <div class="w90 item-center txt-center">
@@ -25,7 +24,7 @@
 var input = document.querySelector('input');
 var preview = document.querySelector('.preview');
 
-input.style.opacity = 100;
+input.style.opacity = 00;
 input.addEventListener('change', updateImageDisplay);
 
 function updateImageDisplay() {
@@ -115,4 +114,3 @@ function returnFileSize(number) {
   }
 }
 </script>
-{/block}

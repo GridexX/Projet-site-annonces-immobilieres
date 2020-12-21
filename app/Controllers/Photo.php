@@ -7,25 +7,31 @@ use App\Controllers\Pages;
 
 class Photo extends Controller
 {
+/*
+  public function getFiles()
+  {
+	if (is_null($this->files))
+	  {
+		  $this->files = new FileCollection();
+	  }
+	  return $this->files->all();
+  } */
+
     public function view()
     {
       return service('SmartyEngine')->view('user_view.tpl');
     }
 
-    public function create($id_annonce=false)
+    public function create(array $lImage,int $id_annonce)
     {
-
-      $lImage = $this->request->getFileMultiple();
+      $model = new photoModel();
       
-      if(!empty($lImage) && count($lImage)<6 )
+      if(count($lImage['images'])<=5 && count($lImage['images'])>0)
       {
-        $i=0;
-        foreach($lImage as $img)
+        foreach($lImage['images'] as $img)
         {
-            $i=$i+1;
-            $model = new photoModel();
-            if ($img->isValid() && ! $img->hasMoved())
-            {
+          if ($img->isValid() && ! $img->hasMoved())
+          {
               $photo = array(
                 "P_nom" => $img->getName(),
                 "P_titre" => $img->getRandomName(),
@@ -33,70 +39,30 @@ class Photo extends Controller
               );
               $img->move('uploads/', $photo["P_titre"]);
               $model->insertPhoto($photo);
-            }
+          } 
         }
-        return $this->returnError($i,"connexion");
+      }
+      else if(count($lImage['images'])>5)  //Génère une erreur si plus de 5 photos veulent être insérées
+      {
+        $notification = array( 
+          "type" => "erreur",
+          "titre" => "Erreur",
+          "message" => "Vous pouvez insérer au maximum 5 photos :".count($lImage['images'])." passées en paramètres"
+        );
+        return $notification;
+      }
+      else //génère un warning si pas de photos insérées
+      {
+        $notification = array( 
+          "type" => "warning",
+          "titre" => "Attention",
+          "message" => "Vous n'avez pas inséré de photos, les photos permettent aux autres utilisateurs de voir votre logement." 
+        );
+        return $notification;
+      }
+      return null;
     }
-    else if(!empty($lImage)) //génère une erreur si plus de 5 photos envoyées
-    {
-      $controller = new Pages();
-      return $controller->showNotif("erreur","Vous pouvez ajouter au maximum 5 photos","user_view");
-    }
-  
 
-
-        /*
-          $data = array();
-    
-          // Count total files
-          $countfiles = count($_FILES['files']['name']);
-     
-          // Looping all files
-          for($i=0;$i<$countfiles;$i++){
-     
-            if(!empty($_FILES['files']['name'][$i])){
-     
-              // Define new $_FILES array - $_FILES['file']
-              $_FILES['file']['name'] = $_FILES['files']['name'][$i];
-              $_FILES['file']['type'] = $_FILES['files']['type'][$i];
-              $_FILES['file']['tmp_name'] = $_FILES['files']['tmp_name'][$i];
-              $_FILES['file']['error'] = $_FILES['files']['error'][$i];
-              $_FILES['file']['size'] = $_FILES['files']['size'][$i];
-    
-              // Set preference
-              $config['upload_path'] = 'uploads/'; 
-              $config['allowed_types'] = 'jpg|jpeg|png|gif';
-              $config['max_size'] = '5000'; // max_size in kb
-              $config['file_name'] = $_FILES['files']['name'][$i];
-     
-              //Load upload library
-              $this->load->library('upload',$config); 
-     
-              // File upload
-              if($this->upload->do_upload('file')){
-                // Get data about the file
-                $uploadData = $this->upload->data();
-                $filename = $uploadData['file_name'];
-    
-                // Initialize array
-                $data['filenames'][] = $filename;
-              }
-            }
-     
-          }
-     
-          // load view
-          service('SmartyEngine')->assign('data',$data);
-          return service('SmartyEngine')->view('user_view.tpl');  
-          $this->load->view('user_view',$data);
-        }else{
-    
-          // load view
-          return service('SmartyEngine')->view('user_view.tpl');  
-        } */
-        return service('SmartyEngine')->view('user_view.tpl');
-      
-    }
 
       public function returnError($error,$view)
     {

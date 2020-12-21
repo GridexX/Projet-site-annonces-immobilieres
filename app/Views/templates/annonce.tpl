@@ -7,7 +7,7 @@
             <div class="img-annonce">
                 <div class="flex-container item-center">
                     <div class="slider">                        
-                        <input type="radio" id="i1" name="images" checked />
+                        {*<input type="radio" id="i1" name="images" checked />
                         <input type="radio" id="i2" name="images" />
                         <input type="radio" id="i3" name="images" />
                         <input type="radio" id="i4" name="images" />
@@ -43,8 +43,30 @@
                             <label for="i3" class="dots" id="dot3"></label>
                             <label for="i4" class="dots" id="dot4"></label>
                             <label for="i5" class="dots" id="dot5"></label>
+                        </div> *}
+                        {*foreach from=$liste_photo item=photo}
+                        <p>{$photo.prev} {$photo.next} {$photo.index}</p>
+                        {/foreach*}
+                        {foreach from=$liste_photo item=photo}
+                            <input type="radio" id="i{$photo.index}" name="images" {($photo.index===1) ? 'checked':''} /> 
+                        {/foreach}
+                        
+                        {foreach from=$liste_photo item=photo}
+                            <div class="slide_img" id="{$photo.lDivID}">                                
+                                <img src="/uploads/{$photo.P_titre}" alt="{$photo.P_nom}">  
+                                {if count($liste_photo)>1}
+                                    <label class="prev" for="i{$photo.prev}"><span>&#x2039;</span></label>
+                                    <label class="next" for="i{$photo.next}"><span>&#x203a;</span></label>	                            
+                                {/if}
+                            </div> 
+                        {/foreach}
+                        <div id="nav_slide">
+                        {if count($liste_photo)>1}
+                            {foreach from=$liste_photo item=photo}
+                                <label for="i{$photo.index}" class="dots" id="dot{$photo.index}"></label>
+                            {/foreach}
+                        {/if}
                         </div>
-                            
                     </div>
                 </div>
             </div>

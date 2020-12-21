@@ -21,7 +21,7 @@
     {foreach from=$liste_annonce item=annonce}
     <a href="/annonce/view/annonce/{$annonce.A_idannonce}" class="annonce flex-container center w45">
         <div class="w35">
-            <img class="w90 center" src="/Images/logo_site.png" alt="House logo">
+            <img class="w90 center" {if isset($annonce.P_photo) } src='/uploads/{$annonce.P_photo.P_titre}' {else} src='/Images/logo_site.png' {/if} } alt="House logo">
         </div> 
         <div class="w65"> 
             <p> {$annonce.A_titre} : {$annonce.A_cout_loyer+$annonce.A_cout_charges} €{if isset($smarty.session.mail) && $smarty.session.mail===$annonce.U_mail}<span style="color:green"><i class="fas fa-check-circle"></i></span>{/if}</p>

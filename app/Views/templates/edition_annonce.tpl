@@ -82,7 +82,7 @@
                     <p class="h6-like">Photos : </p>
                     <label class="btn--success" for="image_uploads" style="width:auto;">Sélectionner des images à uploader (PNG, JPG)</label>
                     
-                    <input class="champs" type="file" id="image_uploads" style="cursor:default;" name="image_uploads" accept=".jpg, .jpeg, .png" multiple value="Sélectionner des images à uploader (PNG, JPG)" >
+                    <input class="champs" type="file" id="image_uploads" style="cursor:default;" name="images[]" accept=".jpg, .jpeg, .png" multiple value="Sélectionner des images à uploader (PNG, JPG)" >
 
                     <div class="preview flex-container item-center txt-center">
                         <div class="w90 item-center txt-center">
@@ -115,7 +115,7 @@
                     </div>
                 </div>
                 <div>
-                    <input class="btn--primary" type="submit" value="Valider" name="inscription"/>
+                    <input class="btn--primary" id="submit-button" type="submit" value="Valider" name="inscription" />
                     <input class="btn--danger" type="reset" value="Effacer"/>
                 </div>
             </form>
@@ -132,6 +132,7 @@
 
         function updateImageDisplay() 
         {
+            document.getElementById('submit-button').disabled = false;
             while(preview.firstChild) {
                 preview.removeChild(preview.firstChild);
             }
@@ -176,6 +177,7 @@
                     var div = document.createElement('div');
                     var title = document.createElement('h5');
                     var para = document.createElement('p');
+                    document.getElementById('submit-button').disabled = true;
                     div.classList.add("notif-container");
 
                     div.classList.add("warning");
