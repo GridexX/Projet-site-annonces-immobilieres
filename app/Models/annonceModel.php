@@ -37,6 +37,12 @@ class annonceModel extends Model
         return $db->table($this->table)->where(['A_idannonce' => $annonce['A_idannonce']])->update($annonce);
     }
 
+    public function deleteAnnonce(int $id_annonce)
+    {
+        $db = \Config\Database::connect();
+        return $db->table($this->table)->delete(["A_idannonce" => $id_annonce]);
+    }
+
     public function getAnnonce($id=false)
     {
         

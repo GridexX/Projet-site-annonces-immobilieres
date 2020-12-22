@@ -16,6 +16,13 @@ class Annonce extends Controller
         return service('SmartyEngine')->view($view.'.tpl');
     }
 
+    public function returnNotif(array $notif, $page=false)
+    {
+        service('SmartyEngine')->assign('notification',$notif);
+        if($page===false) return $this->accueil();
+        return service('SmartyEngine')->view($page.'.tpl');
+    }
+
     public function update($id_annonce)
     {
         $this->create($id_annonce);
@@ -77,15 +84,20 @@ class Annonce extends Controller
             $annonce['A_date_maj'] = date('Y-m-d H:i:s');
             
             $model = new annonceModel();
-            $model->insertAnnonce($annonce);
+           
 
 
             //Gestion des photos de l'annonce  
             $controllerP = new Photo();
             if($id_annonce!==false) //Destruction des anciennes photos puis maj nouvelles
             {
+                $model->updateAnnonce($annonce);
                 $modelP = new photoModel();
                 $modelP->deletePhoto($id_annonce);   
+            }
+            else
+            {
+                $model->insertAnnonce($annonce);
             }
             
             $lastAnnonce = $model->getLastAnnonce($session->get("mail"));  //Récupère la dernière annonce insérée par l'utilisateur
@@ -125,24 +137,50 @@ class Annonce extends Controller
                 
                 }
             }
-
-            $notification = array( 
-                "type" => "success",
-                "titre" => "Success",
-                "message" => "Votre annonce à été insérée dans la BDD"
-            );
-            service('SmartyEngine')->assign('notification',$notification);
-            return $this->accueil();
-            return service('SmartyEngine')->view("connexion.tpl");
-
         }
         else
         {
             $this->returnError('Veuillez vous connecter pour effectuer cette action','connexion');
         }
+        $notif = array(
+            "type" => "success",
+            "titre" => "Success",
+            "message" => "Votre annonce à été insérée dans la BDD"
+        );
+        return $this->returnNotif($notif,false);
     }
 
+    public function delete(int $id_annonce, bool $confirm=false)
+    {
+        if($confirm===false)
+        {
+            service('SmartyEngine')->assign('confirmation',true);
+            return $this->view('edition_annonce',$id_annonce);
+        }
+        $modelA = new annonceModel();
+        $annonce = $modelA->getAnnonce($id_annonce);
+        if( !(gettype($annonce)==='array' && empty($annonce['A_idannonce'])!==1) )
+        {
+            $notif = array(
+                "type" => "error",
+                "titre" => "Erreur",
+                "message" => "L'annonce n'a pas été trouvée dans la BDD"
+            );
+            return $this->returnNotif($notif,false);
+        }
+        
+        $modelP = new photoModel();
+        $modelP->deletePhoto($id_annonce);
+        $modelA->deleteAnnonce($id_annonce); 
 
+        $notif = array(
+            "type" => "success",
+            "titre" => "Success",
+            "message" => "L'annonce a bien été supprimée dans la BDD"
+        );
+        return $this->returnNotif($notif,false);
+        //RAJOUTER LA DESTRUCTION DES MESSAGES
+    }
 
 
 
@@ -245,10 +283,10 @@ class Annonce extends Controller
             $lAnnonces = $modelA->getAnnonceUti($session->get("mail"));
         }
         $nbAnnonces = count($lAnnonces);
-        $lAnnonces = $this->getAnnoncesPubliees($lAnnonces);
+        if($annUti===false) $lAnnonces = $this->getAnnoncesPubliees($lAnnonces);
 
         
-        //return $this->returnError("$nbAnnonces". count($lAnnonces) ,'connexion');
+        
         if($nbAnnonces === 0)  //Affichage du message de warning si pas d'annonces dans la BDD
         {
             $notification = array( 
@@ -298,6 +336,7 @@ class Annonce extends Controller
                 $lConcatAnn[$i]["P_photo"] = $photo[0][0];
             //return $this->returnError((gettype($photo[0][0])) , 'connexion');
         }
+        //return $this->returnError($nbAnnonces." ". count($lAnnonces)." ".$id_debut ,'connexion');
         service('SmartyEngine')->assign('dateFormat',$dateFormat);
         service('SmartyEngine')->assign('liste_annonce',$lConcatAnn);
         service('SmartyEngine')->assign('session',$session);

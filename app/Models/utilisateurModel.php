@@ -32,6 +32,12 @@ class utilisateurModel extends Model
         return $this->simpleQuery($requete);
     }
 
+    public function deleteUtilisateur($mail)
+    {
+        $db = \Config\Database::connect();
+        return $db->table($this->table)->delete(['U_mail' => $mail]);
+    }
+
 }
 
 ?>

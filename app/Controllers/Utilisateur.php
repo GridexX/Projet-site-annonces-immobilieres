@@ -2,6 +2,8 @@
 
 use App\Models\utilisateurModel;
 use CodeIgniter\Controller;
+use App\Controllers\Annonce;
+use App\Models\annonceModel;
 
 class Utilisateur extends Controller
 {
@@ -19,6 +21,55 @@ class Utilisateur extends Controller
     {
         service('SmartyEngine')->assign('error',$error);
         return service('SmartyEngine')->view($view.'.tpl');
+    }
+
+    public function returnNotif(array $notif, $page=false)
+    {
+        service('SmartyEngine')->assign('notification',$notif);
+        if($page===false) return $this->accueil();
+        return service('SmartyEngine')->view($page.'.tpl');
+    }
+
+    public function delete($confirm=false)
+    {
+        $session = \Config\Services::session();
+        service('SmartyEngine')->assign('session',$session);
+        $controllerA = new Annonce();
+        if( $session->get("mail") === null)
+        {
+            $notif = array(
+                "type" => "error",
+                "titre" => "Erreur",
+                "message" => "Vous devez etre connecté pour supprimer un compte !"
+            );
+            return $controllerA->returnNotif($notif,false);
+        }
+        if($confirm===false)
+        {
+            service('SmartyEngine')->assign('confirmation',true);
+            return service('SmartyEngine')->view('edition_profil');
+        }
+
+        //Suppression de toutes les annonces de l'utilisateur
+        $modelA = new annonceModel();
+        $lAnnonce = $modelA->getAnnonceUti($session->get("mail"));
+        foreach($lAnnonce as $annonce)
+        {
+            $modelA->deleteAnnonce($annonce["A_idannonce"]);
+        }
+
+        //Suppression du compte
+        $modelU = new utilisateurModel();
+        $modelU->deleteUtilisateur($session->get("mail"));
+        $notif = array(
+            "type" => "success",
+            "titre" => "Success",
+            "message" => "Votre compte à bien été supprimé"
+        );
+        $session->destroy();
+        service('SmartyEngine')->assign('session',$session);
+        return redirect()->to('/');
+        return $controllerA->returnNotif($notif,false);
     }
 
     public function create()

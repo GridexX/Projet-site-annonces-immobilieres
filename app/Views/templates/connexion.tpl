@@ -2,6 +2,16 @@
 {block name="titre_onglet"}Connexion{/block}
 
 {block name="output_area"}
+    {if isset($confirmation)}
+        <div class="flex-container">
+            <div class="annonce-container formulaire w40 item-center txtcenter">
+                <p>Etes vous sur de vouloir supprimer votre compte ?</p>
+                <a href="/utilisateur/delete/true"><button class="btn--primary" >Oui</button></a>
+                <a href="/pages/view/edition_profil"><button class="btn--danger" >Non</button></a>
+                
+            </div>
+        </div>
+    {/if}
     <div class="flex-container" style="margin-top: 2rem;">
         <div class="formulaire-container w40 item-center txtcenter">
             <h2>{block name="titre_form"}Connexion{/block}</h2>
@@ -34,4 +44,5 @@
             {/block}
         </div>
     </div>
+    {block name="delete_user"}{/block}
 {/block}

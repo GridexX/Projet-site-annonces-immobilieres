@@ -11,3 +11,14 @@
     <input class="champs" type="password" name="new-password" required oninvalid="this.setCustomValidity('Doit être identique au mot de passe')" />
     </div>
 {/block}
+{block name="delete_user"}
+    {if !isset($confirmation)}
+    <div class="flex-container" style="margin-top: 2rem;">
+        <div class="formulaire-container w40 item-center txtcenter">
+            <form class="formulaire" action="/utilisateur/delete/" method="post">
+                <input class="btn--dark" id="submit-button" type="submit" value="Supprimer le profil" name="suppression" />
+            </form>
+        </div>
+    </div>
+    {/if}
+{/block}

@@ -1,6 +1,17 @@
 {extends 'main.tpl'}
 {block name="titre_onglet"}Editer l'annonce{/block}
 {block name="output_area"}
+    {if isset($confirmation)}
+        <div class="flex-container w75 item-center">
+            <div class="annonce-container formulaire w60 item-center">
+                <p>Etes vous sur de vouloir supprimer l'annonce ?</p>
+
+                <a href="/annonce/delete/{$annonce.A_idannonce}"><button class="btn--primary" >Oui</button></a>
+                <a href="/annonce/view/edition_annonce/{$annonce.A_idannonce}"><button class="btn--danger" >Non</button></a>
+                
+            </div>
+        </div>
+    {/if}
     <div class="flex-container w75 item-center">
         <div class="annonce-container formulaire w60 item-center">
             {if isset($error)}
@@ -136,9 +147,20 @@
                     <input class="btn--danger" type="reset" value="Effacer"/>
                 </div>
             </form>
-        </div>
-    </div>    
 
+        </div>
+    </div> 
+    {if isset($annonce.A_idannonce)}
+    <div class="flex-container w75 item-center">
+        <div class="annonce-container formulaire w60 item-center txtcenter">   
+
+            <form class="formulaire" action="/annonce/delete/{$annonce.A_idannonce}" method="post"  >
+                <input class="btn--dark" id="submit-button" type="submit" value="Supprimer l'annonce" name="suppression" />
+            </form>
+
+        </div>
+    </div>
+    {/if}
     <script>
 
         var input = document.querySelector('#image_uploads');
