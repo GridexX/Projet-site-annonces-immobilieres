@@ -23,6 +23,12 @@ class photoModel extends Model
         $db = \Config\Database::connect();
         return $db->table($this->table)->select("*")->where(["A_idannonce" => $idannonce])->get()->getResultArray();
     }
+
+    public function deletePhoto(int $idannonce)
+    {
+        $db = \Config\Database::connect();
+        return $db->table($this->table)->delete(["A_idannonce" => $idannonce]);
+    }
 }
 
 ?>

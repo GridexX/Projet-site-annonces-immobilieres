@@ -80,16 +80,33 @@
                 <hr class="ligne-footer">
                 <div class="Photos">
                     <p class="h6-like">Photos : </p>
-                    <label class="btn--success" for="image_uploads" style="width:auto;">Sélectionner des images à uploader (PNG, JPG)</label>
-                    
-                    <input class="champs" type="file" id="image_uploads" style="cursor:default;" name="images[]" accept=".jpg, .jpeg, .png" multiple value="Sélectionner des images à uploader (PNG, JPG)" >
+                        <div id="change-photos">
+                            <div class="flex-container txt-centrer w100">
+                            {if isset($liste_photo)}
+                            {foreach from=$liste_photo item=photo}
+                                <div class="w{$taille_div}">
+                                
+                                <img src='/uploads/{$photo.P_titre}' alt="{$photo.P_nom}" />
+                                
+                                </div>
+                            {/foreach}
+                            {else}
+                               <p>Pas de photos pour cette annonce  </p> 
+                            {/if}
+                            </div>
+                            <label class="btn--success" for="changer les photos de l'annonce" onclick="javascript:showInputButton()" >Changer les photos</label>
+                        </div>
+                        <div id="obj-photos">
+                        <label class="btn--success" for="image_uploads" style="width:auto;">Sélectionner des images à uploader (PNG, JPG)</label>
+                        
+                        <input class="champs" type="file" id="image_uploads" style="cursor:default;" name="images[]" accept=".jpg, .jpeg, .png" multiple value="Sélectionner des images à uploader (PNG, JPG)" >
 
-                    <div class="preview flex-container item-center txt-center">
-                        <div class="w90 item-center txt-center">
-                            <p>Aucun fichier sélectionné pour le moment</p>
+                        <div class="preview flex-container item-center txt-center">
+                            <div class="w90 item-center txt-center">
+                                <p>Aucun fichier sélectionné pour le moment</p>
+                            </div>
                         </div>
                     </div>
-
                 </div>
                 <hr class="ligne-footer">
                 <div class="Description">
@@ -126,9 +143,16 @@
 
         var input = document.querySelector('#image_uploads');
         var preview = document.querySelector('.preview');
-
+        document.getElementById("obj-photos").style.display = "none";
         input.style.opacity = 0;
+
         input.addEventListener('change', updateImageDisplay);
+
+        function showInputButton()
+        {
+            document.getElementById("obj-photos").style.display = "block";
+            document.getElementById("change-photos").style.display = "none";
+        }
 
         function updateImageDisplay() 
         {
@@ -266,5 +290,7 @@
                 document.getElementById("typeChauffageDivCheck").style.display = "none";
             }
         }
+
     </script>  
+    {block name="script"}{/block}
 {/block}
