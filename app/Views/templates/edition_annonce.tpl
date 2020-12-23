@@ -6,7 +6,7 @@
             <div class="annonce-container formulaire w60 item-center">
                 <p>Etes vous sur de vouloir supprimer l'annonce ?</p>
 
-                <a href="/annonce/delete/{$annonce.A_idannonce}"><button class="btn--primary" >Oui</button></a>
+                <a href="/annonce/delete/{$annonce.A_idannonce}/true"><button class="btn--primary" >Oui</button></a>
                 <a href="/annonce/view/edition_annonce/{$annonce.A_idannonce}"><button class="btn--danger" >Non</button></a>
                 
             </div>
@@ -97,7 +97,7 @@
                             {foreach from=$liste_photo item=photo}
                                 <div class="w{$taille_div}">
                                 
-                                <img src='/uploads/{$photo.P_titre}' alt="{$photo.P_nom}" />
+                                <img src='/uploads/{$annonce.A_idannonce}/{$photo.P_titre}' alt="{$photo.P_nom}" />
                                 
                                 </div>
                             {/foreach}
@@ -150,7 +150,7 @@
 
         </div>
     </div> 
-    {if isset($annonce.A_idannonce)}
+    {if isset($annonce.A_idannonce) && !isset($confirmation)}
     <div class="flex-container w75 item-center">
         <div class="annonce-container formulaire w60 item-center txtcenter">   
 

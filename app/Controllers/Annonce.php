@@ -37,6 +37,30 @@ class Annonce extends Controller
         }
         return $this->files->all();
     } 
+    /*
+    public function createDefault()
+    {
+        $annonce = array( 
+            "A_titre" => "DEFAULT",
+            'T_type' => "T4",
+            'A_cout_loyer' => 500,
+            'A_cout_charges' => 40,
+            'A_type_chauffage'=> "collectif",
+            'A_perf_energie' => 100,
+            'A_superficie' => 100,
+            'A_est_meuble' => true,
+            'A_description' => "",
+            'A_adresse' => "XXX rue des YYY"
+            'A_ville' => "Pétaouchnok",
+            'A_CP' => 00000,
+            'A_etat' => "en cours",
+            'U_mail => ""
+
+            date_default_timezone_set('Europe/Paris');
+            $annonce['A_date_maj'] = date('Y-m-d H:i:s');
+        );
+        return $this->view('nouvelle_annonce',$id_annonce);
+    } */
 
     public function create($id_annonce=false)
     {
@@ -92,8 +116,7 @@ class Annonce extends Controller
             if($id_annonce!==false) //Destruction des anciennes photos puis maj nouvelles
             {
                 $model->updateAnnonce($annonce);
-                $modelP = new photoModel();
-                $modelP->deletePhoto($id_annonce);   
+                $controllerP->delete($id_annonce);   
             }
             else
             {
@@ -169,8 +192,8 @@ class Annonce extends Controller
             return $this->returnNotif($notif,false);
         }
         
-        $modelP = new photoModel();
-        $modelP->deletePhoto($id_annonce);
+        $controllerP = new Photo();
+        $controllerP->delete($id_annonce);
         $modelA->deleteAnnonce($id_annonce); 
 
         $notif = array(

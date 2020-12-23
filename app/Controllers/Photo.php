@@ -22,6 +22,16 @@ class Photo extends Controller
       return service('SmartyEngine')->view('user_view.tpl');
     }
 
+    public function delete(int $id_annonce)
+    {
+      helper('filesystem');
+      $path = "uploads/$id_annonce";
+      $model = new photoModel();
+      $model->deletePhoto($id_annonce); //Suppression dans la BBD
+      delete_files($path, true); //Suppression des fichiers dans le dossier
+      rmdir($path); //Suppression du dossier
+    }
+
     public function create(array $lImage,int $id_annonce)
     {
       $model = new photoModel();
@@ -37,7 +47,7 @@ class Photo extends Controller
                 "P_titre" => $img->getRandomName(),
                 "A_idannonce" => $id_annonce  
               );
-              $img->move('uploads/', $photo["P_titre"]);
+              $img->move("uploads/$id_annonce/", $photo["P_titre"]);
               $model->insertPhoto($photo);
           } 
         }

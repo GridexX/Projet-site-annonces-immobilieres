@@ -53,7 +53,7 @@
                         
                         {foreach from=$liste_photo item=photo}
                             <div class="slide_img" id="{$photo.lDivID}">                                
-                                <img src="/uploads/{$photo.P_titre}" alt="{$photo.P_nom}">  
+                                <img src="/uploads/{$annonce.A_idannonce}/{$photo.P_titre}" alt="{$photo.P_nom}">  
                                 {if count($liste_photo)>1}
                                     <label class="prev" for="i{$photo.prev}"><span>&#x2039;</span></label>
                                     <label class="next" for="i{$photo.next}"><span>&#x203a;</span></label>	                            
