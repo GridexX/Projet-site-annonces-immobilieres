@@ -6,8 +6,13 @@
                 <div id="dropdown-content" class="dropdown-content w40">
                     <a href="/annonce/view/nouvelle_annonce">Créer une annonce</a>
                     <a href="/pages/view/edition_profil">Gérer le Profil</a>
+<<<<<<< HEAD
                     <a href="/annonce/mesAnnonces">Editer les annonces</a>
                     <a href="/pages/view/messagerie">Messagerie</a>
+=======
+                    <a href="#">Editer les annonces</a>
+                    <a href="/messagerie/createConv/{$smarty.session.mail}">Messagerie</a>
+>>>>>>> 2c764e2420132116e01612d8e025c8bb315dac3c
                     <a class="red" href="/pages/deconnexion">Déconnexion</a>
                 </div>                
         </div>

@@ -167,7 +167,7 @@
                     {/if}
                 {else}{*Sinon on propose de prendre contact avec le propriétaire*}
                     <p>{$proprio.U_pseudo} | <i>Nb annonces : </i></p>
-                <button class="btn--primary"><i class="fas fa-comments"></i> Envoyer un message</button>
+                <a href="/messagerie/view/{$annonce.A_idannonce}"><button class="btn--primary"><i class="fas fa-comments"></i> Envoyer un message</button></a>
                 {/if}
 
             </div>
