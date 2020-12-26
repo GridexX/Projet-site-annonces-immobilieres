@@ -29,7 +29,7 @@ class Photo extends Controller
       $model = new photoModel();
       $model->deletePhoto($id_annonce); //Suppression dans la BBD
       delete_files($path, true); //Suppression des fichiers dans le dossier
-      rmdir($path); //Suppression du dossier
+      if(is_dir($path)) rmdir($path); //Suppression du dossier
     }
 
     public function create(array $lImage,int $id_annonce)

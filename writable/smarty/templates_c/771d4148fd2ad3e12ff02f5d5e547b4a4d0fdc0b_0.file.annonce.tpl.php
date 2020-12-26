@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.34-dev-7, created on 2020-12-11 04:09:32
+/* Smarty version 3.1.34-dev-7, created on 2020-12-26 08:05:55
   from 'C:\xampp\htdocs\Projet-site-annonces-immobilieres\app\Views\templates\annonce.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.34-dev-7',
-  'unifunc' => 'content_5fd3455c5d5f42_74858106',
+  'unifunc' => 'content_5fe74343daf330_95181498',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '771d4148fd2ad3e12ff02f5d5e547b4a4d0fdc0b' => 
     array (
       0 => 'C:\\xampp\\htdocs\\Projet-site-annonces-immobilieres\\app\\Views\\templates\\annonce.tpl',
-      1 => 1607681323,
+      1 => 1608991252,
       2 => 'file',
     ),
   ),
@@ -20,26 +20,26 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5fd3455c5d5f42_74858106 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5fe74343daf330_95181498 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_loadInheritance();
 $_smarty_tpl->inheritance->init($_smarty_tpl, true);
 ?>
 
 <?php 
-$_smarty_tpl->inheritance->instanceBlock($_smarty_tpl, 'Block_10229330335fd3455c4dde96_40960070', "titre_onglet");
+$_smarty_tpl->inheritance->instanceBlock($_smarty_tpl, 'Block_10244087235fe74343d053c0_66683343', "titre_onglet");
 ?>
 
 <?php 
-$_smarty_tpl->inheritance->instanceBlock($_smarty_tpl, 'Block_17018272735fd3455c4df407_75269433', "output_area");
+$_smarty_tpl->inheritance->instanceBlock($_smarty_tpl, 'Block_9021155875fe74343d08922_02522593', "output_area");
 $_smarty_tpl->inheritance->endChild($_smarty_tpl, 'main.tpl');
 }
 /* {block "titre_onglet"} */
-class Block_10229330335fd3455c4dde96_40960070 extends Smarty_Internal_Block
+class Block_10244087235fe74343d053c0_66683343 extends Smarty_Internal_Block
 {
 public $subBlocks = array (
   'titre_onglet' => 
   array (
-    0 => 'Block_10229330335fd3455c4dde96_40960070',
+    0 => 'Block_10244087235fe74343d053c0_66683343',
   ),
 );
 public function callBlock(Smarty_Internal_Template $_smarty_tpl) {
@@ -49,12 +49,12 @@ Annonce<?php
 }
 /* {/block "titre_onglet"} */
 /* {block "output_area"} */
-class Block_17018272735fd3455c4df407_75269433 extends Smarty_Internal_Block
+class Block_9021155875fe74343d08922_02522593 extends Smarty_Internal_Block
 {
 public $subBlocks = array (
   'output_area' => 
   array (
-    0 => 'Block_17018272735fd3455c4df407_75269433',
+    0 => 'Block_9021155875fe74343d08922_02522593',
   ),
 );
 public function callBlock(Smarty_Internal_Template $_smarty_tpl) {
@@ -67,44 +67,57 @@ $_smarty_tpl->_checkPlugins(array(0=>array('file'=>'C:\\xampp\\htdocs\\Projet-si
             <div class="img-annonce">
                 <div class="flex-container item-center">
                     <div class="slider">                        
-                        <input type="radio" id="i1" name="images" checked />
-                        <input type="radio" id="i2" name="images" />
-                        <input type="radio" id="i3" name="images" />
-                        <input type="radio" id="i4" name="images" />
-                        <input type="radio" id="i5" name="images" />                       
-                        <div class="slide_img" id="one">                                
-                                <img src="/Images/logo_house.png">                                
-                                    <label class="prev" for="i5"><span>&#x2039;</span></label>
-                                    <label class="next" for="i2"><span>&#x203a;</span></label>	                            
-                        </div>                        
-                        <div class="slide_img" id="two">                            
-                                <img src="/Images/logo_site.png" >                                
-                                    <label class="prev" for="i1"><span>&#x2039;</span></label>
-                                    <label class="next" for="i3"><span>&#x203a;</span></label>                            
-                        </div>                                
-                        <div class="slide_img" id="three">
-                                <img src="/Images/logo_house.png">	                                
-                                    <label class="prev" for="i2"><span>&#x2039;</span></label>
-                                    <label class="next" for="i4"><span>&#x203a;</span></label>
-                        </div>
-                        <div class="slide_img" id="four">
-                                <img src="/Images/logo_site.png">                                
-                                    <label class="prev" for="i3"><span>&#x2039;</span></label>
-                                    <label class="next" for="i5"><span>&#x203a;</span></label>
-                        </div>
-                        <div class="slide_img" id="five">
-                                <img src="/Images/logo_house.png">                                
-                                    <label class="prev" for="i4"><span>&#x2039;</span></label>
-                                    <label class="next" for="i1"><span>&#x203a;</span></label>
-                        </div>
+                                                                        <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['liste_photo']->value, 'photo');
+$_smarty_tpl->tpl_vars['photo']->do_else = true;
+if ($_from !== null) foreach ($_from as $_smarty_tpl->tpl_vars['photo']->value) {
+$_smarty_tpl->tpl_vars['photo']->do_else = false;
+?>
+                            <input type="radio" id="i<?php echo $_smarty_tpl->tpl_vars['photo']->value['index'];?>
+" name="images" <?php echo $_smarty_tpl->tpl_vars['photo']->value['index'] === 1 ? 'checked' : '';?>
+ /> 
+                        <?php
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
+                        
+                        <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['liste_photo']->value, 'photo');
+$_smarty_tpl->tpl_vars['photo']->do_else = true;
+if ($_from !== null) foreach ($_from as $_smarty_tpl->tpl_vars['photo']->value) {
+$_smarty_tpl->tpl_vars['photo']->do_else = false;
+?>
+                            <div class="slide_img" id="<?php echo $_smarty_tpl->tpl_vars['photo']->value['lDivID'];?>
+">                                
+                                <img src="/uploads/<?php echo $_smarty_tpl->tpl_vars['annonce']->value['A_idannonce'];?>
+/<?php echo $_smarty_tpl->tpl_vars['photo']->value['P_titre'];?>
+" alt="<?php echo $_smarty_tpl->tpl_vars['photo']->value['P_nom'];?>
+">  
+                                <?php if (count($_smarty_tpl->tpl_vars['liste_photo']->value) > 1) {?>
+                                    <label class="prev" for="i<?php echo $_smarty_tpl->tpl_vars['photo']->value['prev'];?>
+"><span>&#x2039;</span></label>
+                                    <label class="next" for="i<?php echo $_smarty_tpl->tpl_vars['photo']->value['next'];?>
+"><span>&#x203a;</span></label>	                            
+                                <?php }?>
+                            </div> 
+                        <?php
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
                         <div id="nav_slide">
-                            <label for="i1" class="dots" id="dot1"></label>
-                            <label for="i2" class="dots" id="dot2"></label>
-                            <label for="i3" class="dots" id="dot3"></label>
-                            <label for="i4" class="dots" id="dot4"></label>
-                            <label for="i5" class="dots" id="dot5"></label>
+                        <?php if (count($_smarty_tpl->tpl_vars['liste_photo']->value) > 1) {?>
+                            <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['liste_photo']->value, 'photo');
+$_smarty_tpl->tpl_vars['photo']->do_else = true;
+if ($_from !== null) foreach ($_from as $_smarty_tpl->tpl_vars['photo']->value) {
+$_smarty_tpl->tpl_vars['photo']->do_else = false;
+?>
+                                <label for="i<?php echo $_smarty_tpl->tpl_vars['photo']->value['index'];?>
+" class="dots" id="dot<?php echo $_smarty_tpl->tpl_vars['photo']->value['index'];?>
+"></label>
+                            <?php
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
+                        <?php }?>
                         </div>
-                            
                     </div>
                 </div>
             </div>
@@ -208,12 +221,20 @@ $_smarty_tpl->_checkPlugins(array(0=>array('file'=>'C:\\xampp\\htdocs\\Projet-si
             <div class="utilisateur_container">
                                 <?php if ((isset($_SESSION['mail'])) && $_SESSION['mail'] === $_smarty_tpl->tpl_vars['annonce']->value['U_mail']) {?>
                     <a href="/annonce/view/edition_annonce/<?php echo $_smarty_tpl->tpl_vars['annonce']->value['A_idannonce'];?>
-"><button class="btn--primary"><i class="fas fa-comments"></i> Editer l'annonce</button></a>
+"><button class="btn--primary"><i class="fas fa-edit"></i> Editer l'annonce</button></a>
+                    <?php if ($_smarty_tpl->tpl_vars['annonce']->value['A_etat'] === 'publiée') {?>
+                        <a href="/annonce/changerEtat/<?php echo $_smarty_tpl->tpl_vars['annonce']->value['A_idannonce'];?>
+/en cours"><button class="btn--danger"><i class="fas fa-eye-slash"></i> Masquer l'annonce du site</button></a>
+                    <?php } else { ?>
+                    <a href="/annonce/changerEtat/<?php echo $_smarty_tpl->tpl_vars['annonce']->value['A_idannonce'];?>
+/publiée"><button class="btn--success"><i class="fas fa-arrow-circle-up"></i> Publier l'annonce</button></a>
+                    <?php }?>
                 <?php } else { ?>                    <p><?php echo $_smarty_tpl->tpl_vars['proprio']->value['U_pseudo'];?>
  | <i>Nb annonces : </i></p>
                 <a href="/messagerie/view/<?php echo $_smarty_tpl->tpl_vars['annonce']->value['A_idannonce'];?>
 "><button class="btn--primary"><i class="fas fa-comments"></i> Envoyer un message</button></a>
                 <?php }?>
+
             </div>
         </div>
         

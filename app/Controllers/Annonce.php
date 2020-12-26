@@ -322,7 +322,7 @@ class Annonce extends Controller
 
         
         
-
+        $nbAnnonces = count($lAnnonces);
         //Modification de la variable id_debut si dépassement du nombre d'annonce ou borne trop petite
         if($id_debut>count($lAnnonces) - count($lAnnonces)%$nbAnnonces ) $id_debut = count($lAnnonces) - count($lAnnonces)%$nbAnnonces;
 
@@ -348,7 +348,6 @@ class Annonce extends Controller
             }
         }
 
-        $nbAnnonces = count($lAnnonces);
         if($nbAnnonces === 0)  //Affichage du message de warning si pas d'annonces dans la BDD
         {
             $notification = array( 
