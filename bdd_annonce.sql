@@ -21,17 +21,6 @@ CREATE TABLE IF NOT EXISTS `T_typeMaison`
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 
--- Structure de la table T_utilisateur
-CREATE TABLE IF NOT EXISTS `T_utilisateur`
-(
-    U_mail varchar(40) PRIMARY KEY NOT NULL,
-    U_mdp varchar(40) NOT NULL,
-    U_pseudo varchar(25) NOT NULL,
-    U_nom varchar(25) NOT NULL,
-    U_prenom varchar(25) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
-
 -- Structure de la table T_annonce
 CREATE TABLE IF NOT EXISTS `T_annonce`
 (

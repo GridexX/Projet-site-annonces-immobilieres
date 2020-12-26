@@ -23,6 +23,12 @@ class energieModel extends Model
         $db = \Config\Database::connect();
         return $db->table($this->table)->insert($energie);
     }
+
+    public function getLastEnergie()
+    {
+        $res = $this->asArray()->select('MAX(E_id_engie)')->first();
+        return array( "E_id_engie" => $res['MAX(E_id_engie)']);
+    } 
 }
 
 ?>

@@ -313,6 +313,15 @@
             }
         }
 
+
+    //désactivation des champs du formulaire si admin
+    {if isset($adminNoModif)}
+    var inputsChamps = document.getElementsByClassName("champs");
+    for(var i=0; i<inputsChamps.length ; ++i)
+    {
+        inputsChamps[i].disabled = true;
+    }
+    {/if}
     </script>  
     {block name="script"}{/block}
 {/block}

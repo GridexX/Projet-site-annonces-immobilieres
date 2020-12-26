@@ -23,7 +23,7 @@
             {/if}
             <form class="formulaire" action="/Utilisateur/{block name="action_form"}connect{/block}" method="post">
             <div>
-            <label for="mail">Mail : </label>
+            <label class="" for="mail">Mail : </label>
             <input class="champs" type="text" name="mail" required placeholder="xxx@domaine.extension" pattern=".*@.*\..*" value="{($smarty.session.mail|default:'')}" oninvalid="this.setCustomValidity('L\'email doit être sous la forme xxx@domaine.alias')" {block name="disable_mail"}{/block} />
             </div>
             {block name="input_inscription"}{/block}

@@ -1,7 +1,7 @@
 {extends 'main.tpl'}
 {block name="titre_onglet"}Accueil{/block}
 {block name="output_area"}
-{if isset($lBoutons)}
+{if isset($lBoutons) && !isset($estAccueil)}
     <div class="flex-container w75 center">
     {foreach from=$lBoutons item=bouton}
         <a href="/annonce/viewListe/{$bouton.numAnnDeb}/{$nbAnnonces}"><button class="bouton {($bSelect>=$bouton.numAnnDeb && $bSelect<$bouton.numAnnFin) ? 'btn-green' : 'btn-bleu' } center">{$bouton.numPage}</button></a>
@@ -9,9 +9,9 @@
         <select onchange="location = this.value;">
             <option default>Afficher {$nbAnnonces} annonces par pages</option>
             <option value="/annonce/viewListe/{$bSelect}/15">15 </option>
-            <option value="/annonce/viewListe/{$bSelect}/30">30 </option>
-            <option value="/annonce/viewListe/{$bSelect}/50">50 </option>
-            <option value="/annonce/viewListe/{$bSelect}/100">100</option>
+            {if $nb_annonces>30}<option value="/annonce/viewListe/{$bSelect}/30">30 </option>{/if}
+            {if $nb_annonces>50}<option value="/annonce/viewListe/{$bSelect}/50">50 </option>{/if}
+            {if $nb_annonces>100}<option value="/annonce/viewListe/{$bSelect}/100">100</option>{/if}
         </select>
     </div>
 {/if}

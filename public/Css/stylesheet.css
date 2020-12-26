@@ -61,7 +61,7 @@ footer{
 }
 
 
-.formulaire-container, .annonce-container
+.formulaire-container, .annonce-container, .notif-container
 {
     border-radius: 1rem ;
     border-style: solid;
@@ -75,6 +75,10 @@ label
     text-align: start;
     width: 15rem;
     padding: 1rem;
+    border-top-left-radius: 1rem;
+    border-bottom-left-radius: 1rem; 
+    background-color: gray;
+    color : white;
 }
 
 .div-input div
@@ -642,5 +646,44 @@ label span{
 .msg-category {
     font-style: italic;
     color: grey;
+}
+
+
+
+.notif-container h5
+{
+    font-size: 2rem;
+    font-style: italic;
+    font-weight: bold;
+}
+
+.notif-container.success 
+{
+    border-color: var(--green-dark);
+}
+
+.notif-container.error 
+{
+    border-color: var(--red-dark);
+}
+
+.notif-container.warning 
+{
+    border-color: var(--red);
+}
+
+.notif-container.error h5
+{
+    color: var(--red-light);
+}
+
+.notif-container.success h5
+{
+    color: var(--green-light);
+}
+
+.notif-container.warning h5
+{
+    color: var(--orange);
 }
 

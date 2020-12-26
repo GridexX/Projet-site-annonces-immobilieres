@@ -112,16 +112,39 @@ class Annonce extends Controller
             $annonce['A_adresse'] = $this->request->getVar('adresse');
             $annonce['A_ville'] = $this->request->getVar('ville');
             $annonce['A_CP'] = $this->request->getVar('cp');
-
             $annonce['A_etat'] = 'en cours';
             $annonce['U_mail'] = $session->get("mail");
 
-            date_default_timezone_set('Europe/Paris');
+            date_default_timezone_set('Europe/Paris');  //Setup de l'heure courante
             $annonce['A_date_maj'] = date('Y-m-d H:i:s');
             
-            $model = new annonceModel();
-           
+            //gestion du chauffage
+            if($annonce['A_type_chauffage'] === 'individuel')
+            {
+                $annonce['E_id_engie'] = $this->request->getVar('engie');
+                if( $annonce['E_id_engie'] === 'autreTypeChauffage' ) //Si utilisateur entre nouveau type de chauffage insertion dans la BDD
+                {
+                    $modelE = new energieModel();
+                    $energie = [];
+                    $energie['E_id_engie'] = 'DEFAULT';
+                    $energie['E_description'] = $this->request->getVar('nouv_energie');
 
+                    //test Energie existe déjà
+                    $lEner = $modelE->getEnergie();
+                    for($i=0 ; $i<count($lEner); ++$i) 
+                    {
+                        if ($lEner[$i]['E_description'] === $energie['E_description'])
+                        {
+                            return $this->returnError('L\'energie entrée existe déjà dans la BDD','edition_annonce');
+                        }
+                    }   
+                    
+                    $modelE->insertEnergie($energie);
+                }
+                $annonce['E_id_engie'] = $modelE->getLastEnergie();
+            }
+
+            $model = new annonceModel();
 
             //Gestion des photos de l'annonce  
             $controllerP = new Photo();
@@ -146,42 +169,28 @@ class Annonce extends Controller
                 service('SmartyEngine')->assign('notification',$notif);
                 return service('SmartyEngine')->view('nouvelle_annonce.tpl');   
             }
-            
-            //gestion du chauffage
-            if($annonce['A_type_chauffage'] === 'individuel')
-            {
-                $annonce['E_id_engie'] = $this->request->getVar('engie');
-                if( $annonce['E_id_engie'] === 'autreTypeChauffage' ) //Si utilisateur entre nouveau type de chauffage insertion dans la BDD
-                {
-                    $modelE = new energieModel();
-                    $energie = [];
-                    $energie['E_id_engie'] = 'DEFAULT';
-                    $energie['E_description'] = $this->request->getVar('nouv_energie');
-
-                    //test Energie existe déjà
-                    $lEner = $modelE->getEnergie();
-                    for($i=0 ; $i<count($lEner); ++$i) 
-                    {
-                        if ($lEner[$i]['E_description'] === $energie['E_description'])
-                        {
-                            return $this->returnError('L\'energie entrée existe déjà dans la BDD','edition_annonce');
-                        }
-                    }   
-                    
-                    $modelE->insertEnergie($energie);
-                
-                }
-            }
+            $notif = array(
+                "type" => "success",
+                "titre" => "Success",
+                "message" => "Votre annonce à été insérée dans la BDD"
+            );
+            return $this->returnNotif($notif,false);
         }
         else
         {
             $this->returnError('Veuillez vous connecter pour effectuer cette action','connexion');
         }
+
+        
+    }
+
+    public function test()
+    {
         $notif = array(
             "type" => "success",
             "titre" => "Success",
             "message" => "Votre annonce à été insérée dans la BDD"
-        );
+        ); 
         return $this->returnNotif($notif,false);
     }
 
@@ -217,8 +226,6 @@ class Annonce extends Controller
         //RAJOUTER LA DESTRUCTION DES MESSAGES
     }
 
-
-
     public function view($page,$id_annonce=false)
     {        
         $modelA = new annonceModel();
@@ -227,7 +234,7 @@ class Annonce extends Controller
             return $this->returnError('L\'annonce n\'a pas été trouvée','connexion');
              
         $session = \Config\Services::session();
-        if($page === 'edition_annonce' && $session->get('mail')!==$annonce['U_mail'])  //Vérifie que l'annonce appartient à l'utilisateur
+        if($page === 'edition_annonce' && ($session->get('mail')!==$annonce['U_mail'] || $session->get('admin'))!==true)  //Vérifie que l'annonce appartient à l'utilisateur et 
             return $this->returnError('Vous n\'étes pas autorisé à modifier cette annonce','connexion');
         
         $modelE = new energieModel();
@@ -279,6 +286,11 @@ class Annonce extends Controller
                 service('SmartyEngine')->assign('taille_div',$tailleDiv);
                 service('SmartyEngine')->assign('liste_photo',$lPhotos);
             }
+
+            //Empeche modification champs annonces pour admin si elle ne lui appartient pas
+            
+            if( $session->get("admin")===true && $session->get('mail')!==$annonce['U_mail']  )
+                service('SmartyEngine')->assign('adminNoModif',true);
             
             
         }
@@ -321,30 +333,38 @@ class Annonce extends Controller
         $session = \Config\Services::session();
         $modelA = new annonceModel();
         if(!$annUti)
-
+        {
             $lAnnonces = $modelA->getAnnonce();
-
+            $lAnnonces = $this->getAnnoncesPubliees($lAnnonces);
+        }
         else
         {
             $lAnnonces = $modelA->getAnnonceUti($session->get("mail"));
             $lAnnonces = $this->getAnnoncesUnarchivees($lAnnonces);
+            $nbAnnonces = count($lAnnonces);
         }
-        
-        if($annUti===false) $lAnnonces = $this->getAnnoncesPubliees($lAnnonces);
 
-        
-        
-        $nbAnnonces = count($lAnnonces);
+        if(count($lAnnonces)===0)  //Affichage du message de warning si pas d'annonces dans la BDD
+        {
+            $notification = array( 
+                "type" => "warning",
+                "titre" => "Warning",
+                "message" => "Pas d'annonces dans la BDD"
+            );
+            service('SmartyEngine')->assign('notification',$notification);
+        }
+        else{
+        //$nbAnnonces = count($lAnnonces);
         //Modification de la variable id_debut si dépassement du nombre d'annonce ou borne trop petite
         if($id_debut>count($lAnnonces) - count($lAnnonces)%$nbAnnonces ) $id_debut = count($lAnnonces) - count($lAnnonces)%$nbAnnonces;
 
-        if($nbAnnonces!==6)  //On considère qu'on affiche 6 annonces sur la page d'accueil, Autrement on est sur la page qui affiche toutes les annonces
+        if(count($lAnnonces)>15)  //On affiche les boutons pour switch d'annonce si le nombre est supérieur à 15 et différent page accueil
         { 
             $lBoutons = [] ;
             $debut = 0;
 
             //Gestion des boutons en fonction du nombre d'annonces
-            if($nbAnnonces >5)
+            if($nbAnnonces>5)
             {
                 for($i=0; $i<ceil(count($lAnnonces)/$nbAnnonces); ++$i)
                 {
@@ -359,18 +379,7 @@ class Annonce extends Controller
                 service('SmartyEngine')->assign('nbAnnonces',$nbAnnonces);
             }
         }
-
-        if($nbAnnonces === 0)  //Affichage du message de warning si pas d'annonces dans la BDD
-        {
-            $notification = array( 
-                "type" => "warning",
-                "titre" => "Warning",
-                "message" => "Pas d'annonces dans la BDD"
-            );
-            service('SmartyEngine')->assign('notification',$notification);
-            return service('SmartyEngine')->view('liste_annonce.tpl');
-        }
-        
+    }
         //Gestion des dates pour chaque annonce
         $lConcatAnn = [] ;
         //affichage des annonces avec bornes passées en paramètres
@@ -385,8 +394,10 @@ class Annonce extends Controller
                 $lConcatAnn[$i]["P_photo"] = $photo[0][0];
             //return $this->returnError((gettype($photo[0][0])) , 'connexion');
         }
+    
         //return $this->returnError($nbAnnonces." ". count($lAnnonces)." ".$id_debut ,'connexion');
         service('SmartyEngine')->assign('liste_annonce',$lConcatAnn);
+        service('SmartyEngine')->assign('nb_annonces',count($lAnnonces));
         service('SmartyEngine')->assign('session',$session);
         return service('SmartyEngine')->view('liste_annonce.tpl');
     }
