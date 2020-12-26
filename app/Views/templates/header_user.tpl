@@ -4,11 +4,11 @@
         <div class="w33 navbar-div item-center dropdown txtcenter">
                 <button onclick="myFunction()" id="dropdown-button" class="dropdown-button center w40">{$smarty.session.pseudo}</button>
                 <div id="dropdown-content" class="dropdown-content w40">
-                    <a href="/annonce/view/nouvelle_annonce">Créer une annonce</a>
-                    <a href="/pages/view/edition_profil">Gérer le Profil</a>
-                    <a href="/annonce/mesAnnonces">Editer les annonces</a>
-                    <a href="/messagerie/createConv/{$smarty.session.mail}">Messagerie</a>
-                    <a class="red" href="/pages/deconnexion">Déconnexion</a>
+                    <a href="/annonce/view/nouvelle_annonce">Créer une annonce <i class="fas fa-plus"></i></a>
+                    <a href="/pages/view/edition_profil">Gérer le Profil <i class="fas fa-user-edit"></i></a>
+                    <a href="/annonce/mesAnnonces">Editer les annonces <i class="fas fa-edit"></i></a>
+                    <a href="/messagerie/createConv/{$smarty.session.mail}">Messagerie <i class="fas fa-envelope"></i></a>
+                    <a class="red" href="/pages/deconnexion">Déconnexion <i class="fas fa-sign-out-alt"></i></a>
                 </div>                
         </div>
 
