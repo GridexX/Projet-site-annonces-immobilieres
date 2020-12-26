@@ -37,6 +37,18 @@ class Annonce extends Controller
         }
         return $this->files->all();
     } 
+
+    public function changerEtat(int $id_annonce, string $etat)
+    {
+        if($etat==='en cours' || $etat==='publiée' || $etat==='archivée')
+        {
+            $model = new annonceModel();
+            $annonce = $model->getAnnonce($id_annonce);
+            $annonce["A_etat"] = $etat;
+            $model->updateAnnonce($annonce);
+        }
+        return $this->view("annonce",$id_annonce);
+    }
     /*
     public function createDefault()
     {
@@ -64,7 +76,7 @@ class Annonce extends Controller
 
     public function create($id_annonce=false)
     {
-        //return service('SmartyEngine')->view('connexion.tpl');  
+        
         helper(['form', 'url']);
 
         $annonceVal = $this->validate([
@@ -101,7 +113,7 @@ class Annonce extends Controller
             $annonce['A_ville'] = $this->request->getVar('ville');
             $annonce['A_CP'] = $this->request->getVar('cp');
 
-            $annonce['A_etat'] = 'publiée';
+            $annonce['A_etat'] = 'en cours';
             $annonce['U_mail'] = $session->get("mail");
 
             date_default_timezone_set('Europe/Paris');
@@ -305,26 +317,16 @@ class Annonce extends Controller
         {
             $lAnnonces = $modelA->getAnnonceUti($session->get("mail"));
         }
-        $nbAnnonces = count($lAnnonces);
+        
         if($annUti===false) $lAnnonces = $this->getAnnoncesPubliees($lAnnonces);
 
         
         
-        if($nbAnnonces === 0)  //Affichage du message de warning si pas d'annonces dans la BDD
-        {
-            $notification = array( 
-                "type" => "warning",
-                "titre" => "Warning",
-                "message" => "Pas d'annonces dans la BDD"
-            );
-            service('SmartyEngine')->assign('notification',$notification);
-            return service('SmartyEngine')->view('liste_annonce.tpl');
-        }
 
         //Modification de la variable id_debut si dépassement du nombre d'annonce ou borne trop petite
         if($id_debut>count($lAnnonces) - count($lAnnonces)%$nbAnnonces ) $id_debut = count($lAnnonces) - count($lAnnonces)%$nbAnnonces;
 
-        if($nbAnnonces!==6 && !$annUti)  //On considère qu'on affiche 6 annonces sur la page d'accueil, Autrement on est sur la page qui affiche toutes les annonces
+        if($nbAnnonces!==6)  //On considère qu'on affiche 6 annonces sur la page d'accueil, Autrement on est sur la page qui affiche toutes les annonces
         { 
             $lBoutons = [] ;
             $debut = 0;
@@ -345,14 +347,27 @@ class Annonce extends Controller
                 service('SmartyEngine')->assign('nbAnnonces',$nbAnnonces);
             }
         }
+
+        $nbAnnonces = count($lAnnonces);
+        if($nbAnnonces === 0)  //Affichage du message de warning si pas d'annonces dans la BDD
+        {
+            $notification = array( 
+                "type" => "warning",
+                "titre" => "Warning",
+                "message" => "Pas d'annonces dans la BDD"
+            );
+            service('SmartyEngine')->assign('notification',$notification);
+            return service('SmartyEngine')->view('liste_annonce.tpl');
+        }
+        
         //Gestion des dates pour chaque annonce
         $lConcatAnn = [] ;
         //affichage des annonces avec bornes passées en paramètres
         $modelP = new photoModel();
         for($i=0; $i<$nbAnnonces && $i+$id_debut<count($lAnnonces); ++$i)
         {
-            $dateFormat = $this->dateFormat($lAnnonces[$i]['A_date_maj']);
             $lConcatAnn[$i] = $lAnnonces[$i+$id_debut];
+            $lConcatAnn[$i]['A_date_maj'] = $this->dateFormat($lConcatAnn[$i]['A_date_maj']);
             $photo = [];
             array_push( $photo , $modelP->getPhoto($lConcatAnn[$i]['A_idannonce']));
             if(isset($photo[0][0]))
@@ -360,7 +375,6 @@ class Annonce extends Controller
             //return $this->returnError((gettype($photo[0][0])) , 'connexion');
         }
         //return $this->returnError($nbAnnonces." ". count($lAnnonces)." ".$id_debut ,'connexion');
-        service('SmartyEngine')->assign('dateFormat',$dateFormat);
         service('SmartyEngine')->assign('liste_annonce',$lConcatAnn);
         service('SmartyEngine')->assign('session',$session);
         return service('SmartyEngine')->view('liste_annonce.tpl');

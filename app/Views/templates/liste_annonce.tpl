@@ -24,7 +24,7 @@
             <img class="w90 center" {if isset($annonce.P_photo) } src='/uploads/{$annonce.A_idannonce}/{$annonce.P_photo.P_titre}' {else} src='/Images/logo_site.png' {/if} } alt="House logo">
         </div> 
         <div class="w65"> 
-            <p> {$annonce.A_titre} : {$annonce.A_cout_loyer+$annonce.A_cout_charges} €{if isset($smarty.session.mail) && $smarty.session.mail===$annonce.U_mail}<span style="color:green"><i class="fas fa-check-circle"></i></span>{/if}</p>
+            <p> {$annonce.A_titre} : {$annonce.A_cout_loyer+$annonce.A_cout_charges} €{if isset($smarty.session.mail) && $smarty.session.mail===$annonce.U_mail} {if $annonce.A_etat==='publiée'}<span style="color:green"><i class="fas fa-check-circle"></i></span>{else}<span style="color:orange"><i class="fas fa-clock"></i></span>{/if}{/if}</p>
             <p> {$annonce.A_superficie}m² {$annonce.T_type} | {$annonce.A_ville} </p>
             <small> Posté le {$annonce.A_date_maj}</small> 
         </div>   

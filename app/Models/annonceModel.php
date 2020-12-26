@@ -33,7 +33,7 @@ class annonceModel extends Model
 
     public function updateAnnonce(array $annonce)
     {
-        $db      = \Config\Database::connect();
+        $db = \Config\Database::connect();
         return $db->table($this->table)->where(['A_idannonce' => $annonce['A_idannonce']])->update($annonce);
     }
 

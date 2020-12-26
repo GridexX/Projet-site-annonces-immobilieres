@@ -159,11 +159,17 @@
             <div class="utilisateur_container">
                 {*Si l'annonce appartient à l'utilisateur il peut l'éditer*}
                 {if isset($smarty.session.mail) && $smarty.session.mail===$annonce.U_mail}
-                    <a href="/annonce/view/edition_annonce/{$annonce.A_idannonce}"><button class="btn--primary"><i class="fas fa-comments"></i> Editer l'annonce</button></a>
+                    <a href="/annonce/view/edition_annonce/{$annonce.A_idannonce}"><button class="btn--primary"><i class="fas fa-edit"></i> Editer l'annonce</button></a>
+                    {if $annonce.A_etat==='publiée'}
+                        <a href="/annonce/changerEtat/{$annonce.A_idannonce}/en cours"><button class="btn--danger"><i class="fas fa-eye-slash"></i> Masquer l'annonce du site</button></a>
+                    {else}
+                    <a href="/annonce/changerEtat/{$annonce.A_idannonce}/publiée"><button class="btn--success"><i class="fas fa-arrow-circle-up"></i> Publier l'annonce</button></a>
+                    {/if}
                 {else}{*Sinon on propose de prendre contact avec le propriétaire*}
                     <p>{$proprio.U_pseudo} | <i>Nb annonces : </i></p>
                 <button class="btn--primary"><i class="fas fa-comments"></i> Envoyer un message</button>
                 {/if}
+
             </div>
         </div>
         
