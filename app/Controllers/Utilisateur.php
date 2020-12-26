@@ -146,7 +146,7 @@ class Utilisateur extends Controller
                 $data['pseudo'] = $res["U_pseudo"];
                 $data['nom'] = $res["U_nom"];
                 $data['prenom'] = $res["U_prenom"];
-
+                if ($res["U_admin"] === true) $data['admin'] = true;
                 $session = \Config\Services::session();
                 $session->set($data);
                 service('SmartyEngine')->assign('session',$session);
