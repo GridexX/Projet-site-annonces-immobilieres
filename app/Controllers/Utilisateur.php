@@ -146,7 +146,7 @@ class Utilisateur extends Controller
                 $data['pseudo'] = $res["U_pseudo"];
                 $data['nom'] = $res["U_nom"];
                 $data['prenom'] = $res["U_prenom"];
-                if ($res["U_admin"] === true) $data['admin'] = true;
+                if ($res["U_estAdmin"] !== "0") $data['admin'] = true;
                 $session = \Config\Services::session();
                 $session->set($data);
                 service('SmartyEngine')->assign('session',$session);
@@ -154,12 +154,12 @@ class Utilisateur extends Controller
             }
             else
             {
-                $this->returnError('Le mail ou le mot de passe est incorrect','connexion');
+                return $this->returnError('Le mail ou le mot de passe est incorrect','connexion');
             }
         }
         else
         {
-            $this->returnError('Veuillez vous connecter pour effectuer cette action','connexion');
+            return $this->returnError('Veuillez vous connecter pour effectuer cette action','connexion');
         }
     }  
 

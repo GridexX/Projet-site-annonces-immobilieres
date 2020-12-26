@@ -6,7 +6,7 @@ class utilisateurModel extends Model
 {
     protected $table = 'T_utilisateur';
 
-    protected $allowedFields = ['U_mail', 'U_mdp', 'U_pseudo', 'U_nom', 'U_prenom'];
+    protected $allowedFields = ['U_mail', 'U_mdp', 'U_pseudo', 'U_nom', 'U_prenom', 'U_estAdmin'];
 
     public function insertUtilisateur($mail, $mdp, $pseudo, $nom, $prenom)
     {

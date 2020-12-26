@@ -38,7 +38,7 @@ class Annonce extends Controller
         return $this->files->all();
     } 
 
-    public function changerEtat(int $id_annonce, string $etat)
+    public function changerEtat(int $id_annonce, string $etat) //Rajouter test appartenances annonce
     {
         if($etat==='en cours' || $etat==='publiée' || $etat==='archivée')
         {
@@ -297,6 +297,17 @@ class Annonce extends Controller
         return $lAnnPub;
     }
 
+    public function getAnnoncesUnarchivees(array $lAnnonces):array
+    {
+        $lAnnPub = [];
+        foreach($lAnnonces as $annonce)
+        {
+            if($annonce["A_etat"]!=="archivée")
+                array_push($lAnnPub,$annonce);
+        }
+        return $lAnnPub;
+    }
+
     public function dateFormat(string $date):string
     {
         $tabMois = array("Janvier","Févrirer","Mars","Avril","Mai","Juin",'Juillet','Août','Septembre','Octobre','Novembre','Décembre');
@@ -316,6 +327,7 @@ class Annonce extends Controller
         else
         {
             $lAnnonces = $modelA->getAnnonceUti($session->get("mail"));
+            $lAnnonces = $this->getAnnoncesUnarchivees($lAnnonces);
         }
         
         if($annUti===false) $lAnnonces = $this->getAnnoncesPubliees($lAnnonces);
