@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.34-dev-7, created on 2020-12-26 08:01:54
+/* Smarty version 3.1.34-dev-7, created on 2020-12-26 08:36:09
   from 'C:\xampp\htdocs\Projet-site-annonces-immobilieres\app\Views\templates\header_user.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.34-dev-7',
-  'unifunc' => 'content_5fe74252e6d209_32217842',
+  'unifunc' => 'content_5fe74a59dfc7c5_93961405',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '90eaa05665c2429f91000f88b51af14802b4e33d' => 
     array (
       0 => 'C:\\xampp\\htdocs\\Projet-site-annonces-immobilieres\\app\\Views\\templates\\header_user.tpl',
-      1 => 1608991313,
+      1 => 1608993368,
       2 => 'file',
     ),
   ),
@@ -20,26 +20,26 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5fe74252e6d209_32217842 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5fe74a59dfc7c5_93961405 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_loadInheritance();
 $_smarty_tpl->inheritance->init($_smarty_tpl, true);
 ?>
 
 <?php 
-$_smarty_tpl->inheritance->instanceBlock($_smarty_tpl, 'Block_6911138705fe74252e55914_64682361', "divBtnConnexion");
+$_smarty_tpl->inheritance->instanceBlock($_smarty_tpl, 'Block_522389935fe74a59dedb73_52029273', "divBtnConnexion");
 ?>
 
 <?php 
-$_smarty_tpl->inheritance->instanceBlock($_smarty_tpl, 'Block_6268855275fe74252e6a8b8_69706915', "script");
+$_smarty_tpl->inheritance->instanceBlock($_smarty_tpl, 'Block_4625341165fe74a59dfa9a3_32649943', "script");
 $_smarty_tpl->inheritance->endChild($_smarty_tpl, 'header.tpl');
 }
 /* {block "divBtnConnexion"} */
-class Block_6911138705fe74252e55914_64682361 extends Smarty_Internal_Block
+class Block_522389935fe74a59dedb73_52029273 extends Smarty_Internal_Block
 {
 public $subBlocks = array (
   'divBtnConnexion' => 
   array (
-    0 => 'Block_6911138705fe74252e55914_64682361',
+    0 => 'Block_522389935fe74a59dedb73_52029273',
   ),
 );
 public function callBlock(Smarty_Internal_Template $_smarty_tpl) {
@@ -50,12 +50,12 @@ public function callBlock(Smarty_Internal_Template $_smarty_tpl) {
                 <button onclick="myFunction()" id="dropdown-button" class="dropdown-button center w40"><?php echo $_SESSION['pseudo'];?>
 </button>
                 <div id="dropdown-content" class="dropdown-content w40">
-                    <a href="/annonce/view/nouvelle_annonce">Créer une annonce</a>
-                    <a href="/pages/view/edition_profil">Gérer le Profil</a>
-                    <a href="/annonce/mesAnnonces">Editer les annonces</a>
+                    <a href="/annonce/view/nouvelle_annonce">Créer une annonce <i class="fas fa-plus"></i></a>
+                    <a href="/pages/view/edition_profil">Gérer le Profil <i class="fas fa-user-edit"></i></a>
+                    <a href="/annonce/mesAnnonces">Editer les annonces <i class="fas fa-edit"></i></a>
                     <a href="/messagerie/createConv/<?php echo $_SESSION['mail'];?>
-">Messagerie</a>
-                    <a class="red" href="/pages/deconnexion">Déconnexion</a>
+">Messagerie <i class="fas fa-envelope"></i></a>
+                    <a class="red" href="/pages/deconnexion">Déconnexion <i class="fas fa-sign-out-alt"></i></a>
                 </div>                
         </div>
 
@@ -64,12 +64,12 @@ public function callBlock(Smarty_Internal_Template $_smarty_tpl) {
 }
 /* {/block "divBtnConnexion"} */
 /* {block "script"} */
-class Block_6268855275fe74252e6a8b8_69706915 extends Smarty_Internal_Block
+class Block_4625341165fe74a59dfa9a3_32649943 extends Smarty_Internal_Block
 {
 public $subBlocks = array (
   'script' => 
   array (
-    0 => 'Block_6268855275fe74252e6a8b8_69706915',
+    0 => 'Block_4625341165fe74a59dfa9a3_32649943',
   ),
 );
 public function callBlock(Smarty_Internal_Template $_smarty_tpl) {

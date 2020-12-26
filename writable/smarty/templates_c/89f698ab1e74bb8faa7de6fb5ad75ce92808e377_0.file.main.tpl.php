@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.34-dev-7, created on 2020-12-26 07:57:18
+/* Smarty version 3.1.34-dev-7, created on 2020-12-26 08:26:58
   from 'C:\xampp\htdocs\Projet-site-annonces-immobilieres\app\Views\templates\main.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.34-dev-7',
-  'unifunc' => 'content_5fe7413e8001f5_30145129',
+  'unifunc' => 'content_5fe748328670e6_86951999',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '89f698ab1e74bb8faa7de6fb5ad75ce92808e377' => 
     array (
       0 => 'C:\\xampp\\htdocs\\Projet-site-annonces-immobilieres\\app\\Views\\templates\\main.tpl',
-      1 => 1608991035,
+      1 => 1608992815,
       2 => 'file',
     ),
   ),
@@ -23,7 +23,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:notifications.tpl' => 1,
   ),
 ),false)) {
-function content_5fe7413e8001f5_30145129 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5fe748328670e6_86951999 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_loadInheritance();
 $_smarty_tpl->inheritance->init($_smarty_tpl, false);
 ?>
@@ -37,11 +37,10 @@ $_smarty_tpl->inheritance->init($_smarty_tpl, false);
 		<meta name="viewport" content="width=device-width, initial-scale=1"/>
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
 		<link rel="stylesheet" href="/Css/stylesheet.css" />
-        <link rel="stylesheet" href="/Css/semantic.min.css" />
         <link rel="stylesheet" href="/Css/knacss.css" />
         <link rel="icon" type="image/png" href="/Images/logo_site.png" />
         <title><?php 
-$_smarty_tpl->inheritance->instanceBlock($_smarty_tpl, 'Block_18350974315fe7413e7d2570_05240237', "titre_onglet");
+$_smarty_tpl->inheritance->instanceBlock($_smarty_tpl, 'Block_10274939185fe74832831b00_32315880', "titre_onglet");
 ?>
  - Site de petites annonces</title>
 	</head>
@@ -62,7 +61,7 @@ $_smarty_tpl->inheritance->instanceBlock($_smarty_tpl, 'Block_18350974315fe7413e
 ?>
                 <?php }?>
                 <?php 
-$_smarty_tpl->inheritance->instanceBlock($_smarty_tpl, 'Block_11553952335fe7413e7feb13_06718926', "output_area");
+$_smarty_tpl->inheritance->instanceBlock($_smarty_tpl, 'Block_8796883155fe748328655a5_23538014', "output_area");
 ?>
 
             </div>
@@ -73,12 +72,12 @@ $_smarty_tpl->inheritance->instanceBlock($_smarty_tpl, 'Block_11553952335fe7413e
     </body>
 </html><?php }
 /* {block "titre_onglet"} */
-class Block_18350974315fe7413e7d2570_05240237 extends Smarty_Internal_Block
+class Block_10274939185fe74832831b00_32315880 extends Smarty_Internal_Block
 {
 public $subBlocks = array (
   'titre_onglet' => 
   array (
-    0 => 'Block_18350974315fe7413e7d2570_05240237',
+    0 => 'Block_10274939185fe74832831b00_32315880',
   ),
 );
 public function callBlock(Smarty_Internal_Template $_smarty_tpl) {
@@ -86,12 +85,12 @@ public function callBlock(Smarty_Internal_Template $_smarty_tpl) {
 }
 /* {/block "titre_onglet"} */
 /* {block "output_area"} */
-class Block_11553952335fe7413e7feb13_06718926 extends Smarty_Internal_Block
+class Block_8796883155fe748328655a5_23538014 extends Smarty_Internal_Block
 {
 public $subBlocks = array (
   'output_area' => 
   array (
-    0 => 'Block_11553952335fe7413e7feb13_06718926',
+    0 => 'Block_8796883155fe748328655a5_23538014',
   ),
 );
 public function callBlock(Smarty_Internal_Template $_smarty_tpl) {
