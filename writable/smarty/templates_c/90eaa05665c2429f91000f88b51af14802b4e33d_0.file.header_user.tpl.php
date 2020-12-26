@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.34-dev-7, created on 2020-12-05 11:30:21
+/* Smarty version 3.1.34-dev-7, created on 2020-12-25 09:50:38
   from 'C:\xampp\htdocs\Projet-site-annonces-immobilieres\app\Views\templates\header_user.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.34-dev-7',
-  'unifunc' => 'content_5fcbc3ad09de02_80861752',
+  'unifunc' => 'content_5fe60a4e307009_15866782',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '90eaa05665c2429f91000f88b51af14802b4e33d' => 
     array (
       0 => 'C:\\xampp\\htdocs\\Projet-site-annonces-immobilieres\\app\\Views\\templates\\header_user.tpl',
-      1 => 1607189183,
+      1 => 1608911407,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5fcbc3ad09de02_80861752 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5fe60a4e307009_15866782 (Smarty_Internal_Template $_smarty_tpl) {
 ?><div class="navbar navbar-fixed_top">
     <div class="flex-container">
         <div class="w33 navbar-div item-center txtcenter">
@@ -36,7 +36,8 @@ function content_5fcbc3ad09de02_80861752 (Smarty_Internal_Template $_smarty_tpl)
                     <a href="/annonce/view/nouvelle_annonce">Créer une annonce</a>
                     <a href="/pages/view/edition_profil">Gérer le Profil</a>
                     <a href="#">Editer les annonces</a>
-                    <a href="/pages/view/messagerie">Messagerie</a>
+                    <a href="/messagerie/createConv/<?php echo $_SESSION['mail'];?>
+">Messagerie</a>
                     <a class="red" href="/pages/deconnexion">Déconnexion</a>
                 </div>                
         </div>

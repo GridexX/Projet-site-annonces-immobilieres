@@ -7,7 +7,7 @@
                     <a href="/annonce/view/nouvelle_annonce">Créer une annonce</a>
                     <a href="/pages/view/edition_profil">Gérer le Profil</a>
                     <a href="#">Editer les annonces</a>
-                    <a href="/pages/view/messagerie">Messagerie</a>
+                    <a href="/messagerie/createConv/{$smarty.session.mail}">Messagerie</a>
                     <a class="red" href="/pages/deconnexion">Déconnexion</a>
                 </div>                
         </div>
