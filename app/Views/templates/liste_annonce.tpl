@@ -14,6 +14,9 @@
             {if $nb_annonces>100}<option value="/annonce/viewListe/{$bSelect}/100">100</option>{/if}
         </select>
     </div>
+    {if isset($recherche)}
+        {include file="recherche_annonce.tpl"}
+    {/if}
 {/if}
 {if isset($liste_annonce)}
 <div class="liste_annonce flex-container w75 center">

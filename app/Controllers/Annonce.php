@@ -184,16 +184,6 @@ class Annonce extends Controller
         
     }
 
-    public function test()
-    {
-        $notif = array(
-            "type" => "success",
-            "titre" => "Success",
-            "message" => "Votre annonce à été insérée dans la BDD"
-        ); 
-        return $this->returnNotif($notif,false);
-    }
-
     public function delete(int $id_annonce, bool $confirm=false)
     {
         if($confirm===false)
@@ -327,6 +317,28 @@ class Annonce extends Controller
         return substr($date,8,2).' '.$tabMois[$numMois-1].' '.substr($date,0,4).' à '.substr($date,11,2).'h'.substr($date,14,2);  
     }
 
+    function maxValueInArray($array, $keyToSearch)
+    {
+        $currentMax = 0;
+        foreach($array as $ele)
+        {
+            if( $ele[$keyToSearch] > $currentMax )
+                $currentMax = $ele[$keyToSearch];
+        }
+        return $currentMax;
+    }
+
+    function minValueInArray($array, $keyToSearch)
+    {
+        $currentMin = $array[0][$keyToSearch];
+        foreach($array as $ele)
+        {
+            if( $ele[$keyToSearch] < $currentMin )
+                $currentMin = $ele[$keyToSearch];
+            
+        }
+        return $currentMin;
+    }
 
     public function viewListe(int $id_debut=0,int $nbAnnonces=15, bool $annUti=false)
     {
@@ -336,6 +348,25 @@ class Annonce extends Controller
         {
             $lAnnonces = $modelA->getAnnonce();
             $lAnnonces = $this->getAnnoncesPubliees($lAnnonces);
+
+            helper(['form', 'url']);
+            $recherche = [];
+            $recherche["valeur_min_loyer"] = floor($this->minValueInArray($lAnnonces,"A_cout_loyer") - ($this->minValueInArray($lAnnonces,"A_cout_loyer")%10) );
+            $recherche["valeur_max_loyer"] = floor($this->maxValueInArray($lAnnonces,"A_cout_loyer") + 10 - ($this->maxValueInArray($lAnnonces,"A_cout_loyer")%10) );
+            $recherche["valeur_min_charges"] = floor($this->minValueInArray($lAnnonces,"A_cout_charges") - ($this->minValueInArray($lAnnonces,"A_cout_charges")%10) );
+            $recherche["valeur_max_charges"] = floor($this->maxValueInArray($lAnnonces,"A_cout_charges") + 10 - ($this->maxValueInArray($lAnnonces,"A_cout_charges")%10) );
+            $recherche["valeur_min_surface"] = ceil($this->minValueInArray($lAnnonces,"A_superficie"));
+            $recherche["valeur_max_surface"] = floor($this->maxValueInArray($lAnnonces,"A_superficie"));
+            
+            //$recherche["min_loyer"] = $this->request->getVar("minLoyer");
+            //$recherche["max_loyer"] = $this->request->getVar("maxLoyer");
+            $recherche["A_type_chauffage"] = $this->request->getPost("chauffage");
+            $recherche["E_id_engie"] = $this->request->getPost("engie");
+
+            $modelE = new energieModel();
+            $energie = $modelE->getEnergie();
+            service('SmartyEngine')->assign('energie',$energie);
+            service('SmartyEngine')->assign('recherche',$recherche);
         }
         else
         {
@@ -420,5 +451,7 @@ class Annonce extends Controller
         }
         return $this->accueil();
     }
+
+    
 }
 ?>
