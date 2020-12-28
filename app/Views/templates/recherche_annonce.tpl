@@ -210,8 +210,29 @@
                 </span>
                 
             </div>
-            <div>
-
+            <div class="flex-container">
+                <span class="w33">
+                 <label for="type"><i class="fas fa-home"></i></i> Type : </label>
+                        <select class="champs" name="type">                 
+                            <option value="T1" {(($recherche.T_type==='T1')?'selected':'')|default:''}>T1</option>
+                            <option value="T2" {(($recherche.T_type==='T2')?'selected':'')|default:''}>T2</option>
+                            <option value="T3" {(($recherche.T_type==='T3')?'selected':'')|default:''}>T3</option>
+                            <option value="T4" {(($recherche.T_type==='T4')?'selected':'')|default:''}>T4</option>
+                            <option value="T5" {(($recherche.T_type==='T5')?'selected':'')|default:''}>T5</option>
+                            <option value="T6" {(($recherche.T_type==='T6')?'selected':'')|default:''}>T6</option>
+                            <option value="indifférent" {( !isset($recherche.T_type) || $recherche.T_type==='indifférent')?'selected':''}>Indifférent</option>
+                        </select>
+                </span>
+                <span class="w33">
+                    <label for="ville" class="label-cp">Ville : </label>
+                    <input class="champs champs-cp" type="text" name="ville" value="{$recherche.A_ville|default:''}" placeholder="Paris"/>
+                        
+                </span>
+                <span class="w33">
+                    <label for="cp" class="label-cp">Code Postal : </label>
+                    <input class="champs champs-cp" type="text" name="cp" value="{$recherche.A_CP|default:''}" placeholder="75000" pattern="[0-9]{literal}{5}{/literal}"  oninvalid="this.setCustomValidity('5 chiffres')" />
+                        
+                </span>
             </div>
         </form>
     </div>

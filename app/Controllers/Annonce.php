@@ -362,6 +362,9 @@ class Annonce extends Controller
             //$recherche["max_loyer"] = $this->request->getVar("maxLoyer");
             $recherche["A_type_chauffage"] = $this->request->getPost("chauffage");
             $recherche["E_id_engie"] = $this->request->getPost("engie");
+            $recherche["T_type"] = $this->request->getPost("type");
+            $recherche["A_ville"] = $this->request->getPost("ville");
+            $recherche["A_CP"] = $this->request->getPost("cp");
 
             $modelE = new energieModel();
             $energie = $modelE->getEnergie();
