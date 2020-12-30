@@ -4,7 +4,7 @@
 {if isset($lBoutons) && !isset($estAccueil)}
     <div class="flex-container w75 center">
     {foreach from=$lBoutons item=bouton}
-        <a href="/annonce/viewListe/{$bouton.numAnnDeb}/{$nbAnnonces}"><button class="bouton {($bSelect>=$bouton.numAnnDeb && $bSelect<$bouton.numAnnFin) ? 'btn-green' : 'btn-bleu' } center">{$bouton.numPage}</button></a>
+        <a href="/annonce/viewListe/{$bouton.numAnnDeb}/{$nbAnnonces}"><button class="bouton {($bSelect>=$bouton.numAnnDeb && $bSelect<$bouton.numAnnFin) ? 'btn-green' : 'btn-bleu' } center">{$bouton.numPage+1}</button></a>
     {/foreach}
         <select onchange="location = this.value;">
             <option default>Afficher {$nbAnnonces} annonces par pages</option>

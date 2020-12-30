@@ -347,29 +347,86 @@ class Annonce extends Controller
         if(!$annUti)
         {
             $lAnnonces = $modelA->getAnnonce();
-            $lAnnonces = $this->getAnnoncesPubliees($lAnnonces);
+            
 
             helper(['form', 'url']);
             $recherche = [];
-            $recherche["valeur_min_loyer"] = floor($this->minValueInArray($lAnnonces,"A_cout_loyer") - ($this->minValueInArray($lAnnonces,"A_cout_loyer")%10) );
-            $recherche["valeur_max_loyer"] = floor($this->maxValueInArray($lAnnonces,"A_cout_loyer") + 10 - ($this->maxValueInArray($lAnnonces,"A_cout_loyer")%10) );
-            $recherche["valeur_min_charges"] = floor($this->minValueInArray($lAnnonces,"A_cout_charges") - ($this->minValueInArray($lAnnonces,"A_cout_charges")%10) );
-            $recherche["valeur_max_charges"] = floor($this->maxValueInArray($lAnnonces,"A_cout_charges") + 10 - ($this->maxValueInArray($lAnnonces,"A_cout_charges")%10) );
-            $recherche["valeur_min_surface"] = ceil($this->minValueInArray($lAnnonces,"A_superficie"));
-            $recherche["valeur_max_surface"] = floor($this->maxValueInArray($lAnnonces,"A_superficie"));
+            $recherche["A_titre"] = empty($this->request->getPost("A_titre")) ? null : $this->request->getPost("A_titre");
+            $recherche["A_type_chauffage"] = $this->request->getPost("A_type_chauffage")=== "indifférent" ? null : $this->request->getPost("A_type_chauffage");
+            $recherche["E_id_engie"] = $this->request->getPost("E_id_engie")=== "indifférent" ? null : $this->request->getPost("E_id_engie");
+            $recherche["T_type"] = $this->request->getPost("T_type")=== "indifférent" ? null : $this->request->getPost("T_type");
+            $recherche["A_est_meuble"] = $this->request->getPost("A_est_meuble")=== "indifférent" ? null : $this->request->getPost("A_est_meuble");
+            $recherche["A_ville"] = empty($this->request->getPost("A_ville")) ? null : $this->request->getPost("A_ville");
+            $recherche["A_CP"] = empty($this->request->getPost("A_CP")) ? null : $this->request->getPost("A_CP");
             
-            //$recherche["min_loyer"] = $this->request->getVar("minLoyer");
-            //$recherche["max_loyer"] = $this->request->getVar("maxLoyer");
-            $recherche["A_type_chauffage"] = $this->request->getPost("chauffage");
-            $recherche["E_id_engie"] = $this->request->getPost("engie");
-            $recherche["T_type"] = $this->request->getPost("type");
-            $recherche["A_ville"] = $this->request->getPost("ville");
-            $recherche["A_CP"] = $this->request->getPost("cp");
-
             $modelE = new energieModel();
             $energie = $modelE->getEnergie();
-            service('SmartyEngine')->assign('energie',$energie);
+            
+            //return $this->returnError( var_dump( $modelA->searchAnnonce($recherche)), 'connexion' );
+            
+                
+            $lAnnonces = $this->getAnnoncesPubliees($lAnnonces); 
+            
+            $borne = [];
+            $borne["min_A_cout_loyer"] = floor($this->minValueInArray($lAnnonces,"A_cout_loyer") - ($this->minValueInArray($lAnnonces,"A_cout_loyer")%10) );
+            $borne["max_A_cout_loyer"] = floor($this->maxValueInArray($lAnnonces,"A_cout_loyer") + 10 - ($this->maxValueInArray($lAnnonces,"A_cout_loyer")%10) );
+            $borne["min_A_cout_charges"] = floor($this->minValueInArray($lAnnonces,"A_cout_charges") - ($this->minValueInArray($lAnnonces,"A_cout_charges")%10) );
+            $borne["max_A_cout_charges"] = floor($this->maxValueInArray($lAnnonces,"A_cout_charges") + 10 - ($this->maxValueInArray($lAnnonces,"A_cout_charges")%10) );
+            $borne["min_A_superficie"] = ceil($this->minValueInArray($lAnnonces,"A_superficie"));
+            $borne["max_A_superficie"] = floor($this->maxValueInArray($lAnnonces,"A_superficie"));
+            $borne["min_A_perf_energie"] = ceil($this->minValueInArray($lAnnonces,"A_perf_energie"));
+            $borne["max_A_perf_energie"] = floor($this->maxValueInArray($lAnnonces,"A_perf_energie"));
+
+            $tabEngie = [ 0, 50, 90, 150, 230, 330, $borne["max_A_perf_energie"] ];
+
+            
+            $whereCond = "";
+            $tempIndex = [];
+            foreach($recherche as $key => $val)
+            {
+                if($val!==null)
+                    if($key==="A_est_meuble")
+                    $whereCond .= " && $key is $val";
+                    else
+                    $whereCond .= " && $key like '%$val%'";
+                var_dump($val);
+            }
+            foreach($borne as $key => $val)
+            {
+                if(!empty($this->request->getPost($key)))
+                {
+                    $borne[$key] = $this->request->getPost($key);
+                    if(substr($key,4)==="A_perf_energie")
+                    {
+                        //$tempIndex[$key] = $borne[$key];
+                        $borne[$key] = $tabEngie[$borne[$key]];
+                        
+                        //return $this->returnError( $borne["max_A_perf_energie"], 'connexion' );
+                    }
+                    
+                    //if(substr($key,4)==="A_perf_energie")
+                      //  $borne[$key] = $tempIndex[$key];      
+                }   
+                $whereCond .= ( substr($key,0,3)==="min" ) ? ' && '.substr($key,4).' BETWEEN '.$borne[$key] :  ' AND '.$borne[$key] ; //en fonction du min ou du max
+                
+            }
+            $whereCond = empty($whereCond) ? '' : 'WHERE '.substr($whereCond,3);
+            var_dump($whereCond);
+            $recherche["totAnnonce"] = count($lAnnonces);
+            if( $modelA->searchAnnonce($whereCond) !== NULL)
+            {
+                $lAnnonces = $this->getAnnoncesPubliees($modelA->searchAnnonce($whereCond) );
+            }
+            else
+            {
+                $lAnnonces = array();
+            }
+            $recherche["totAnnonceTrouvees"] = count($lAnnonces);
+            
             service('SmartyEngine')->assign('recherche',$recherche);
+            service('SmartyEngine')->assign('borne',$borne);
+            service('SmartyEngine')->assign('energie',$energie);
+            
         }
         else
         {

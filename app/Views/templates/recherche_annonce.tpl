@@ -3,14 +3,14 @@
         <form method="post" action="/annonce/viewListe/{$bSelect}/{$nbAnnonces}" >
             <div>
                 <span><p class="h5-like">Rechercher des annonces</p>
-                    <input class="champs" type="text" placeholder="Titre de l'recherche" />
+                    <input class="champs" type="text" name="A_titre" placeholder="Titre de l'annonce" />
                     <button class="btn--primary" id="submit-button" type="submit" value="Valider" name="recherche"><i class="fas fa-search"></i></button>              
                 </span>
                 
             </div>
             <hr>
             <div class="flex-container ">
-            <span class="w10 item-center"><p class="h6-like">Fourchette Loyer : </p></span>
+            <span class="w10 item-center"><p class="h6-like">Fourchette A_cout_loyer : </p></span>
             
               
             <!-- Range Slider HTML -->
@@ -23,13 +23,13 @@
                         <span thumb style="left:0%;"></span>
                         <span thumb style="left:100%;"></span>
                         <div sign style="left:0%;">
-                        <span id="value">{$recherche.min_loyer|default:$recherche.valeur_min_loyer} €</span>
+                        <span id="value">{$borne.min_A_cout_loyer} €</span>
                         </div>
                         <div sign style="left:100%;">
-                        <span id="value">{$recherche.max_loyer|default:$recherche.valeur_max_loyer} €</span>
+                        <span id="value">{$borne.max_A_cout_loyer} €</span>
                         </div>
                     </div>
-                    <input type="range" tabindex="0" name="minLoyer" value="{$recherche.min_loyer|default:$recherche.valeur_min_loyer}" max="{$recherche.valeur_max_loyer}" min="{$recherche.valeur_min_loyer}" step="10" oninput="
+                    <input type="range" tabindex="0" name="min_A_cout_loyer" value="{$borne.min_A_cout_loyer}" max="{$borne.max_A_cout_loyer}" min="{$borne.min_A_cout_loyer}" step="10" oninput="
                     this.value=Math.min(this.value,this.parentNode.childNodes[5].value-1);
                     var value=(100/(parseInt(this.max)-parseInt(this.min)))*parseInt(this.value)-(100/(parseInt(this.max)-parseInt(this.min)))*parseInt(this.min);
                     var children = this.parentNode.childNodes[1].childNodes;
@@ -38,7 +38,7 @@
                     children[7].style.left=value+'%';children[11].style.left=value+'%';
                     children[11].childNodes[1].innerHTML=this.value+' €';" />
 
-                    <input type="range" tabindex="0" name="maxLoyer" value="{$recherche.max_loyer|default:$recherche.valeur_max_loyer}" max="{$recherche.valeur_max_loyer}" min="{$recherche.valeur_min_loyer}" step="10" oninput="
+                    <input type="range" tabindex="0" name="max_A_cout_loyer" value="{$borne.max_A_cout_loyer}" max="{$borne.max_A_cout_loyer}" min="{$borne.min_A_cout_loyer}" step="10" oninput="
                     this.value=Math.max(this.value,this.parentNode.childNodes[3].value-(-1));
                     var value=(100/(parseInt(this.max)-parseInt(this.min)))*parseInt(this.value)-(100/(parseInt(this.max)-parseInt(this.min)))*parseInt(this.min);
                     var children = this.parentNode.childNodes[1].childNodes;
@@ -49,7 +49,7 @@
                     </div>
                   <!-- End Range Slider HTML -->
     		</span>
-            <span class="w10 item-center"><p class="h6-like">Fourchette Charges : </p></span>
+            <span class="w10 item-center"><p class="h6-like">Fourchette A_cout_charges : </p></span>
             
               
             <!-- Range Slider HTML -->
@@ -62,13 +62,13 @@
                         <span thumb style="left:0%;"></span>
                         <span thumb style="left:100%;"></span>
                         <div sign style="left:0%;">
-                        <span id="value">{$recherche.min_charges|default:$recherche.valeur_min_charges} €</span>
+                        <span id="value">{$borne.min_A_cout_charges} €</span>
                         </div>
                         <div sign style="left:100%;">
-                        <span id="value">{$recherche.max_charges|default:$recherche.valeur_max_charges} €</span>
+                        <span id="value">{$borne.max_A_cout_charges} €</span>
                         </div>
                     </div>
-                    <input type="range" tabindex="0" name="minCharges" value="{$recherche.min_charges|default:$recherche.valeur_min_charges}" max="{$recherche.max_charges|default:$recherche.valeur_max_charges}" min="{$recherche.valeur_min_charges}" step="5" oninput="
+                    <input type="range" tabindex="0" name="min_A_cout_charges" value="{$borne.min_A_cout_charges}" max="{$borne.max_A_cout_charges}" min="{$borne.min_A_cout_charges}" step="5" oninput="
                     this.value=Math.min(this.value,this.parentNode.childNodes[5].value-1);
                     var value=(100/(parseInt(this.max)-parseInt(this.min)))*parseInt(this.value)-(100/(parseInt(this.max)-parseInt(this.min)))*parseInt(this.min);
                     var children = this.parentNode.childNodes[1].childNodes;
@@ -77,7 +77,7 @@
                     children[7].style.left=value+'%';children[11].style.left=value+'%';
                     children[11].childNodes[1].innerHTML=this.value+' €';" />
 
-                    <input type="range" tabindex="0" name="maxCharges" value="{$recherche.max_charges|default:$recherche.valeur_max_charges}" max="{$recherche.max_charges|default:$recherche.valeur_max_charges}" min="{$recherche.valeur_min_charges}" step="5" oninput="
+                    <input type="range" tabindex="0" name="max_A_cout_charges" value="{$borne.max_A_cout_charges}" max="{$borne.max_A_cout_charges}" min="{$borne.min_A_cout_charges}" step="5" oninput="
                     this.value=Math.max(this.value,this.parentNode.childNodes[3].value-(-1));
                     var value=(100/(parseInt(this.max)-parseInt(this.min)))*parseInt(this.value)-(100/(parseInt(this.max)-parseInt(this.min)))*parseInt(this.min);
                     var children = this.parentNode.childNodes[1].childNodes;
@@ -91,7 +91,7 @@
             </div>
 
             <div class="flex-container ">
-            <span class="w10 item-center"><p class="h6-like">Fourchette Surface : </p></span>
+            <span class="w10 item-center"><p class="h6-like">Fourchette A_superficie : </p></span>
             
               
             <!-- Range Slider HTML -->
@@ -104,13 +104,13 @@
                         <span thumb style="left:0%;"></span>
                         <span thumb style="left:100%;"></span>
                         <div sign style="left:0%;">
-                        <span id="value">{$recherche.min_surface|default:$recherche.valeur_min_surface} m²</span>
+                        <span id="value">{$borne.min_A_superficie} m²</span>
                         </div>
                         <div sign style="left:100%;">
-                        <span id="value">{$recherche.max_surface|default:$recherche.valeur_max_surface} m²</span>
+                        <span id="value">{$borne.max_A_superficie} m²</span>
                         </div>
                     </div>
-                    <input type="range" tabindex="0" name="minSurface" value="{$recherche.min_surface|default:$recherche.valeur_min_surface}" max="{$recherche.max_surface|default:$recherche.valeur_max_surface}" min="{$recherche.valeur_min_surface}" step="1" oninput="
+                    <input type="range" tabindex="0" name="min_A_superficie" value="{$borne.min_A_superficie}" max="{$borne.max_A_superficie}" min="{$borne.min_A_superficie}" step="1" oninput="
                     this.value=Math.min(this.value,this.parentNode.childNodes[5].value-1);
                     var value=(100/(parseInt(this.max)-parseInt(this.min)))*parseInt(this.value)-(100/(parseInt(this.max)-parseInt(this.min)))*parseInt(this.min);
                     var children = this.parentNode.childNodes[1].childNodes;
@@ -119,7 +119,7 @@
                     children[7].style.left=value+'%';children[11].style.left=value+'%';
                     children[11].childNodes[1].innerHTML=this.value+' m²';" />
 
-                    <input type="range" tabindex="0" name="maxSurface" value="{$recherche.max_surface|default:$recherche.valeur_max_surface}" max="{$recherche.max_surface|default:$recherche.valeur_max_surface}" min="{$recherche.valeur_min_surface}" step="1" oninput="
+                    <input type="range" tabindex="0" name="max_A_superficie" value="{$borne.max_A_superficie}" max="{$borne.max_A_superficie}" min="{$borne.min_A_superficie}" step="1" oninput="
                     this.value=Math.max(this.value,this.parentNode.childNodes[3].value-(-1));
                     var value=(100/(parseInt(this.max)-parseInt(this.min)))*parseInt(this.value)-(100/(parseInt(this.max)-parseInt(this.min)))*parseInt(this.min);
                     var children = this.parentNode.childNodes[1].childNodes;
@@ -150,7 +150,7 @@
                         <span id="value">G</span>
                         </div>
                     </div>
-                    <input type="range" tabindex="0" name="minSurface" value="0" max="6" min="0" step="0" oninput="
+                    <input type="range" tabindex="0" name="min_A_perf_energie" value="0" max="6" min="0" step="0" oninput="
                     this.value=Math.min(this.value,this.parentNode.childNodes[5].value-1);
                     var value=(100/(parseInt(this.max)-parseInt(this.min)))*parseInt(this.value)-(100/(parseInt(this.max)-parseInt(this.min)))*parseInt(this.min);
                     var children = this.parentNode.childNodes[1].childNodes;
@@ -161,7 +161,7 @@
                     children[11].style.backgroundColor=tabColor2[parseInt(this.value)];
                     bgGradient(0, tabColor2[parseInt(this.value)]);" />
 
-                    <input type="range" tabindex="0" name="maxSurface" value="6" max="6" min="0" step="0" oninput="
+                    <input type="range" tabindex="0" name="max_A_perf_energie" value="6" max="6" min="0" step="0" oninput="
                     this.value=Math.max(this.value,this.parentNode.childNodes[3].value-(-1));
                     var value=(100/(parseInt(this.max)-parseInt(this.min)))*parseInt(this.value)-(100/(parseInt(this.max)-parseInt(this.min)))*parseInt(this.min);
                     var children = this.parentNode.childNodes[1].childNodes;
@@ -179,15 +179,15 @@
             <div class="flex-container">
                 <span class="w33">
                     <label for="meuble"><i class="fas fa-couch"></i> Meublé : </label>
-                    <select class="champs" name="meuble">                 
-                        <option value="estMeuble" {(($recherche.A_est_meuble)?'selected':'')|default:''} >Oui</option>
-                        <option value="nonMeuble" {(($recherche.A_est_meuble)?'':'selected')|default:''} >Non</option>
+                    <select class="champs" name="A_est_meuble">                 
+                        <option value="TRUE" {(($recherche.A_est_meuble)?'selected':'')|default:''} >Oui</option>
+                        <option value="FALSE" {(($recherche.A_est_meuble)?'':'selected')|default:''} >Non</option>
                         <option value="indifférent" {( !isset($recherche.A_est_meuble) || $recherche.A_est_meuble==='indifférent')?'selected':''}>Indifférent</option>     
                     </select>
                 </span>
                 <span class="w33">
                     <label for="chauffage"><i class="fas fa-burn"></i> Chauffage : </label>
-                    <select class="champs" name="chauffage" onchange="chauffageSelectCheck(this);" > 
+                    <select class="champs" name="A_type_chauffage" onchange="chauffageSelectCheck(this);" > 
                         <option value="indifférent" {(isset($recherche.A_type_chauffage))?'':'selected'}>Indifférent</option>                
                         <option value="individuel" id="chauffageIndOption" {(($recherche.A_type_chauffage==='individuel')?'selected':'')|default:''} >Individuel</option>
                         <option value="collectif" {(($recherche.A_type_chauffage==='collectif')?'selected':'')|default:''} >Collectif</option>
@@ -196,7 +196,7 @@
                 <span class="w33">
                 <div id="chauffageDivCheck" style="display: {($recherche.A_type_chauffage==='individuel')?'block;':'none;'}" >
                         <label for="chauffage"><i class="fas fa-burn"></i> Type Chauffage : </label>
-                        <select class="champs" name="engie" onchange="engieSelectCheck(this);" >   
+                        <select class="champs" name="E_id_engie" onchange="engieSelectCheck(this);" >   
                             {if isset($energie)}
                             {foreach from=$energie item=i }
                                 <option value="{$i.E_id_engie}" {(($recherche.E_id_engie===$i.E_id_engie)?'selected':'')|default:''} >{$i.E_description}</option>
@@ -213,28 +213,29 @@
             <div class="flex-container">
                 <span class="w33">
                  <label for="type"><i class="fas fa-home"></i></i> Type : </label>
-                        <select class="champs" name="type">                 
+                        <select class="champs" name="T_type">                 
                             <option value="T1" {(($recherche.T_type==='T1')?'selected':'')|default:''}>T1</option>
                             <option value="T2" {(($recherche.T_type==='T2')?'selected':'')|default:''}>T2</option>
                             <option value="T3" {(($recherche.T_type==='T3')?'selected':'')|default:''}>T3</option>
                             <option value="T4" {(($recherche.T_type==='T4')?'selected':'')|default:''}>T4</option>
                             <option value="T5" {(($recherche.T_type==='T5')?'selected':'')|default:''}>T5</option>
                             <option value="T6" {(($recherche.T_type==='T6')?'selected':'')|default:''}>T6</option>
-                            <option value="indifférent" {( !isset($recherche.T_type) || $recherche.T_type==='indifférent')?'selected':''}>Indifférent</option>
+                            <option value="indifférent" {(empty($recherche.T_type) || $recherche.T_type==='indifférent')?'selected':''}>Indifférent</option>
                         </select>
                 </span>
                 <span class="w33">
                     <label for="ville" class="label-cp">Ville : </label>
-                    <input class="champs champs-cp" type="text" name="ville" value="{$recherche.A_ville|default:''}" placeholder="Paris"/>
+                    <input class="champs champs-cp" type="text" name="A_ville" value="{$recherche.A_ville|default:''}" placeholder="Paris"/>
                         
                 </span>
                 <span class="w33">
                     <label for="cp" class="label-cp">Code Postal : </label>
-                    <input class="champs champs-cp" type="text" name="cp" value="{$recherche.A_CP|default:''}" placeholder="75000" pattern="[0-9]{literal}{5}{/literal}"  oninvalid="this.setCustomValidity('5 chiffres')" />
+                    <input class="champs champs-cp" type="text" name="A_CP" value="{$recherche.A_CP|default:''}" placeholder="75000" pattern="[0-9]{literal}{5}{/literal}"  oninvalid="this.setCustomValidity('5 chiffres')" />
                         
                 </span>
             </div>
-        </form>
+        </form><hr>
+        <div class="txtcenter"><small>{$recherche.totAnnonceTrouvees} / {$recherche.totAnnonce} annonces au total</small></div>
     </div>
 </div>
 <script>
@@ -278,7 +279,7 @@ function bgGradient(signType, color)
     {
         color2 = color;
     }
-    document.getElementById("range").style.backgroundImage = getCssValuePrefix() + 'linear-gradient(to right, green,blue);' ;//"linear-gradient(to right, "+color1+","+color2+");";
+    document.getElementById("range").style.background = getCssValuePrefix() + 'linear-gradient(to right, green,blue);' ;//"linear-gradient(to right, "+color1+","+color2+");";
     console.log(getCssValuePrefix() +"linear-gradient(to right, "+color1+","+color2+");");
 }
 

@@ -67,6 +67,22 @@ class annonceModel extends Model
         $db = \Config\Database::connect();
         return $db->table($this->table)->select('*')->where(['U_mail' => $mail])->orderBy("A_date_maj", "desc")->get()->getResultArray();
     }
+
+    public function searchAnnonce(string $recherche)
+    {
+
+
+        $query = 'SELECT * FROM '.$this->table.' '.$recherche ;
+        $res = $this->db->simpleQuery($query);//->result_array();
+        foreach($res as $row)
+            $data[] = $row;
+        
+        return isset($data) ? $data : null;
+
+        
+        
+        
+    }
 }
 
 ?>
