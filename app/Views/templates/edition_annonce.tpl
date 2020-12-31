@@ -122,7 +122,7 @@
                 <hr class="ligne-footer">
                 <div class="Description">
                     <p class="h6-like">Description : </p>
-                    <textarea class="text-description" name="description" required placeholder="Tapez ici votre description" rows="10" cols="80">{$annonce.A_description|default:''}</textarea>    
+                    <textarea class="text-description champs" name="description" required placeholder="Tapez ici votre description" rows="10" cols="80">{$annonce.A_description|default:''}</textarea>    
                 </div>
                 <hr class="ligne-footer">
                 <div class="localisation div-input">
@@ -321,6 +321,7 @@
     {
         inputsChamps[i].disabled = true;
     }
+    doc
     {/if}
     </script>  
     {block name="script"}{/block}

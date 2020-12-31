@@ -288,26 +288,22 @@ class Annonce extends Controller
         return service('SmartyEngine')->view($page.'.tpl');   
     }
 
-    public function getAnnoncesPubliees(array $lAnnonces):array
+    public function getTypeAnnonce(array $lAnnonces, $type):array
     {
-        $lAnnPub = [];
+        $lAnnType = [];
         foreach($lAnnonces as $annonce)
         {
-            if($annonce["A_etat"]==="publiée")
-                array_push($lAnnPub,$annonce);
+            if($type==="débloquée")
+            {
+                if($annonce["A_etat"]!=="archivée")
+                {
+                    array_push($lAnnType,$annonce);
+                }
+            }
+            else if($annonce["A_etat"]===$type)
+                array_push($lAnnType,$annonce);
         }
-        return $lAnnPub;
-    }
-
-    public function getAnnoncesUnarchivees(array $lAnnonces):array
-    {
-        $lAnnPub = [];
-        foreach($lAnnonces as $annonce)
-        {
-            if($annonce["A_etat"]!=="archivée")
-                array_push($lAnnPub,$annonce);
-        }
-        return $lAnnPub;
+        return $lAnnType;
     }
 
     public function dateFormat(string $date):string
@@ -365,7 +361,7 @@ class Annonce extends Controller
             //return $this->returnError( var_dump( $modelA->searchAnnonce($recherche)), 'connexion' );
             
                 
-            $lAnnonces = $this->getAnnoncesPubliees($lAnnonces); 
+            $lAnnonces = $this->getTypeAnnonce($lAnnonces,"publiée"); 
             
             $borne = [];
             $borne["min_A_cout_loyer"] = floor($this->minValueInArray($lAnnonces,"A_cout_loyer") - ($this->minValueInArray($lAnnonces,"A_cout_loyer")%10) );
@@ -415,7 +411,7 @@ class Annonce extends Controller
             $recherche["totAnnonce"] = count($lAnnonces);
             if( $modelA->searchAnnonce($whereCond) !== NULL)
             {
-                $lAnnonces = $this->getAnnoncesPubliees($modelA->searchAnnonce($whereCond) );
+                $lAnnonces = $this->getTypeAnnonce($modelA->searchAnnonce($whereCond),"publiée" );
             }
             else
             {
@@ -431,7 +427,7 @@ class Annonce extends Controller
         else
         {
             $lAnnonces = $modelA->getAnnonceUti($session->get("mail"));
-            $lAnnonces = $this->getAnnoncesUnarchivees($lAnnonces);
+            $lAnnonces = $this->getTypeAnnonce($lAnnonces, "débloquée");
             $nbAnnonces = count($lAnnonces);
         }
 

@@ -12,7 +12,8 @@
     </div>
 {/block}
 {block name="delete_user"}
-    {if !isset($confirmation) && !isset($smarty.session.admin)}
+    {if !isset($confirmation)}
+    {if isset($uti) && isset($smarty.session.admin) || !isset($smarty.session.admin)}
     <div class="flex-container" style="margin-top: 2rem;">
         <div class="formulaire-container w40 item-center txtcenter">
             <form class="formulaire" action="/utilisateur/delete/" method="post">
@@ -20,5 +21,6 @@
             </form>
         </div>
     </div>
+    {/if}
     {/if}
 {/block}

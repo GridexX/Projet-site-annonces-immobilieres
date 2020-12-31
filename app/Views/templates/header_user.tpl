@@ -5,9 +5,10 @@
                 <button onclick="myFunction()" id="dropdown-button" class="dropdown-button center w40">{$smarty.session.pseudo} {if isset($smarty.session.admin)}<small>(Mode Admin)</small>{/if}</button>
                 <div id="dropdown-content" class="dropdown-content w40">
                     <a href="/annonce/view/nouvelle_annonce">Créer une annonce <i class="fas fa-plus"></i></a>
-                    <a href="/pages/view/edition_profil">Gérer le Profil <i class="fas fa-user-edit"></i></a>
+                    <a href="/utilisateur/view/edition_profil">Gérer le Profil <i class="fas fa-user-edit"></i></a>
                     <a href="/annonce/mesAnnonces">Editer les annonces <i class="fas fa-edit"></i></a>
                     <a href="/messagerie/createConv/{$smarty.session.mail}">Messagerie <i class="fas fa-envelope"></i></a>
+                    {if isset($smarty.session.admin)} <a href="/utilisateur/view/espace_admin">Espace Admin <i class="fas fa-user-cog"></i></a> {/if}
                     <a class="red" href="/pages/deconnexion">Déconnexion <i class="fas fa-sign-out-alt"></i></a>
                 </div>                
         </div>

@@ -11,15 +11,15 @@ class utilisateurModel extends Model
     public function insertUtilisateur($mail, $mdp, $pseudo, $nom, $prenom)
     {
         $mdp = sha1($mdp);
-        $requete = 'INSERT INTO '.$this->table.' VALUES ("'.$mail.'", "'.$mdp.'", "'.$pseudo.'", "'.$nom.'", "'.$prenom.'")';
+        $requete = 'INSERT INTO '.$this->table.' VALUES ("'.$mail.'", "'.$mdp.'", "'.$pseudo.'", "'.$nom.'", "'.$prenom.'", FALSE)';
         return $this->simpleQuery($requete);
     }
 
-    public function getUtilisateur($mail)
+    public function getUtilisateur($mail=false)
     {
         if ($mail === false)
         {
-            return $this->findAll();
+            return $this->where(['U_estAdmin' => false])->findAll();
         }
         
         return $this->asArray()->where(['U_mail' => $mail])->first();

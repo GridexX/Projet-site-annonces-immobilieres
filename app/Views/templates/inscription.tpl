@@ -7,15 +7,15 @@
 {block name="input_inscription"}
     <div>
     <label for="pseudo">Pseudo : </label>
-    <input class="champs" type="text" name="pseudo" required value="{($smarty.session.pseudo|default:'')}" placeholder="MomoDu69" />
+    <input class="champs" type="text" name="pseudo" required value="{($uti.U_pseudo|default:($smarty.session.pseudo|default:''))}" placeholder="MomoDu69" />
     </div>
     <div>
     <label for="prenom">Prénom : </label>
-    <input class="champs" type="text" name="prenom" required value="{($smarty.session.prenom|default:'')}" placeholder="Momo"/>
+    <input class="champs" type="text" name="prenom" required value="{($uti.U_prenom|default:($smarty.session.prenom|default:''))}" placeholder="Momo"/>
     </div>
     <div>
     <label for="nom">Nom : </label>
-    <input class="champs" type="text" name="nom" required value="{($smarty.session.nom|default:'')}" placeholder="Durant"/>
+    <input class="champs" type="text" name="nom" required value="{($uti.U_nom|default:($smarty.session.nom|default:''))}" placeholder="Durant"/>
     </div>
 
 {/block}

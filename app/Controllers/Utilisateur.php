@@ -4,6 +4,7 @@ use App\Models\utilisateurModel;
 use CodeIgniter\Controller;
 use App\Controllers\Annonce;
 use App\Models\annonceModel;
+use App\Controllers\Mail;
 
 class Utilisateur extends Controller
 {
@@ -21,13 +22,6 @@ class Utilisateur extends Controller
     {
         service('SmartyEngine')->assign('error',$error);
         return service('SmartyEngine')->view($view.'.tpl');
-    }
-
-    public function returnNotif(array $notif, $page=false)
-    {
-        service('SmartyEngine')->assign('notification',$notif);
-        if($page===false) return $this->accueil();
-        return service('SmartyEngine')->view($page.'.tpl');
     }
 
     public function delete($confirm=false)
@@ -58,14 +52,19 @@ class Utilisateur extends Controller
             $modelA->deleteAnnonce($annonce["A_idannonce"]);
         }
 
-        //Suppression du compte
+        //Envoi d'un mail à l'utilisateur pour lui dire que son compte à bien été supprimé
+        $controllerM = new Mail();
         $modelU = new utilisateurModel();
+        $controllerM->mailDelAccount($modelU->getUtilisateur($session->get("mail")));
+
+        //Suppression du compte
         $modelU->deleteUtilisateur($session->get("mail"));
         $notif = array(
             "type" => "success",
             "titre" => "Success",
             "message" => "Votre compte à bien été supprimé"
         );
+
         $session->destroy();
         service('SmartyEngine')->assign('session',$session);
         return redirect()->to('/');
@@ -99,27 +98,33 @@ class Utilisateur extends Controller
                     $data['pseudo'] = $this->request->getVar('pseudo');
                     $data['nom'] = $this->request->getVar('nom');
                     $data['prenom'] = $this->request->getVar('prenom');
-                    
+                    //var_dump($data);
                     $model->insertUtilisateur($data['mail'], $mdp, $data['pseudo'], $data['nom'], $data['prenom']);
-
+                    $controllerA = new Annonce();
                     $session = \Config\Services::session();
                     $session->set($data);
+                    $notif = array(
+                        "type" => "success",
+                        "titre" => "Success",
+                        "message" => "Votre compte à bien été crée"
+                    );
                     service('SmartyEngine')->assign('session',$session);
-                    return service('SmartyEngine')->view('liste_annonce.tpl');
+                    //return redirect()->to('/');
+                    return $controllerA->returnNotif($notif,false);
                 }
                 else
                 {
-                    $this->returnError('Cette adresse mail existe déjà','inscription');
+                    return $this->returnError('Cette adresse mail existe déjà','inscription');
                 }
             }  
             else
             {
-                $this->returnError('Les mots de passes ne correspondent pas','inscription');
+                return $this->returnError('Les mots de passes ne correspondent pas','inscription');
             }
         }
         else
         {
-            $this->returnError('Veuillez vous connecter pour effectuer cette action','connexion');
+            return $this->returnError('Veuillez vous connecter pour effectuer cette action','connexion');
         }   
     }
 
@@ -146,7 +151,7 @@ class Utilisateur extends Controller
                 $data['pseudo'] = $res["U_pseudo"];
                 $data['nom'] = $res["U_nom"];
                 $data['prenom'] = $res["U_prenom"];
-                if ($res["U_estAdmin"] !== "0") $data['admin'] = true;
+                if ($res["U_estAdmin"] == true) $data['admin'] = true;
                 $session = \Config\Services::session();
                 $session->set($data);
                 service('SmartyEngine')->assign('session',$session);
@@ -194,16 +199,57 @@ class Utilisateur extends Controller
                 if(! empty($newMdp)) $mdp = $newMdp; //Pour garder le même mdp quand on enregistre le formulaire
                 $model->updateUtilisateur($session->get("mail"), $mdp, $data['pseudo'], $data['nom'] , $data['prenom']);
                 $session->set($data); 
+
+                //Envoi du mail de d'information
+                $controllerM = new Mail();
+                $controllerM->accountModified($res, $newMdp, !empty($session->get("admin")) );
+
                 service('SmartyEngine')->assign('succes','Profil mis à jour !');
                 service('SmartyEngine')->assign('session',$session);
-                service('SmartyEngine')->view('edition_profil.tpl');
+                //service('SmartyEngine')->view('edition_profil');
             }
 
         }
         else
         {
-            $this->returnError('Veuillez vous connecter pour effectuer cette action','connexion');
+            return $this->returnError('Veuillez vous connecter pour effectuer cette action','connexion');
         }
+    }
+
+
+    public function view($page,$mail=false)
+    {
+        $session = \Config\Services::session();
+        $modelU = new utilisateurModel();
+        if($page==="espace_admin")
+        {
+            if ($session->get("admin")!==true)
+                return $this->returnError('Vous devez disposer des droits administrateurs pour effectuer cette action','connexion');
+
+            
+            $modelA = new annonceModel();
+            $controllerA = new Annonce();
+            $lUtilisateurs = $modelU->getUtilisateur();
+            $lAnnonce = $controllerA->getTypeAnnonce( $modelA->getAnnonce(), "archivée" );
+            service('SmartyEngine')->assign('liste_annonce',$lAnnonce);
+            service('SmartyEngine')->assign('liste_utilisateur',$lUtilisateurs);
+
+            
+        } 
+        else if($page==="edition_profil")
+        {
+            if ($session->get("admin")!==true && $mail!==false && $mail!==$session->get("mail"))
+                return $this->returnError('Vous devez disposer des droits administrateurs pour effectuer cette action','connexion');
+        
+            if($mail!==false){
+            $utilisateur = $modelU->getUtilisateur($mail);
+            service('SmartyEngine')->assign('uti',$utilisateur);
+            }
+            
+        }   
+        return service('SmartyEngine')->view($page);
+
+        
     }
 }
 ?>

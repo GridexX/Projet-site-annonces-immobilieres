@@ -154,6 +154,11 @@
                 <pre>{$annonce.A_description}</pre>
                 <br><br>
                 <hr class="ligne-footer">
+                <p class="h6-like">Localisation</p>
+                
+                    <div id="map"></div>
+                
+                <hr class="ligne-footer">
             </div>
 
             <div class="utilisateur_container">
@@ -183,4 +188,12 @@
         </div>
         
     </div>
+    <script>
+    //var adresseQuery = "24 boulevard Clémenceau, Strasbourg 67000";
+    var map = document.getElementById("map");
+    var adresseQuery = "{$annonce.A_adresse}, {$annonce.A_ville} {$annonce.A_CP}";
+    adresseQuery = adresseQuery.replace(/ /g, "%20");
+    
+    map.innerHTML = '<iframe style="width: 100%; height: 25vw;" src="https://maps.google.com/maps?width=700&amp;height=440&amp;hl=en&amp;q=%27'+adresseQuery+'%27+(titre)&amp;ie=UTF8&amp;t=&amp;z=16&amp;iwloc=B&amp;output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>';
+    </script>
 {/block}
