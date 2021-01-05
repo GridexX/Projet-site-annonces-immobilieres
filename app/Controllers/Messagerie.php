@@ -19,6 +19,7 @@ class Messagerie extends Controller
         $modelUser = new utilisateurModel();
         $modelAnnonce = new annonceModel();
         $annonce = $modelAnnonce->getAnnonce($id_annonce);
+        $model = new messagerieModel();  
         $messagerieVal = $this->validate([
             'message' => 'required'
          ]);
@@ -32,8 +33,7 @@ class Messagerie extends Controller
                 $messagerie['A_mail'] = $annonce['U_mail'];
                 $messagerie['M_texte_message'] = $this->request->getVar('message');
                 date_default_timezone_set('Europe/Paris');
-                $messagerie['M_dateheure_message'] = date('Y-m-d H:i:s');            
-                $model = new messagerieModel();            
+                $messagerie['M_dateheure_message'] = date('Y-m-d H:i:s');                      
                 $model->insertMessagerie($messagerie);  
             }
         }
@@ -41,7 +41,7 @@ class Messagerie extends Controller
         $annonce = $modelAnnonce->getAnnonce($id_annonce);
         service('SmartyEngine')->assign('annonce',$annonce);
         service('SmartyEngine')->assign('messages',$model->getMessage($id_annonce, $session->get("mail")));
-        service('SmartyEngine')->assign('owner',$modelUser->getUtilisateur($annonce['U_mail']));
+        service('SmartyEngine')->assign('user',$modelUser->getUtilisateur($annonce['U_mail']));
         return service('SmartyEngine')->view('messagerie.tpl');  
     }
     public function createConv($mail)
@@ -70,8 +70,11 @@ class Messagerie extends Controller
         service('SmartyEngine')->assign('messages',$messagerie->getMessage($id_annonce, $session->get("mail")));
         $tmp = $messagerie->getMessage($id_annonce, $session->get("mail"));
         $mess = end($tmp);
-        if($session->get("mail") === $mess['A_mail']) $mail = $mess['U_mail'];
-        else $mail = $mess['A_mail'];
+        $mail = $annonce['U_mail'];
+        if (!empty($mess)) {
+            if($session->get("mail") === $mess['A_mail']) $mail = $mess['U_mail'];
+            else $mail = $mess['A_mail'];
+        }
         service('SmartyEngine')->assign('user',$modelUser->getUtilisateur($mail));
         return service('SmartyEngine')->view('messagerie.tpl');     
     }

@@ -18,7 +18,7 @@
 <div class="liste_annonce flex-container w50 center">
     {foreach from=$liste_annonce item=annonce}
     
-    <a href="/annonce/view/annonce/{$annonce.A_idannonce}" class="annonce-pad{extends 'inscription.tpl'}
+    <a href="/annonce/view/annonce/{$annonce.A_idannonce}" class="annonce-pad"
 {block name="titre_onglet"}Profil{/block}
 {block name="titre_form"}Editer le profil{/block} flex-container center w33">
     
