@@ -8,10 +8,10 @@ class utilisateurModel extends Model
 
     protected $allowedFields = ['U_mail', 'U_mdp', 'U_pseudo', 'U_nom', 'U_prenom', 'U_estAdmin'];
 
-    public function insertUtilisateur($mail, $mdp, $pseudo, $nom, $prenom)
+    public function insertUtilisateur($mail, $mdp, $pseudo, $nom, $prenom, $admin=false)
     {
         $mdp = sha1($mdp);
-        $requete = 'INSERT INTO '.$this->table.' VALUES ("'.$mail.'", "'.$mdp.'", "'.$pseudo.'", "'.$nom.'", "'.$prenom.'", FALSE)';
+        $requete = 'INSERT INTO '.$this->table.' VALUES ("'.$mail.'", "'.$mdp.'", "'.$pseudo.'", "'.$nom.'", "'.$prenom.'", "'.$admin.'")';
         return $this->simpleQuery($requete);
     }
 
@@ -21,7 +21,10 @@ class utilisateurModel extends Model
         {
             return $this->where(['U_estAdmin' => false])->findAll();
         }
-        
+        else if($mail === "admin")
+        {
+            return $this->where(['U_estAdmin' => true])->findAll();
+        }
         return $this->asArray()->where(['U_mail' => $mail])->first();
     }
 

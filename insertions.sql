@@ -18,6 +18,7 @@ VALUES
 
 INSERT INTO `T_utilisateur`
 VALUES
+( "admin@root.fr", SHA1("root"), "Admin", "Admin", "Admin", TRUE);
 ( "arsene.fougerouse@etu.univ-amu.fr", SHA1("2F"), "GridexX", "Fougerouse", "Arsène" ),
 ( "andrea.duhamel@etu.univ-amu.fr", SHA1("RB6S"), "Sydy", "Duhamel", "Andréa" );  
 ( "eliot.masset@etu.univ-amu.fr", SHA1("MC"), "Fabrien", "Masset", "Eliot" );  

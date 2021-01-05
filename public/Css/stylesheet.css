@@ -351,39 +351,39 @@ label
 
 .critere-A
 {
-    background-color: #009432;
+    background-color: #009641;
     border-top-left-radius: .3rem;
     border-bottom-left-radius: .3rem;
 }
 
 .critere-B
 {
-    background-color: #00bd3f; 
+    background-color: #52ae32;
 }
 
 .critere-C
 {
-    background-color: #00e44c; 
+    background-color:#c8d300;
 }
 
 .critere-D
 {
-    background-color: #f6f208; 
+    background-color: #ffdf00;
 }
 
 .critere-E
 {
-    background-color: #f5d02a;  
+    background-color: #fbba00; 
 }
 
 .critere-F
 {
-    background-color: #f5962a;  
+    background-color: #ec6608; 
 }
 
 .critere-G
 {
-    background-color: #eb0a0a;  
+    background-color: #e40f1b; 
     border-top-right-radius: .3rem;
     border-bottom-right-radius: .3rem;
 }
@@ -687,3 +687,187 @@ label span{
     color: var(--orange);
 }
 
+.annonce-pad
+{
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    border-radius: 2rem;
+    border-width: 2px;
+    border-style: solid;
+    border-color: var(--green-dark);
+    background-color: whitesmoke;
+    margin: 1.5em;
+    padding: 2em;
+    text-align: left;
+    text-decoration: none;
+    box-shadow: .2em .2em .15em rgba(44, 44, 44, 0.5);
+    transition-duration: .5s;
+    height: 18rem;
+
+}
+
+[slider] {
+    position: relative;
+    height: 10px;
+    border-radius: 10px;
+    text-align: left;
+    margin: 45px 0 10px 0;
+  }
+  
+  [slider] > div {
+    position: absolute;
+    left: 13px;
+    right: 15px;
+    height: 10px;
+  }
+  
+  [slider] > div > [inverse-left] {
+    position: absolute;
+    left: 0;
+    height: 10px;
+    border-radius: 10px;
+    background-color: #CCC;
+    margin: 0 7px;
+  }
+  
+  [slider] > div > [inverse-right] {
+    position: absolute;
+    right: 0;
+    height: 10px;
+    border-radius: 10px;
+    background-color: #CCC;
+    margin: 0 7px;
+  }
+  
+  [slider] > div > [range] {
+    position: absolute;
+    left: 0;
+    height: 10px;
+    border-radius: 14px;
+    background-color: #2e86de;
+    
+  }
+  
+  [slider] > div > [thumb] {
+    position: absolute;
+    top: -6px;
+    z-index: 2;
+    height: 20px;
+    width: 20px;
+    text-align: left;
+    margin-left: -11px;
+    cursor: pointer;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+    background-color: #FFF;
+    border-radius: 50%;
+    outline: none;
+  }
+  
+  [slider] > input[type=range] {
+    position: absolute;
+    pointer-events: none;
+    -webkit-appearance: none;
+    z-index: 3;
+    height: 14px;
+    top: -2px;
+    width: 100%;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+    filter: alpha(opacity=0);
+    -moz-opacity: 0;
+    -khtml-opacity: 0;
+    opacity: 0;
+  }
+  
+  div[slider] > input[type=range]::-ms-track {
+    -webkit-appearance: none;
+    background: transparent;
+    color: transparent;
+  }
+  
+  div[slider] > input[type=range]::-moz-range-track {
+    -moz-appearance: none;
+    background: transparent;
+    color: transparent;
+  }
+  
+  div[slider] > input[type=range]:focus::-webkit-slider-runnable-track {
+    background: transparent;
+    border: transparent;
+  }
+  
+  div[slider] > input[type=range]:focus {
+    outline: none;
+  }
+  
+  div[slider] > input[type=range]::-ms-thumb {
+    pointer-events: all;
+    width: 28px;
+    height: 28px;
+    border-radius: 0px;
+    border: 0 none;
+    background: red;
+  }
+  
+  div[slider] > input[type=range]::-moz-range-thumb {
+    pointer-events: all;
+    width: 28px;
+    height: 28px;
+    border-radius: 0px;
+    border: 0 none;
+    background: red;
+  }
+  
+  div[slider] > input[type=range]::-webkit-slider-thumb {
+    pointer-events: all;
+    width: 28px;
+    height: 28px;
+    border-radius: 0px;
+    border: 0 none;
+    background: red;
+    -webkit-appearance: none;
+  }
+  
+  div[slider] > input[type=range]::-ms-fill-lower {
+    background: transparent;
+    border: 0 none;
+  }
+  
+  div[slider] > input[type=range]::-ms-fill-upper {
+    background: transparent;
+    border: 0 none;
+  }
+  
+  div[slider] > input[type=range]::-ms-tooltip {
+    display: none;
+  }
+  
+  [slider] > div > [sign] {
+
+    position: absolute;
+    margin-left: -25px;
+    top: -42px;
+    z-index:3;
+    background-color: #2e86de;
+    color: #fff;
+    width: 50px;
+    height: 28px;
+    border-radius: 28px;
+    -webkit-border-radius: 28px;
+    align-items: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    text-align: center;
+  }
+  
+
+  
+  [slider] > div > [sign] > span {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 28px;
+  }
+  
+  [slider]:hover > div > [sign] {
+    opacity: 1;
+  }
+
+  

@@ -212,7 +212,7 @@ class Annonce extends Controller
             "titre" => "Success",
             "message" => "L'annonce a bien été supprimée dans la BDD"
         );
-        return $this->returnNotif($notif,false);
+        //return $this->returnNotif($notif,false);
         //RAJOUTER LA DESTRUCTION DES MESSAGES
     }
 
@@ -491,6 +491,9 @@ class Annonce extends Controller
 
     public function accueil()
     {
+        $controllerU = new Utilisateur();
+        if(! $controllerU->existeAdmin())
+            return service('SmartyEngine')->view('create_admin.tpl');
         $session = \Config\Services::session();
         $modelA = new annonceModel();
         $lAnnonces = $modelA->getAnnonce();

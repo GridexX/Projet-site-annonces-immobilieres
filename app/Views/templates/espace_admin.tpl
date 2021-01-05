@@ -18,7 +18,9 @@
 <div class="liste_annonce flex-container w50 center">
     {foreach from=$liste_annonce item=annonce}
     
-    <a href="/annonce/view/annonce/{$annonce.A_idannonce}" class="annonce-pad flex-container center w33">
+    <a href="/annonce/view/annonce/{$annonce.A_idannonce}" class="annonce-pad{extends 'inscription.tpl'}
+{block name="titre_onglet"}Profil{/block}
+{block name="titre_form"}Editer le profil{/block} flex-container center w33">
     
         <div class="w35">
             <img class="w90 center" {if isset($annonce.P_photo) } src='/uploads/{$annonce.A_idannonce}/{$annonce.P_photo.P_titre}' {else} src='/Images/logo_site.png' {/if} } alt="House logo">

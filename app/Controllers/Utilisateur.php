@@ -18,6 +18,15 @@ class Utilisateur extends Controller
         return $mdp1 === $mdp2;
     }
 
+    public function existeAdmin()
+    {
+        $model = new utilisateurModel();
+        $admin = $model->getUtilisateur("admin");
+        return ! empty($admin);
+    }
+
+    //public function 
+
     public function returnError($error,$view)
     {
         service('SmartyEngine')->assign('error',$error);
@@ -46,9 +55,11 @@ class Utilisateur extends Controller
 
         //Suppression de toutes les annonces de l'utilisateur
         $modelA = new annonceModel();
+        $controllerP = new Photo();
         $lAnnonce = $modelA->getAnnonceUti($session->get("mail"));
         foreach($lAnnonce as $annonce)
         {
+            $controllerP->delete($annonce["A_idannonce"]);
             $modelA->deleteAnnonce($annonce["A_idannonce"]);
         }
 
@@ -71,7 +82,7 @@ class Utilisateur extends Controller
         return $controllerA->returnNotif($notif,false);
     }
 
-    public function create()
+    public function create($admin=false)
     {
         helper(['form','url']);
 
@@ -99,7 +110,12 @@ class Utilisateur extends Controller
                     $data['nom'] = $this->request->getVar('nom');
                     $data['prenom'] = $this->request->getVar('prenom');
                     //var_dump($data);
-                    $model->insertUtilisateur($data['mail'], $mdp, $data['pseudo'], $data['nom'], $data['prenom']);
+                    if($this->existeAdmin())
+                        $model->insertUtilisateur($data['mail'], $mdp, $data['pseudo'], $data['nom'], $data['prenom']);
+                    else{
+                        $model->insertUtilisateur($data['mail'], $mdp, $data['pseudo'], $data['nom'], $data['prenom'], true);
+                        $data["admin"] = true;
+                    }
                     $controllerA = new Annonce();
                     $session = \Config\Services::session();
                     $session->set($data);
@@ -109,8 +125,7 @@ class Utilisateur extends Controller
                         "message" => "Votre compte à bien été crée"
                     );
                     service('SmartyEngine')->assign('session',$session);
-                    //return redirect()->to('/');
-                    return $controllerA->returnNotif($notif,false);
+                    return redirect()->to('/');
                 }
                 else
                 {

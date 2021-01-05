@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.34-dev-7, created on 2020-12-26 08:27:16
+/* Smarty version 3.1.34-dev-7, created on 2021-01-04 13:52:28
   from '/var/www/html/app/Views/templates/main.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.34-dev-7',
-  'unifunc' => 'content_5fe74844a9f9c3_46149240',
+  'unifunc' => 'content_5ff371fcb25889_41699548',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '4f634e2dff1467347bbeea3353db8a17b370be7f' => 
     array (
       0 => '/var/www/html/app/Views/templates/main.tpl',
-      1 => 1608992621,
+      1 => 1609764827,
       2 => 'file',
     ),
   ),
@@ -23,7 +23,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:notifications.tpl' => 1,
   ),
 ),false)) {
-function content_5fe74844a9f9c3_46149240 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5ff371fcb25889_41699548 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_loadInheritance();
 $_smarty_tpl->inheritance->init($_smarty_tpl, false);
 ?>
@@ -41,7 +41,7 @@ $_smarty_tpl->inheritance->init($_smarty_tpl, false);
         <link rel="stylesheet" href="/Css/knacss.css" />
         <link rel="icon" type="image/png" href="/Images/logo_site.png" />
         <title><?php 
-$_smarty_tpl->inheritance->instanceBlock($_smarty_tpl, 'Block_7343526575fe74844a97aa0_81074624', "titre_onglet");
+$_smarty_tpl->inheritance->instanceBlock($_smarty_tpl, 'Block_4408198315ff371fcafe724_24284211', "titre_onglet");
 ?>
  - Site de petites annonces</title>
 	</head>
@@ -62,23 +62,23 @@ $_smarty_tpl->inheritance->instanceBlock($_smarty_tpl, 'Block_7343526575fe74844a
 ?>
                 <?php }?>
                 <?php 
-$_smarty_tpl->inheritance->instanceBlock($_smarty_tpl, 'Block_19067833585fe74844a9ef90_44251341', "output_area");
+$_smarty_tpl->inheritance->instanceBlock($_smarty_tpl, 'Block_7327704885ff371fcb23876_11538101', "output_area");
 ?>
 
             </div>
             <footer class="item-fluid">
-                <p>&copy; 2020 Andréa Duhamel & Arsène Fougerouse, IUT D'Aix-Marseille campus d'Arles</p>
+                <p>&copy; 2021 Andréa Duhamel & Arsène Fougerouse, IUT D'Aix-Marseille campus d'Arles</p>
             </footer>
         </div>
     </body>
 </html><?php }
 /* {block "titre_onglet"} */
-class Block_7343526575fe74844a97aa0_81074624 extends Smarty_Internal_Block
+class Block_4408198315ff371fcafe724_24284211 extends Smarty_Internal_Block
 {
 public $subBlocks = array (
   'titre_onglet' => 
   array (
-    0 => 'Block_7343526575fe74844a97aa0_81074624',
+    0 => 'Block_4408198315ff371fcafe724_24284211',
   ),
 );
 public function callBlock(Smarty_Internal_Template $_smarty_tpl) {
@@ -86,12 +86,12 @@ public function callBlock(Smarty_Internal_Template $_smarty_tpl) {
 }
 /* {/block "titre_onglet"} */
 /* {block "output_area"} */
-class Block_19067833585fe74844a9ef90_44251341 extends Smarty_Internal_Block
+class Block_7327704885ff371fcb23876_11538101 extends Smarty_Internal_Block
 {
 public $subBlocks = array (
   'output_area' => 
   array (
-    0 => 'Block_19067833585fe74844a9ef90_44251341',
+    0 => 'Block_7327704885ff371fcb23876_11538101',
   ),
 );
 public function callBlock(Smarty_Internal_Template $_smarty_tpl) {
