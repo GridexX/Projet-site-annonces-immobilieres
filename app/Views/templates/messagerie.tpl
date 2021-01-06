@@ -1,5 +1,7 @@
 {extends 'main.tpl'}
+{block name="titre_onglet"}Messages{/block}
 {block name="output_area"}
+
 <div class="flex-container w75 item-center">
   <div class="messaging center w100">
     <div class="inbox_msg">
@@ -7,7 +9,7 @@
       <div class="mesgs">
         <div>
         {foreach from=$messages item=mess}
-        {if $mess.U_mail === $user.U_mail}
+        {if $mess.U_mail !== $mail}
           <div class="received_msg">
               <p>{$mess.M_texte_message}</p>
               <span class="time_date"> {$mess.M_dateheure_message}</span>
@@ -17,14 +19,14 @@
               <p>{$mess.M_texte_message}</p>
               <span class="time_date">{$mess.M_dateheure_message}</span> 
           </div>
-        {/if}
-        {/foreach}              
+        {/if}        
+        {/foreach}    
         </div>
       </div>
     </div>    
   </div>
   <div class="send right">
-      <form action="/messagerie/create/{$annonce.A_idannonce}" method="post" >
+      <form action="/messagerie/create/{$annonce.A_idannonce}/{$user.U_mail}/{$mail}" method="post" >
         <input name="message" type="text" class="msger-input" placeholder="Enter your message...">
         <button type="submit" class="msger-send-btn">Send</button>
       </form>

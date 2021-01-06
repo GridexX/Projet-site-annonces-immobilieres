@@ -173,7 +173,7 @@
                     
                 {else}{*Sinon on propose de prendre contact avec le propriétaire*}
                     <p>{*$proprio.U_pseudo*} | <i>Nb annonces : </i></p>
-                <a href="/messagerie/view/{$annonce.A_idannonce}"><button class="btn--primary"><i class="fas fa-comments"></i> Envoyer un message</button></a>
+                <a href="/messagerie/view/{$annonce.A_idannonce}/{$smarty.session.mail}/{$annonce.U_mail}"><button class="btn--primary"><i class="fas fa-comments"></i> Envoyer un message</button></a>
                     {if isset($smarty.session.admin)} {*Si admin peut archiver l'annonce*}
                         <a href="/annonce/view/edition_annonce/{$annonce.A_idannonce}"><button class="btn--primary"><i class="fas fa-edit"></i> Editer l'annonce</button></a>
                         {if $annonce.A_etat!=='archivée'}

@@ -29,35 +29,52 @@ class MessagerieModel extends Model
         $db->table($this->table)->where(['A_idMessagerie' => $Messagerie['A_idMessagerie']])->update($Messagerie);
     }
     */
-    public function dateFormat(string $date):string
+
+    public function getMessage($id_annonce, $mail, $mail2) 
     {
-        $tabMois = array("Janvier","Févrirer","Mars","Avril","Mai","Juin",'Juillet','Août','Septembre','Octobre','Novembre','Décembre');
-        $numMois =  substr($date,5,2);
-        return substr($date,8,2).' '.$tabMois[$numMois-1].' '.substr($date,0,4).' à '.substr($date,11,2).'h'.substr($date,14,2);  
-    } 
-    public function getMessage($id_annonce, $mail) 
-    {
+        $db = \Config\Database::connect();
+        return $db->table($this->table)
+        ->select('*')
+        ->orderBy("M_dateheure_message", "asc")
+        ->where('A_idannonce', $id_annonce)
+        ->groupStart()
+            ->where("U_mail", $mail)
+            ->where("A_mail", $mail2)
+        ->groupEnd()
+        ->orGroupStart()
+            ->where("U_mail", $mail2)
+            ->where("A_mail", $mail)
+        ->groupEnd()
+        ->where('A_idannonce', $id_annonce)
+        ->get()->getResultArray();
+        /*
         $modelAnnonce = new annonceModel();
         $annonce = $modelAnnonce->getAnnonce($id_annonce);
-        $db = \Config\Database::connect();
-        $allMessages = $db->table($this->table)->select('*')->where(['A_idannonce' => $id_annonce])->orderBy("M_dateheure_message", "asc")->get()->getResultArray();
         $listeMessage = [];
         foreach ($allMessages as $message) {
             $message['M_dateheure_message'] = $this->dateFormat($message['M_dateheure_message']);
-            if($message['A_idannonce'] === $id_annonce && ($message['U_mail'] === $mail || $mail === $message['A_mail'])) { 
+            if($message['A_idannonce'] === $id_annonce && ($message['U_mail'] === $mail || $mail === $message['A_mail'])) {
                 $listeMessage[] = $message;
             }
         }
         return $listeMessage;
+        */
     }
     public function getConv($mail) //Récupère les convs de l'utilisateur
     {
         $db = \Config\Database::connect();
-        $allConv = $db->table($this->table)->select('*')->get()->getResultArray();
+        return $db->table($this->table)
+        ->select('*')
+        ->orderBy("M_dateheure_message", "asc")
+        ->where("U_mail", $mail)
+        ->orWhere("A_mail", $mail)
+        ->get()->getResultArray();
+        /*
         $listeId = [];
         foreach ($allConv as $mess) {
             if(!in_array($mess['A_idannonce'], $listeId) && ($mail == $mess['A_mail'] || $mail == $mess['U_mail'])) { 
-                $listeId[] = $mess['A_idannonce'];
+                $liste['ID'] = $mess['A_idannonce'];
+
             }
             
         }
@@ -80,11 +97,16 @@ class MessagerieModel extends Model
                 $case['title'] = $annonce['A_titre'];
                 $user = $modelUser->getUtilisateur($case['mail']);
                 if(!empty($user)) $case['pseudo'] = $user['U_pseudo'];
-                $case['lien'] = "/messagerie/view/{$annonce['A_idannonce']}";
+                $case['lien'] = "/messagerie/view/{$annonce['A_idannonce']}/{$case['mail']}";
             }
             $liste[] = $case;            
         }
         return $liste;
-    }    
+        */
+    }  
+    public function deleteM($id_annonce) {
+        $db = \Config\Database::connect();
+        return $db->table($this->table)->delete(["A_idannonce" => $id_annonce]);
+    }  
 }
 ?>

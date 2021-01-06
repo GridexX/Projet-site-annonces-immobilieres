@@ -3,6 +3,7 @@
 use App\Models\annonceModel;
 use App\Models\energieModel;
 use App\Models\utilisateurModel;
+use App\Models\messagerieModel;
 use App\Models\photoModel;
 use App\Controllers\Pages;
 use CodeIgniter\Controller;
@@ -140,8 +141,9 @@ class Annonce extends Controller
                     }   
                     
                     $modelE->insertEnergie($energie);
+                    $annonce['E_id_engie'] = $modelE->getLastEnergie();
                 }
-                $annonce['E_id_engie'] = $modelE->getLastEnergie();
+
             }
 
             $model = new annonceModel();
@@ -202,7 +204,8 @@ class Annonce extends Controller
             );
             return $this->returnNotif($notif,false);
         }
-        
+        $messModel = new messagerieModel();
+        $messModel->deleteM($id_annonce);
         $controllerP = new Photo();
         $controllerP->delete($id_annonce);
         $modelA->deleteAnnonce($id_annonce); 
@@ -212,6 +215,7 @@ class Annonce extends Controller
             "titre" => "Success",
             "message" => "L'annonce a bien été supprimée dans la BDD"
         );
+        return redirect()->to('/');
         //return $this->returnNotif($notif,false);
         //RAJOUTER LA DESTRUCTION DES MESSAGES
     }
@@ -224,7 +228,7 @@ class Annonce extends Controller
             return $this->returnError('L\'annonce n\'a pas été trouvée','connexion');
              
         $session = \Config\Services::session();
-        if($page === 'edition_annonce' && ($session->get('mail')!==$annonce['U_mail'] || $session->get('admin'))!==true)  //Vérifie que l'annonce appartient à l'utilisateur et 
+        if($page === 'edition_annonce' && ($session->get('mail')!==$annonce['U_mail'])) //Vérifie que l'annonce appartient à l'utilisateur et 
             return $this->returnError('Vous n\'étes pas autorisé à modifier cette annonce','connexion');
         
         $modelE = new energieModel();
@@ -385,7 +389,6 @@ class Annonce extends Controller
                     $whereCond .= " && $key is $val";
                     else
                     $whereCond .= " && $key like '%$val%'";
-                var_dump($val);
             }
             foreach($borne as $key => $val)
             {
@@ -407,7 +410,6 @@ class Annonce extends Controller
                 
             }
             $whereCond = empty($whereCond) ? '' : 'WHERE '.substr($whereCond,3);
-            var_dump($whereCond);
             $recherche["totAnnonce"] = count($lAnnonces);
             if( $modelA->searchAnnonce($whereCond) !== NULL)
             {
