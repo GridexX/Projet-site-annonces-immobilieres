@@ -1,6 +1,6 @@
 <div class="flex-container w75 item-center">
     <div class="annonce-container formulaire w60 item-center">
-        <form method="post" action="/annonce/viewListe/{$bSelect}/{$nbAnnonces}" >
+        <form method="post" action="/annonce/viewListe/{$bSelect|default:''}/{$nbAnnonces|default:''}" >
             <div>
                 <span><p class="h5-like">Rechercher des annonces</p>
                     <input class="champs" type="text" name="A_titre" placeholder="Titre de l'annonce" />
@@ -235,7 +235,7 @@
                 </span>
             </div>
         </form><hr>
-        <div class="txtcenter"><small>{$recherche.totAnnonceTrouvees} / {$recherche.totAnnonce} annonces au total</small></div>
+        <div class="txtcenter"><small>{$var.totAnnonceTrouvees} / {$var.totAnnonce} annonces au total</small></div>
     </div>
 </div>
 <script>

@@ -8,6 +8,7 @@ use App\Models\photoModel;
 use App\Controllers\Pages;
 use CodeIgniter\Controller;
 use App\Controllers\Photo;
+use App\Controllers\Mail;
 
 class Annonce extends Controller
 {
@@ -39,16 +40,54 @@ class Annonce extends Controller
         return $this->files->all();
     } 
 
-    public function changerEtat(int $id_annonce, string $etat) //Rajouter test appartenances annonce
+    public function bloquerAnnonces(string $mail)
     {
-        if($etat==='en cours' || $etat==='publiée' || $etat==='archivée')
+        $modelA = new annonceModel();
+        $modelU = new utilisateurModel();
+        $lAnnonces = $modelA->getAnnonceUti($mail);
+        foreach($lAnnonces as $annonce)
+        {
+            $annonce["A_etat"] = "bloquée";
+            $modelA->updateAnnonce($annonce);
+        }
+        $controllerMail = new Mail();
+        $controllerMail->annoncesBloquées($modelU->getUtilisateur($mail));
+        return redirect()->to('/utilisateur/view/espace_admin');
+    }
+
+    public function changerEtat(int $id_annonce, string $etat, string $page) //Rajouter test appartenances annonce
+    {
+        if($etat==='en cours' || $etat==='publiée' || $etat==='archivée' || $etat="bloquée")
         {
             $model = new annonceModel();
             $annonce = $model->getAnnonce($id_annonce);
             $annonce["A_etat"] = $etat;
             $model->updateAnnonce($annonce);
+            //prévient l'utilisateur si l'admin bloque son annonce
+
+            //RAJOUTER MAIL
+            if($etat==="bloquée")
+            {
+                $modelU = new utilisateurModel();
+                $controllerMail = new Mail();
+                //$controllerMail->annonceBloquée($modelU->getUtilisateur($annonce["U_mail"]),$annonce);
+            }
         }
-        return $this->view("annonce",$id_annonce);
+        switch ($page) {
+            case 'espace_admin':
+                $controllerU = new Utilisateur();
+                return $controllerU->view($page);
+                break;
+            case 'annonce':
+                return $this->view($page,$annonce["A_idannonce"]);
+                break;
+            case 'annoncesUti':
+                return $this->annoncesUti($annonce["U_mail"]);
+                break;    
+            default:
+                # code...
+                break;
+        }
     }
     /*
     public function createDefault()
@@ -142,8 +181,7 @@ class Annonce extends Controller
                     
                     $modelE->insertEnergie($energie);
                     $annonce['E_id_engie'] = $modelE->getLastEnergie();
-                }
-
+                }                
             }
 
             $model = new annonceModel();
@@ -164,10 +202,10 @@ class Annonce extends Controller
             $imagefile = $this->request->getFiles();
             //return $this->returnError(print_r($lastAnnonce),'connexion');
             $notif = $controllerP->create($imagefile, $lastAnnonce["A_idannonce"]);
-            
-            if(gettype($notif)!==NULL)
+
+            if($notif!==NULL)
             {
-                    
+                var_dump(gettype($notif));   
                 service('SmartyEngine')->assign('notification',$notif);
                 return service('SmartyEngine')->view('nouvelle_annonce.tpl');   
             }
@@ -176,7 +214,7 @@ class Annonce extends Controller
                 "titre" => "Success",
                 "message" => "Votre annonce à été insérée dans la BDD"
             );
-            return $this->returnNotif($notif,false);
+            return redirect()->to("/annonce/mesAnnonces");
         }
         else
         {
@@ -228,7 +266,7 @@ class Annonce extends Controller
             return $this->returnError('L\'annonce n\'a pas été trouvée','connexion');
              
         $session = \Config\Services::session();
-        if($page === 'edition_annonce' && ($session->get('mail')!==$annonce['U_mail'])) //Vérifie que l'annonce appartient à l'utilisateur et 
+        if($page === 'edition_annonce' && !($session->get('mail')===$annonce['U_mail'] || $session->get('admin') ) )  //Vérifie que l'annonce appartient à l'utilisateur et 
             return $this->returnError('Vous n\'étes pas autorisé à modifier cette annonce','connexion');
         
         $modelE = new energieModel();
@@ -299,7 +337,7 @@ class Annonce extends Controller
         {
             if($type==="débloquée")
             {
-                if($annonce["A_etat"]!=="archivée")
+                if($annonce["A_etat"]!=="bloquée")
                 {
                     array_push($lAnnType,$annonce);
                 }
@@ -315,6 +353,17 @@ class Annonce extends Controller
         $tabMois = array("Janvier","Févrirer","Mars","Avril","Mai","Juin",'Juillet','Août','Septembre','Octobre','Novembre','Décembre');
         $numMois =  substr($date,5,2);
         return substr($date,8,2).' '.$tabMois[$numMois-1].' '.substr($date,0,4).' à '.substr($date,11,2).'h'.substr($date,14,2);  
+    }
+
+    public function arrDateFormat(array $lAnnonces)
+    {
+        $lAnnonceFormat = [];
+        foreach($lAnnonces as $annonce)
+        {
+            $annonce["A_date_maj"] = $this->dateFormat($annonce["A_date_maj"]);
+            array_push($lAnnonceFormat, $annonce); 
+        }
+        return $lAnnonceFormat;
     }
 
     function maxValueInArray($array, $keyToSearch)
@@ -340,77 +389,82 @@ class Annonce extends Controller
         return $currentMin;
     }
 
-    public function viewListe(int $id_debut=0,int $nbAnnonces=15, bool $annUti=false)
+    public function whereReqChamps($lAnnonces):string
+    {
+        helper(['form', 'url']);
+        $recherche = [];
+        $recherche["A_titre"] = empty($this->request->getPost("A_titre")) ? null : $this->request->getPost("A_titre");
+        $recherche["A_type_chauffage"] = $this->request->getPost("A_type_chauffage")=== "indifférent" ? null : $this->request->getPost("A_type_chauffage");
+        $recherche["E_id_engie"] = $this->request->getPost("E_id_engie")=== "indifférent" ? null : $this->request->getPost("E_id_engie");
+        $recherche["T_type"] = $this->request->getPost("T_type")=== "indifférent" ? null : $this->request->getPost("T_type");
+        $recherche["A_est_meuble"] = $this->request->getPost("A_est_meuble")=== "indifférent" ? null : $this->request->getPost("A_est_meuble");
+        $recherche["A_ville"] = empty($this->request->getPost("A_ville")) ? null : $this->request->getPost("A_ville");
+        $recherche["A_CP"] = empty($this->request->getPost("A_CP")) ? null : $this->request->getPost("A_CP");
+
+        $borne = [];
+        $borne["min_A_cout_loyer"] = floor($this->minValueInArray($lAnnonces,"A_cout_loyer") - ($this->minValueInArray($lAnnonces,"A_cout_loyer")%10) );
+        $borne["max_A_cout_loyer"] = floor($this->maxValueInArray($lAnnonces,"A_cout_loyer") + 10 - ($this->maxValueInArray($lAnnonces,"A_cout_loyer")%10) );
+        $borne["min_A_cout_charges"] = floor($this->minValueInArray($lAnnonces,"A_cout_charges") - ($this->minValueInArray($lAnnonces,"A_cout_charges")%10) );
+        $borne["max_A_cout_charges"] = floor($this->maxValueInArray($lAnnonces,"A_cout_charges") + 10 - ($this->maxValueInArray($lAnnonces,"A_cout_charges")%10) );
+        $borne["min_A_superficie"] = ceil($this->minValueInArray($lAnnonces,"A_superficie"));
+        $borne["max_A_superficie"] = floor($this->maxValueInArray($lAnnonces,"A_superficie"));
+        $borne["min_A_perf_energie"] = ceil($this->minValueInArray($lAnnonces,"A_perf_energie"));
+        $borne["max_A_perf_energie"] = floor($this->maxValueInArray($lAnnonces,"A_perf_energie"));
+
+        $tabEngie = [ 0, 50, 90, 150, 230, 330, $borne["max_A_perf_energie"] ];
+
+        $whereCond = "";
+        $tempIndex = [];
+        foreach($recherche as $key => $val)
+        {
+            if($val!==null)
+            {
+                if($key==="A_est_meuble")
+                    $whereCond .= " && $key is $val";
+                else
+                    $whereCond .= " && $key like '%$val%'";
+            }
+        }
+        foreach($borne as $key => $val)
+        {
+            if(!empty($this->request->getPost($key)))
+            {
+                $borne[$key] = $this->request->getPost($key);
+                if(substr($key,4)==="A_perf_energie")
+                {
+                    //$tempIndex[$key] = $borne[$key];
+                    $borne[$key] = $tabEngie[$borne[$key]];
+                    //return $this->returnError( $borne["max_A_perf_energie"], 'connexion' );
+                }
+                //if(substr($key,4)==="A_perf_energie")
+                    //  $borne[$key] = $tempIndex[$key];      
+            }   
+            $whereCond .= ( substr($key,0,3)==="min" ) ? ' && '.substr($key,4).' BETWEEN '.$borne[$key] :  ' AND '.$borne[$key] ; //en fonction du min ou du max
+            
+        }
+        service('SmartyEngine')->assign('recherche',$recherche);
+        service('SmartyEngine')->assign('borne',$borne);
+        var_dump($recherche);
+        var_dump($borne);
+        $whereCond = empty($whereCond) ? '' : 'WHERE '.substr($whereCond,3);
+        return $whereCond;
+    }
+
+    public function viewListe(int $id_debut=0,int $nbAnnonces=15,$annUti=false)
     {
         $session = \Config\Services::session();
         $modelA = new annonceModel();
-        if(!$annUti)
+        if($annUti===false)
         {
             $lAnnonces = $modelA->getAnnonce();
-            
-
-            helper(['form', 'url']);
-            $recherche = [];
-            $recherche["A_titre"] = empty($this->request->getPost("A_titre")) ? null : $this->request->getPost("A_titre");
-            $recherche["A_type_chauffage"] = $this->request->getPost("A_type_chauffage")=== "indifférent" ? null : $this->request->getPost("A_type_chauffage");
-            $recherche["E_id_engie"] = $this->request->getPost("E_id_engie")=== "indifférent" ? null : $this->request->getPost("E_id_engie");
-            $recherche["T_type"] = $this->request->getPost("T_type")=== "indifférent" ? null : $this->request->getPost("T_type");
-            $recherche["A_est_meuble"] = $this->request->getPost("A_est_meuble")=== "indifférent" ? null : $this->request->getPost("A_est_meuble");
-            $recherche["A_ville"] = empty($this->request->getPost("A_ville")) ? null : $this->request->getPost("A_ville");
-            $recherche["A_CP"] = empty($this->request->getPost("A_CP")) ? null : $this->request->getPost("A_CP");
             
             $modelE = new energieModel();
             $energie = $modelE->getEnergie();
             
             //return $this->returnError( var_dump( $modelA->searchAnnonce($recherche)), 'connexion' );
-            
-                
             $lAnnonces = $this->getTypeAnnonce($lAnnonces,"publiée"); 
-            
-            $borne = [];
-            $borne["min_A_cout_loyer"] = floor($this->minValueInArray($lAnnonces,"A_cout_loyer") - ($this->minValueInArray($lAnnonces,"A_cout_loyer")%10) );
-            $borne["max_A_cout_loyer"] = floor($this->maxValueInArray($lAnnonces,"A_cout_loyer") + 10 - ($this->maxValueInArray($lAnnonces,"A_cout_loyer")%10) );
-            $borne["min_A_cout_charges"] = floor($this->minValueInArray($lAnnonces,"A_cout_charges") - ($this->minValueInArray($lAnnonces,"A_cout_charges")%10) );
-            $borne["max_A_cout_charges"] = floor($this->maxValueInArray($lAnnonces,"A_cout_charges") + 10 - ($this->maxValueInArray($lAnnonces,"A_cout_charges")%10) );
-            $borne["min_A_superficie"] = ceil($this->minValueInArray($lAnnonces,"A_superficie"));
-            $borne["max_A_superficie"] = floor($this->maxValueInArray($lAnnonces,"A_superficie"));
-            $borne["min_A_perf_energie"] = ceil($this->minValueInArray($lAnnonces,"A_perf_energie"));
-            $borne["max_A_perf_energie"] = floor($this->maxValueInArray($lAnnonces,"A_perf_energie"));
-
-            $tabEngie = [ 0, 50, 90, 150, 230, 330, $borne["max_A_perf_energie"] ];
-
-            
-            $whereCond = "";
-            $tempIndex = [];
-            foreach($recherche as $key => $val)
-            {
-                if($val!==null)
-                    if($key==="A_est_meuble")
-                    $whereCond .= " && $key is $val";
-                    else
-                    $whereCond .= " && $key like '%$val%'";
-            }
-            foreach($borne as $key => $val)
-            {
-                if(!empty($this->request->getPost($key)))
-                {
-                    $borne[$key] = $this->request->getPost($key);
-                    if(substr($key,4)==="A_perf_energie")
-                    {
-                        //$tempIndex[$key] = $borne[$key];
-                        $borne[$key] = $tabEngie[$borne[$key]];
-                        
-                        //return $this->returnError( $borne["max_A_perf_energie"], 'connexion' );
-                    }
-                    
-                    //if(substr($key,4)==="A_perf_energie")
-                      //  $borne[$key] = $tempIndex[$key];      
-                }   
-                $whereCond .= ( substr($key,0,3)==="min" ) ? ' && '.substr($key,4).' BETWEEN '.$borne[$key] :  ' AND '.$borne[$key] ; //en fonction du min ou du max
-                
-            }
-            $whereCond = empty($whereCond) ? '' : 'WHERE '.substr($whereCond,3);
-            $recherche["totAnnonce"] = count($lAnnonces);
+            $var["totAnnonce"] = count($lAnnonces);
+            $whereCond = $this->whereReqChamps($lAnnonces);
             if( $modelA->searchAnnonce($whereCond) !== NULL)
             {
                 $lAnnonces = $this->getTypeAnnonce($modelA->searchAnnonce($whereCond),"publiée" );
@@ -419,17 +473,16 @@ class Annonce extends Controller
             {
                 $lAnnonces = array();
             }
-            $recherche["totAnnonceTrouvees"] = count($lAnnonces);
-            
-            service('SmartyEngine')->assign('recherche',$recherche);
-            service('SmartyEngine')->assign('borne',$borne);
+            $var["totAnnonceTrouvees"] = count($lAnnonces);
+            service('SmartyEngine')->assign('var',$var);
             service('SmartyEngine')->assign('energie',$energie);
-            
+
         }
         else
         {
-            $lAnnonces = $modelA->getAnnonceUti($session->get("mail"));
-            $lAnnonces = $this->getTypeAnnonce($lAnnonces, "débloquée");
+            
+            $lAnnonces = $modelA->getAnnonceUti($annUti);
+            $lAnnonces = !empty($session->get("admin")) ? $lAnnonces : $this->getTypeAnnonce($lAnnonces, "débloquée");
             $nbAnnonces = count($lAnnonces);
         }
 
@@ -503,14 +556,21 @@ class Annonce extends Controller
         $this->viewListe(0,6);
     }
 
-    public function mesAnnonces()
+    public function mesAnnonces($mail=false)
     {
         $session = \Config\Services::session();
+        service('SmartyEngine')->assign('mesAnnonces',true);
         if( !empty($session->get("mail")))  
         {
-            return $this->viewListe(0,0,true);
+            return ($mail===false) ? $this->viewListe(0,0,$session->get("mail")) : $this->viewListe(0,0,$mail);
         }
         return $this->accueil();
+        
+    }
+
+    public function annoncesUti($mail)
+    {
+        return $this->mesAnnonces($mail);
     }
 
     

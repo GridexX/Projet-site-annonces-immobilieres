@@ -163,7 +163,7 @@
 
             <div class="utilisateur_container">
                 {*Si l'annonce appartient à l'utilisateur il peut l'éditer*}
-                {if isset($smarty.session.mail) && $smarty.session.mail===$annonce.U_mail}
+                {*if isset($smarty.session.mail) && $smarty.session.mail===$annonce.U_mail || isset($smarty.session.admin)} 
                     <a href="/annonce/view/edition_annonce/{$annonce.A_idannonce}"><button class="btn--primary"><i class="fas fa-edit"></i> Editer l'annonce</button></a>
                     {if $annonce.A_etat==='publiée'}
                         <a href="/annonce/changerEtat/{$annonce.A_idannonce}/en cours"><button class="btn--danger"><i class="fas fa-eye-slash"></i> Masquer l'annonce du site</button></a>
@@ -173,16 +173,45 @@
                     
                 {else}{*Sinon on propose de prendre contact avec le propriétaire*}
                     <p>{*$proprio.U_pseudo*} | <i>Nb annonces : </i></p>
-                <a href="/messagerie/view/{$annonce.A_idannonce}/{$smarty.session.mail}/{$annonce.U_mail}"><button class="btn--primary"><i class="fas fa-comments"></i> Envoyer un message</button></a>
+                    <a href="/messagerie/view/{$annonce.A_idannonce}/{$smarty.session.mail}/{$annonce.U_mail}"><button class="btn--primary"><i class="fas fa-comments"></i> Envoyer un message</button></a>
                     {if isset($smarty.session.admin)} {*Si admin peut archiver l'annonce*}
-                        <a href="/annonce/view/edition_annonce/{$annonce.A_idannonce}"><button class="btn--primary"><i class="fas fa-edit"></i> Editer l'annonce</button></a>
-                        {if $annonce.A_etat!=='archivée'}
+                        
+                        {*if $annonce.A_etat!=='archivée'}
                         <a href="/annonce/changerEtat/{$annonce.A_idannonce}/archivée"><button class="btn--danger"><i class="fas fa-archive"></i> Archiver l'annonce</button></a>
                         {else}
                         <a href="/annonce/changerEtat/{$annonce.A_idannonce}/en cours"><button class="btn--success"><i class="fas fa-archive"></i> Désarchiver l'annonce</button></a>
                         {/if}
+                    {/if*}
+                <div class="flex-container ">
+                    <div class="w75">
+                    {if isset($smarty.session.mail) && ($smarty.session.mail===$annonce.U_mail || isset($smarty.session.admin) )}
+                        <a href="/annonce/view/edition_annonce/{$annonce.A_idannonce}"><button class="btn--primary"><i class="fas fa-edit"></i> Editer l'annonce</button></a>
                     {/if}
-                {/if}
+                    {if !isset($smarty.session.mail) || $smarty.session.mail!==$annonce.U_mail}
+                        <a href="/messagerie/view/{$annonce.A_idannonce}"><button class="btn--primary"><i class="fas fa-comments"></i> Envoyer un message</button></a>
+                    {/if}
+                    {if isset($smarty.session.admin)}
+                        {if $annonce.A_etat!=="bloquée"}
+                            <a href="/annonce/changerEtat/{$annonce.A_idannonce}/bloquée/annonce"><button class="btn--danger"><i class="fas fa-ban"></i> Bloquer l'annonce</button></a>
+                        {else}
+                            <a href="/annonce/changerEtat/{$annonce.A_idannonce}/en cours/annonce"><button class="btn--success"><i class="fas fa-check-double"></i> Débloquer l'annonce</button></a>
+                        {/if}
+                    {/if}
+                    </div>
+                    <span class="w15">
+                    <div class="select">          
+                        <select name="slct" id="slct" onchange="location = '/annonce/changerEtat/{$annonce.A_idannonce}/'+this.value;">
+                            <option disabled>Etat de l'annonce</option>
+                            <option disabled {($annonce.A_etat==="bloquée")?'selected':''} >Bloquée</option>
+                            <option value="en cours" {($annonce.A_etat==="en cours")?'selected':''} >Brouillon</option>
+                            <option value="publiée" {($annonce.A_etat==="publiée")?'selected':''} >Publiée</option>
+                            <option value="archivée" {($annonce.A_etat==="archivée")?'selected':''}>Archivée</option>
+                        </select>
+                    </div>
+                     
+                    </span>
+                </div>
+            
 
             </div>
         </div>

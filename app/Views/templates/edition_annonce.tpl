@@ -102,7 +102,7 @@
                                 </div>
                             {/foreach}
                             {else}
-                               <p>Pas de photos pour cette annonce  </p> 
+                               <p style="color:red">Veuillez insérer des photos</p> 
                             {/if}
                             </div>
                             <label class="btn--success" for="changer les photos de l'annonce" onclick="javascript:showInputButton()" >Changer les photos</label>
@@ -114,7 +114,7 @@
 
                         <div class="preview flex-container item-center txt-center">
                             <div class="w90 item-center txt-center">
-                                <p>Aucun fichier sélectionné pour le moment</p>
+                                <p style="color:red">Veuillez insérer des photos</p> 
                             </div>
                         </div>
                     </div>
@@ -162,7 +162,7 @@
     </div>
     {/if}
     <script>
-
+        document.getElementById('submit-button').disabled = true;
         var input = document.querySelector('#image_uploads');
         var preview = document.querySelector('.preview');
         document.getElementById("obj-photos").style.display = "none";
@@ -174,11 +174,12 @@
         {
             document.getElementById("obj-photos").style.display = "block";
             document.getElementById("change-photos").style.display = "none";
+            document.getElementById('submit-button').disabled = true;
         }
 
         function updateImageDisplay() 
         {
-            document.getElementById('submit-button').disabled = false;
+            
             while(preview.firstChild) {
                 preview.removeChild(preview.firstChild);
             }
@@ -189,11 +190,13 @@
                 var para = document.createElement('p');
                 para.textContent = 'Pas encore d\'images de sélectionnées';
                 preview.appendChild(para);
+                document.getElementById('submit-button').disabled = true;
             } 
             else
             {
                 var list = document.createElement('ol');
                 preview.appendChild(list);
+                document.getElementById('submit-button').disabled = false;
                 if(curFiles.length <= 5)
                 {
                     for(var i = 0; i < curFiles.length; i++) 
@@ -323,6 +326,7 @@
     }
     doc
     {/if}
+    document.getElementById('submit-button').disabled = false;
     </script>  
     {block name="script"}{/block}
 {/block}

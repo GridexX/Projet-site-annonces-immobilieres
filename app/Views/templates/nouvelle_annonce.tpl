@@ -6,6 +6,6 @@
 <script>
 
 window.onload = showInputButton();
-
+document.getElementById('submit-button').disabled = true;
 </script>
 {/block}
