@@ -20,6 +20,8 @@ class Mail extends Controller
         $config['SMTPPort'] = 465; 
 
         $email->initialize($config);
+        $session = \Config\Services::session();
+        //service('SmartyEngine')->assign('session',$session);
         return $email;
     }
 
@@ -39,8 +41,8 @@ class Mail extends Controller
         $message = '<body style="width: 100%; background-color: #56199c;">
         <div style="color: white; text-align: center;"><h1>Bonjour '.$uti["U_pseudo"].'</h1><div style="font-size:1.35rem;">'.$corps;
         if($msg!==false)  
-            $message .= '<div style="background-color:#F79F1F;width:80%;margin-left:10%;padding:.1rem;color:black;border-radius: .9rem;"><p style="text-align:left;margin-left:10%">'.$msg[0].' : "<i>'.$msg[1].'</i>"</p></div>';
-        $message .= '</div><br><br><br><br><br><br><p>&copy; 2021 Andréa Duhamel & Arsène Fougerouse, IUT D\'Aix-Marseille campus d\'Arles</p></div></body>' ;
+            $message .= '<div style="background-color:#F79F1F;width:80%;margin-left:10%;padding:.1rem;color:black;border-radius: .9rem;"><p style="text-align:left;margin-left:10%"><small>'.$msg["U_mail"].'</small> : "<i>'.$msg["M_texte_message"].'</i>"</p></div>';
+        $message .= '</div><br/><br/><br/><br/><br/><br/><p>&copy; 2021 Andréa Duhamel & Arsène Fougerouse, IUT D\'Aix-Marseille campus d\'Arles</p></div></body>' ;
         return $message;
     }
 
@@ -50,7 +52,7 @@ class Mail extends Controller
         return $msg;
     }
 
-    public function accountModified( $actionAdmin=false)
+    public function accountModified($uti, $actionAdmin=false)
     {
         $modelU = new utilisateurModel();
         $uti = $modelU->getUtilisateur('fr.annonce.immobiliere@gmail.com');
@@ -60,10 +62,10 @@ class Mail extends Controller
         if($actionAdmin)
         {
             $corps .= $this->adminMark("modifier");
-            
-            $corps .= '<div style="color:black;background-color:white;border-radius:1rem;border-color: black;"><b>Nom : </b> <i>"'.$uti["U_nom"].'"</i></p>';
-            $corps .= "<h5>Vos nouveaux attributs :</h5> <p><b>Pseudo : </b> <i>".$uti["U_pseudo"]."</i></p>";
-            $corps .= "<p><b>Prénom : </b> <i>".$uti["U_prenom"]."</i></p></div>";
+            $corps .= '<h5>Vos nouveaux attributs : </h5><div style="background-color:white;width:80%;margin-left:10%;padding:.1rem;color:black;border-radius: .9rem;">';
+            $corps .= '<p><b>Pseudo : </b> <i>'.$uti["U_pseudo"].'</i></p>';
+            $corps .= "<p><b>Prénom : </b> <i>".$uti["U_prenom"]."</i></p>";
+            $corps .= '<p><b>Nom : </b> <i>'.$uti["U_nom"].'</i></p></div>';
         } 
         $message = $this->text($uti,$corps);
         return $this->sendMail($sujet, $message, $dest);
@@ -73,9 +75,9 @@ class Mail extends Controller
     {
         $sujet = "Suppression de votre compte";
         $dest = $uti['U_mail'];
-        $corps = "<p>Vous recevez ce mail pour vous indiquer que votre compte à été supprimé.</p>";
+        $corps = "<p>Vous recevez ce mail de confirmation car votre compte à été supprimé.</p>";
         if($actionAdmin) $corps .= $this->adminMark("supprimer");
-        $corps .= "<p>Nous sommes dans le regret de vous voir nous quitter.</p> <br><br><p>Bonne continuation !</p><p>L'équipe du Site</p>";
+        $corps .= "<p>Nous sommes dans le regret de vous voir nous quitter.</p> <br/><br/><p>Bonne continuation !</p><p>L'équipe du Site</p>";
         $message = $this->text($uti,$corps);
         return $this->sendMail($sujet, $message, $dest);
     }    
@@ -84,16 +86,40 @@ class Mail extends Controller
     {
         $sujet = "Creation de votre compte";
         $dest = $uti['U_mail'];
-        $message = '<h4>Cher'.$uti["U_pseudo"].' </h4> <br><p>Bienvenue sur notre site ShareLoc !</p>';
+        $corps = '<p>Votre compte à bien été crée sur notre Site. Nous sommes ravis de vous accueillir parmis nous !</p>';
+        $message = $this->text($uti,$corps);
         return $this->sendMail($sujet, $message, $dest);
     }
 
-    public function incomingMessage($annonce, $message, $utiDest, $utiSend)  //Definit que l'annonce si message au proprio, sinon destinataire si réponse du proprio
+    public function incomingMessage($T_message, $utiDest, $utiSend)  //Definit que l'annonce si message au proprio, sinon destinataire si réponse du proprio
     {
-        $sujet = "Vous avez un nouveau message";
-        $dest = $utiDest['U_mail'];
-        $message = '<p>Vous avez reçu un message de <b>'.$utiSend['U_pseudo'].'</b> concernant l\'annonce : <b>'.$annonce["A_titre"].'</b>.</p> <br><p><pre>'.$message.'</pre></p>';
-    }    
+        $modelU = new utilisateurModel();
+        $utiDest = $modelU->getUtilisateur('fr.annonce.immobiliere@gmail.com');
+        $utiSend = $modelU->getUtilisateur('arsene.fougerouse@etu.univ-amu.fr');
+        $sujet = $utiSend["U_mail"]." vous a envoyé un message";
+        $T_message["U_mail"] = $utiSend["U_mail"];
+        $T_message["M_texte_message"] = "Yo bgggg !";
+        $annonce["A_titre"] = "fzfze";
+        $corps = '<p>Vous avez reçu un message de <b>'.$utiSend['U_pseudo'].'</b> concernant l\'annonce : <b>'.$annonce["A_titre"].'</b>.';
+        $message = $this->text($utiDest, $corps, $T_message);
+        return $this->sendMail($sujet, $message, $utiDest["U_mail"]);
+    }  
+    
+    public function annonceBloquée($uti, $annonce=false)
+    {
+        $sujet = ($annonce===false) ? "Vos annonces ont été bloquées" : "Votre annonce a été bloquée";
+        $dest = $uti['U_mail'];
+        $corps = "<p>L'administrateur à pris la décision de bloquer ";
+        $corps .=($annonce===false) ? "vos annonces" : "votre annonce : <i>".$annonce["A_titre"]."</i>"; 
+        $corps.="</p><br/><br/><small>Soyez certains que cette nouvelle nous attriste grandement...</small>";
+        $message = $this->text($uti,$corps);
+        return $this->sendMail($sujet, $message, $dest);
+    }
+
+    public function annoncesBloquées($uti)
+    {
+        return $this->annonceBloquée($uti,false);
+    }
 
     public function sendMail($sujet, $message, $dest)
     {

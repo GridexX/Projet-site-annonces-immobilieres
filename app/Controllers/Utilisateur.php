@@ -25,7 +25,6 @@ class Utilisateur extends Controller
         return ! empty($admin);
     }
 
-    //public function 
 
     public function returnError($error,$view)
     {
@@ -119,6 +118,10 @@ class Utilisateur extends Controller
                     $controllerA = new Annonce();
                     $session = \Config\Services::session();
                     $session->set($data);
+                    $controllerM = new Mail();
+                    $modelU = new utilisateurModel();
+                    $controllerM->createAccount($modelU->getUtilisateur($data['mail']));
+                    
                     $notif = array(
                         "type" => "success",
                         "titre" => "Success",
@@ -217,7 +220,7 @@ class Utilisateur extends Controller
 
                 //Envoi du mail de d'information
                 $controllerM = new Mail();
-                $controllerM->accountModified($res, $newMdp, !empty($session->get("admin")) );
+                $controllerM->accountModified($res, !empty($session->get("admin")) );
 
                 service('SmartyEngine')->assign('succes','Profil mis à jour !');
                 service('SmartyEngine')->assign('session',$session);
@@ -245,7 +248,7 @@ class Utilisateur extends Controller
             $modelA = new annonceModel();
             $controllerA = new Annonce();
             $lUtilisateurs = $modelU->getUtilisateur();
-            $lAnnonce = $controllerA->getTypeAnnonce( $modelA->getAnnonce(), "archivée" );
+            $lAnnonce = $controllerA->arrDateFormat( $controllerA->getTypeAnnonce( $modelA->getAnnonce(), "bloquée" ) );
             service('SmartyEngine')->assign('liste_annonce',$lAnnonce);
             service('SmartyEngine')->assign('liste_utilisateur',$lUtilisateurs);
 
@@ -257,14 +260,12 @@ class Utilisateur extends Controller
                 return $this->returnError('Vous devez disposer des droits administrateurs pour effectuer cette action','connexion');
         
             if($mail!==false){
-            $utilisateur = $modelU->getUtilisateur($mail);
-            service('SmartyEngine')->assign('uti',$utilisateur);
+                $utilisateur = $modelU->getUtilisateur($mail);
+                service('SmartyEngine')->assign('uti',$utilisateur);
             }
             
         }   
-        return service('SmartyEngine')->view($page);
-
-        
+        return service('SmartyEngine')->view($page.'.tpl');   
     }
 }
 ?>

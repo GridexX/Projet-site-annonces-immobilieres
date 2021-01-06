@@ -14,24 +14,36 @@
             {if $nb_annonces>100}<option value="/annonce/viewListe/{$bSelect}/100">100</option>{/if}
         </select>
     </div>
-    {if isset($recherche)}
+    {/if}
+    {if !isset($estAccueil) && (isset($recherche) || isset($borne) )}
+        <p>Yo</p>
         {include file="recherche_annonce.tpl"}
     {/if}
-{/if}
+
 {if isset($liste_annonce)}
 <div class="liste_annonce flex-container w75 center">
 
     {foreach from=$liste_annonce item=annonce}
-    <a href="/annonce/view/annonce/{$annonce.A_idannonce}" class="annonce flex-container center w45">
-        <div class="w35">
-            <img class="w90 center" {if isset($annonce.P_photo) } src='/uploads/{$annonce.A_idannonce}/{$annonce.P_photo.P_titre}' {else} src='/Images/logo_site.png' {/if} } alt="House logo">
+    <div style="cursor: pointer;" onclick="window.location.href='/annonce/view/annonce/{$annonce.A_idannonce}'" class="annonce flex-container center w45">
+
+        <div class="w35 center">
+        <div class="img-container">
+            <img class="" {if isset($annonce.P_photo) } src='/uploads/{$annonce.A_idannonce}/{$annonce.P_photo.P_titre}' {else} src='/Images/logo_site.png' {/if} } alt="House logo">
+        </div>
         </div> 
         <div class="w65"> 
             <p> {$annonce.A_titre} : {$annonce.A_cout_loyer+$annonce.A_cout_charges} €{if isset($smarty.session.mail) && $smarty.session.mail===$annonce.U_mail} {if $annonce.A_etat==='publiée'}<span style="color:green"><i class="fas fa-check-circle"></i></span>{else}<span style="color:orange"><i class="fas fa-clock"></i></span>{/if}{/if}</p>
             <p> {$annonce.A_superficie}m² {$annonce.T_type} | {$annonce.A_ville} </p>
             <small> Posté le {$annonce.A_date_maj}</small> 
+            {if isset($smarty.session.admin) && isset($mesAnnonces)}
+                {if $annonce.A_etat!=='bloquée'}
+                    <a href="/annonce/changerEtat/{$annonce.A_idannonce}/bloquée/annoncesUti/"><button class="btn--danger"><i class="fas fa-ban"></i> Bloquer l'annonce</button></a>
+                {else}
+                    <a class="btn--success" href="/annonce/changerEtat/{$annonce.A_idannonce}/en cours/annoncesUti/" ><i class="fas fa-check-double"></i> Débloquer l'annonce</a>
+                {/if}
+            {/if}
         </div>   
-    </a>
+    </div>
     {/foreach}
 </div>
 {/if}

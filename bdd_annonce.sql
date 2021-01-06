@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS `T_utilisateur`
     U_pseudo varchar(25) NOT NULL,
     U_nom varchar(25) NOT NULL,
     U_prenom varchar(25) NOT NULL,
-    U_estAdmin boolean NOT NULL DEFAULT FALSE,
+    U_estAdmin boolean NOT NULL DEFAULT FALSE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 
@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `T_annonce`
 (
     A_idannonce int PRIMARY KEY NOT NULL AUTO_INCREMENT,
     A_date_maj DATETIME NOT NULL,
-    A_etat ENUM('en cours','publiée','archivée'),
+    A_etat ENUM('en cours','publiée','archivée','bloquée'),
     A_titre varchar(50) NOT NULL,
     A_cout_loyer numeric(7,2) NOT NULL,
     A_cout_charges numeric(5,2) NOT NULL,
@@ -73,7 +73,8 @@ CREATE TABLE IF NOT EXISTS `T_message`
     M_dateheure_message DATETIME NOT NULL,
     M_texte_message text(500) NOT NULL,
     A_idannonce int,
-    U_mail varchar(40) NOT NULL,
+    U_mail varchar(40) NOT NULL, -- mail de l'envoyeur
+    A_mail varchar(40) NOT NULL, -- mail du receveur
     CONSTRAINT FK_MSG_ANNONCE FOREIGN KEY (A_idannonce) REFERENCES T_annonce(A_idannonce),
     CONSTRAINT FK_MSG_UTI FOREIGN KEY (U_mail) REFERENCES T_utilisateur(U_mail),
     CONSTRAINT PK_MSG PRIMARY KEY (A_idannonce, U_mail, M_dateheure_message)
