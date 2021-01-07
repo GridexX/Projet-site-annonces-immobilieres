@@ -1,7 +1,7 @@
 
-    <div class="flex-container" id="notif">
-        <div class="item-center txtcenter notif-container success">
-            <span><p>Votre annonce machin <button onclick="hideNotif();" class="btn--close"><i class="fas fa-times"></i></button></p></span>
+    <div class="flex-container" id="notif" >
+        <div class="item-center txtcenter notif-container {$notification.type}">
+            <span><p>{$notification.message}<button onclick="hideNotif();" class="btn--close"><i class="fas fa-times"></i></button></p></span>
         </div>
     </div>
     <script>

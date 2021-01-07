@@ -674,6 +674,7 @@ label span{
 #notif
 {
     margin : 2rem 0;
+    cursor: pointer;
 }
 
 .notif-container

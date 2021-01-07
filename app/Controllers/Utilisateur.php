@@ -5,6 +5,7 @@ use CodeIgniter\Controller;
 use App\Controllers\Annonce;
 use App\Models\annonceModel;
 use App\Controllers\Mail;
+use App\Controllers\Pages;
 
 class Utilisateur extends Controller
 {
@@ -24,6 +25,28 @@ class Utilisateur extends Controller
         $admin = $model->getUtilisateur("admin");
         return ! empty($admin);
     }
+
+    public function estAdmin():bool
+    {
+        $session = \Config\Services::session();
+        $estAdmin = $session->get('admin')===NULL ? false : true;
+        //var_dump( $estAdmin );
+        return $estAdmin;
+    }
+
+    public function annonceAppartientUti($annonce,$uti):bool
+    {
+        return $annonce["U_mail"] = $uti["U_mail"];
+    }
+
+    public function estConnecte():bool
+    {
+        $session = \Config\Services::session();
+        $estConnecte = !empty($session->get("mail")) ? true : false;
+        //var_dump($estConnecte);
+        return $estConnecte;
+    }
+
 
 
     public function returnError($error,$view)
@@ -239,10 +262,15 @@ class Utilisateur extends Controller
     {
         $session = \Config\Services::session();
         $modelU = new utilisateurModel();
-        if($page==="espace_admin")
+        $controlP = new Pages();
+        if($page==="espace_admin")  //vérification si admin pour accéder à l'espace administrateur
         {
-            if ($session->get("admin")!==true)
-                return $this->returnError('Vous devez disposer des droits administrateurs pour effectuer cette action','connexion');
+            if (!$this->estAdmin()){
+                $controlP->affNotif("error","Vous devez disposer des droits administrateurs pour effectuer cette action");
+                $controlA = new Annonce();
+                return $controlA->accueil();
+            }
+                //return $this->returnError('Vous devez disposer des droits administrateurs pour effectuer cette action','connexion');
 
             
             $modelA = new annonceModel();

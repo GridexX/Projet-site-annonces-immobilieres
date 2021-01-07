@@ -4,6 +4,11 @@ use CodeIgniter\Controller;
 
 class Pages extends Controller
 {
+    public function affNotif($type, $message)
+    {
+        $notification = array( "type" => $type, "message" => $message);
+        service('SmartyEngine')->assign('notification',$notification);
+    }
 
     public function returnError($error,$view)
     {

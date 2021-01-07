@@ -42,6 +42,15 @@ class Annonce extends Controller
 
     public function bloquerAnnonces(string $mail)
     {
+        
+        $controlU = new Utilisateur();
+        if( !$controlU->estAdmin() )
+        {
+            $controlP = new Pages();
+            $controlP->affNotif("error","Vous ne pouvez pas bloquer des annonces !");
+            return $this->accueil();
+        }
+
         $modelA = new annonceModel();
         $modelU = new utilisateurModel();
         $lAnnonces = $modelA->getAnnonceUti($mail);
@@ -454,7 +463,7 @@ class Annonce extends Controller
     {
         $session = \Config\Services::session();
         $modelA = new annonceModel();
-        if($annUti===false)
+        if(!empty($annUti))
         {
             $lAnnonces = $modelA->getAnnonce();
             

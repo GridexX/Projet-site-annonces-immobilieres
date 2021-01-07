@@ -24,6 +24,8 @@ class Photo extends Controller
 
     public function delete(int $id_annonce)
     {
+      //VERIFICATION SI L'ANNONCE APPARTIENT L'UTILISATEUR
+
       helper('filesystem');
       $path = "uploads/$id_annonce";
       $model = new photoModel();
