@@ -41,6 +41,7 @@
                 {else}
                     <a class="btn--success" href="/annonce/changerEtat/{$annonce.A_idannonce}/en cours/annoncesUti/" ><i class="fas fa-check-double"></i> Débloquer l'annonce</a>
                 {/if}
+                <a href="/messagerie/delete/{$annonce.A_idannonce}"><button class="btn--danger"> Supprimer les messages de l'annonce</button></a>
             {/if}
         </div>   
     </div>

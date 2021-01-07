@@ -180,8 +180,8 @@
                         <a href="/annonce/changerEtat/{$annonce.A_idannonce}/archivée"><button class="btn--danger"><i class="fas fa-archive"></i> Archiver l'annonce</button></a>
                         {else}
                         <a href="/annonce/changerEtat/{$annonce.A_idannonce}/en cours"><button class="btn--success"><i class="fas fa-archive"></i> Désarchiver l'annonce</button></a>
-                        {/if}
-                    {/if*}
+                        {/if*}
+                    {/if}
                 <div class="flex-container ">
                     <div class="w75">
                     {if isset($smarty.session.mail) && ($smarty.session.mail===$annonce.U_mail || isset($smarty.session.admin) )}

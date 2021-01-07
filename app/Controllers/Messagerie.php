@@ -153,6 +153,13 @@ class Messagerie extends Controller
         $tabMois = array("Janvier","Févrirer","Mars","Avril","Mai","Juin",'Juillet','Août','Septembre','Octobre','Novembre','Décembre');
         $numMois =  substr($date,5,2);
         return substr($date,8,2).' '.$tabMois[$numMois-1].' '.substr($date,0,4).' à '.substr($date,11,2).'h'.substr($date,14,2);  
-    } 
+    }
+    public function delete($id_annonce)
+    {
+        $model = new messagerieModel();
+        $model->deleteM($id_annonce);
+        return redirect()->to("/annonce/view/$id_annonce"); 
+    }
+    
 }
 ?>
