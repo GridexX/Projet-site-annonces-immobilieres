@@ -268,13 +268,18 @@ class Annonce extends Controller
     }
 
     public function view($page,$id_annonce=false)
-    {        
+    {      
+        $session = \Config\Services::session();
+        $controlP = new Pages();
+        if($session->get("mail") === null && $page === 'nouvelle_annonce') {
+            $controlP->affNotif("error","Vous devez être connecté pour créer une annonce !","/");
+            return $this->accueil(); 
+        }  
         $modelA = new annonceModel();
         $annonce = $modelA->getAnnonce($id_annonce);
         if( $page!=='nouvelle_annonce' && !($id_annonce!==false && gettype($annonce)==='array' && empty($annonce['A_idannonce'])!==1)) //Lance une erreur si annonce n'existe pas pour édition où la vue
             return $this->returnError('L\'annonce n\'a pas été trouvée','connexion');
              
-        $session = \Config\Services::session();
         if($page === 'edition_annonce' && !($session->get('mail')===$annonce['U_mail'] || $session->get('admin') ) )  //Vérifie que l'annonce appartient à l'utilisateur et 
             return $this->returnError('Vous n\'étes pas autorisé à modifier cette annonce','connexion');
         
@@ -507,7 +512,8 @@ class Annonce extends Controller
         else{
         //$nbAnnonces = count($lAnnonces);
         //Modification de la variable id_debut si dépassement du nombre d'annonce ou borne trop petite
-        if($id_debut>count($lAnnonces) - count($lAnnonces)%$nbAnnonces ) $id_debut = count($lAnnonces) - count($lAnnonces)%$nbAnnonces;
+        if($nbAnnonces > 0)
+            if($id_debut>count($lAnnonces) - count($lAnnonces)%$nbAnnonces ) $id_debut = count($lAnnonces) - count($lAnnonces)%$nbAnnonces;
 
         if(count($lAnnonces)>15)  //On affiche les boutons pour switch d'annonce si le nombre est supérieur à 15 et différent page accueil
         { 
