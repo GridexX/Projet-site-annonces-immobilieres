@@ -1,0 +1,20 @@
+--------VERIFICATIONS--------
+
+Il faut être connecté pour: 
+    - Envoyer un message
+    - Regarder ses conversations
+    - Créer une annonce
+    - Gérer notre profil
+    - Editer nos annonces
+    - Acceder a l'espace admin
+
+--------FONCTIONNALITES--------
+
+Quand on est déconnecté on peut:
+    - Regarder les annonces
+    - Envoyer un mail
+
+--------BUGS--------
+
+Bug des formulaires
+Bug du css

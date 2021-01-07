@@ -21,8 +21,7 @@ class App extends BaseConfig
 	| environments.
 	|
 	*/
-	public $baseURL = 'http://localhost/'; 
-	#POUR LE SERVEUR AMU
+	public $baseURL = 'http://localhost:8080/'; 
 	#public $baseURL = 'https://a-pedagoarles-lamp.aix.univ-amu.fr/A2020M3104G13/';
 
 	/*
