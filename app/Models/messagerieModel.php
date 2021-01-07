@@ -7,7 +7,7 @@ use App\Models\utilisateurModel;
 
 class MessagerieModel extends Model
 {
-    protected $table = 'T_Message';
+    protected $table = 'T_message';
 
     protected $allowedFields = [
         'A_idannonce',
