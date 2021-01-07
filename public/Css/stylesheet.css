@@ -298,6 +298,11 @@ hr.white
     outline-style: none;
 }
 
+.no-outline
+{
+    outline-style: none;  
+}
+
 .dropdown-content {
     display: none;
     position: absolute;
@@ -666,23 +671,54 @@ label span{
     color: grey;
 }
 
-
-
-.notif-container h5
+#notif
 {
-    font-size: 2rem;
+    margin : 2rem 0;
+}
+
+.notif-container
+{
+    width: auto;
+    border : 0;
+    padding : .5rem 2rem;
+    transition: .3s;
+    transition-timing-function: cubic-bezier(0, 0, 0.21, 1)
+}
+
+.notif-container:hover
+{
+    transform: translate(-.1em,-.1em);
+    box-shadow: .4em .4em .9em rgba(44, 44, 44, 0.35);
+}
+
+.btn--close
+{
+    color : rgba(255, 255, 255, 0.6);
+    background: none;
+    margin-right: -2rem;
+    margin-top : -.2rem;
+    transition-duration: .3s;
+}
+
+.btn--close:hover
+{
+    color:white;
+}
+.notif-container p
+{
+    font-size: 1.5rem;
     font-style: italic;
-    font-weight: bold;
+    color:whitesmoke;
 }
 
 .notif-container.success 
 {
-    border-color: var(--green-dark);
+    background-color: var(--green-light);
 }
 
 .notif-container.error 
 {
-    border-color: var(--red-dark);
+    background-color: var(--red-light);
 }
 
 .notif-container.warning 
@@ -939,3 +975,4 @@ label span{
     color:darkorange;
   }
   
+
