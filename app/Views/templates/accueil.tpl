@@ -1,26 +1,14 @@
 {extends 'main.tpl'}
 {block name="titre_onglet"}Accueil{/block}
 {block name="output_area"}
-{if !isset($estAccueil)}
-    {if isset($lBoutons) && $var.totAnnonce > 15}
-        <div class="flex-container w75 center">
-        {foreach from=$lBoutons item=bouton}
-            <a href="/annonce/viewListe/{$bouton.numAnnDeb}/{$nbAnnonces}"><button class="bouton {($bSelect>=$bouton.numAnnDeb && $bSelect<$bouton.numAnnFin) ? 'btn-green' : 'btn-bleu' } center">{$bouton.numPage+1}</button></a>
-        {/foreach}
-            <select onchange="location = this.value;">
-                <option default>Afficher {$nbAnnonces} annonces par pages</option>
-                <option value="/annonce/viewListe/{$bSelect}/15">15 </option>
-                {if {$var.totAnnonce}>30}<option value="/annonce/viewListe/{$bSelect}/30">30 </option>{/if}
-                {if {$var.totAnnonce}>50}<option value="/annonce/viewListe/{$bSelect}/50">50 </option>{/if}
-                {if {$var.totAnnonce}>100}<option value="/annonce/viewListe/{$bSelect}/100">100</option>{/if}
-            </select>
+<div class="flex-container ">
+        <div class="txtblock w50 center txtcenter">
+            <h2>Liste des dernières annonces</h2>
+            <div class="txtblock w40 center txtcenter">
+                <hr class="white"/>
+            </div>
         </div>
-    {/if}
-    {if (isset($recherche) || isset($borne) )}
-        {include file="recherche_annonce.tpl"}
-    {/if}
-{/if}
-
+    </div>
 {if isset($liste_annonce)}
 <div class="liste_annonce flex-container w75 center">
 
@@ -36,7 +24,7 @@
             <p> {$annonce.A_titre} : {$annonce.A_cout_loyer+$annonce.A_cout_charges} €{if isset($smarty.session.mail) && $smarty.session.mail===$annonce.U_mail} {if $annonce.A_etat==='publiée'}<span style="color:green"><i class="fas fa-check-circle"></i></span>{else}<span style="color:orange"><i class="fas fa-clock"></i></span>{/if}{/if}</p>
             <p> {$annonce.A_superficie}m² {$annonce.T_type} | {$annonce.A_ville} </p>
             <small> Posté le {$annonce.A_date_maj}</small> 
-            {if isset($smarty.session.admin) && isset($mesAnnonces)}
+            {if isset($affBoutonsAdmin)}
                 {if $annonce.A_etat!=='bloquée'}
                     <a href="/annonce/changerEtat/{$annonce.A_idannonce}/bloquée/annoncesUti/"><button class="btn--danger"><i class="fas fa-ban"></i> Bloquer l'annonce</button></a>
                 {else}
@@ -49,4 +37,5 @@
     {/foreach}
 </div>
 {/if}
+
 {/block}

@@ -26,6 +26,14 @@ class Utilisateur extends Controller
         return ! empty($admin);
     }
 
+    public function existeUti($mail):bool
+    {
+        $model = new utilisateurModel();
+        $uti = $model->getUtilisateur($mail);
+        //var_dump(!empty($uti));
+        return ! empty($uti);
+    }
+
     public function estAdmin():bool
     {
         $session = \Config\Services::session();

@@ -23,7 +23,7 @@ class utilisateurModel extends Model
         }
         else if($mail === "admin")
         {
-            return $this->where(['U_estAdmin' => true])->findAll();
+            return $this->where(['U_estAdmin' => true])->first();
         }
         return $this->asArray()->where(['U_mail' => $mail])->first();
     }

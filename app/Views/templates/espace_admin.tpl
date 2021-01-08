@@ -20,6 +20,8 @@
             <a href="/utilisateur/view/edition_profil/{$uti.U_mail}" ><button class="btn--primary">Editer</button></a>
             <a href="/annonce/annoncesUti/{$uti.U_mail}" ><button class="btn--primary"><small><i class="fas fa-eye"></i> Voir ses annonces</small></button></a>
             <a href="/annonce/bloquerAnnonces/{$uti.U_mail}" ><button class="btn--danger"><small><i class="fas fa-ban"></i> Bloquer les annonces</small></button></a>
+            <a href="/messagerie/sendMail/{$uti.U_mail}" ><button class="btn--success"><small><i class="fas fa-envelope"></i> Envoyer un mail</small></button></a>
+            
             </div>
         </div>
         {/foreach}

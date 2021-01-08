@@ -121,6 +121,15 @@ class Mail extends Controller
         return $this->annonceBloquée($uti,false);
     }
 
+    public function mailAdmin($msg, $sujet, $uti, $send)
+    {
+        $sujet = $sujet;
+        $dest = $uti["U_mail"];
+        $corps = "<p>L'administrateur du site <b>".$send."</b> vous a envoyé un mail : </p>";
+        $message = $this->text($uti, $corps, $msg);
+        return $this->sendMail($sujet, $message, $dest);
+    }
+
     public function sendMail($sujet, $message, $dest)
     {
         $email = $this->configMail();

@@ -1,10 +1,12 @@
 <?php namespace App\Controllers;
 
-use App\Models\messagerieModel;
 use App\Models\annonceModel;
+use App\Models\energieModel;
 use App\Models\utilisateurModel;
 use App\Controllers\Pages;
 use CodeIgniter\Controller;
+use App\Controllers\Photo;
+use App\Controllers\Mail;
 
 class Messagerie extends Controller
 {
@@ -12,6 +14,65 @@ class Messagerie extends Controller
     {
         service('SmartyEngine')->assign('error',$error);
         return service('SmartyEngine')->view($view.'.tpl');
+    }
+
+    public function sendMail($mail)
+    {
+        
+        $modelU = new utilisateurModel();
+        $controlU = new Utilisateur();
+        $controlP = new Pages();
+        $controlA = new Annonce();
+        $session = \Config\Services::session();
+        $uti = $modelU->getUtilisateur($mail);
+        service("SmartyEngine")->assign('uti',$uti);
+        
+        if( !$controlU->estConnecte())
+        {
+            $controlP->affNotif('error',"Vous devez être connecté et avoir un compte admin pour envoyer un mail");
+            return $controlU->view("espace_admin");
+        }
+        //Seul l'admin peut envoyer un mail à un utilisateur
+        if( !$controlU->estAdmin() )
+        {
+            $controlP->affNotif('error',"Vous devez être admin pour envoyer un mail !");
+            return $controlU->view("espace_admin");
+        } 
+        if( !$controlU->existeUti($mail))  //Vérification de l'adresse mail
+        {
+            $controlP->affNotif('error',"Aucune adresse mail correspondante dans la BDD");
+            $controlU->view("espace_admin");
+        } 
+        
+        
+        helper(['form', 'url']);
+
+        $mailVal = $this->validate([
+            'message' => 'required',
+            'sujet' => 'required'
+         ]);
+        if($mailVal)
+        {
+            $sujet = $this->request->getVar('sujet');
+            $msg["U_mail"] = $session->get("mail");
+            $msg["M_texte_message"] = $this->request->getVar('message');
+            $uti = $modelU->getUtilisateur($mail);
+            $controlM = new Mail();
+            //$controlM->mailAdmin($msg, $sujet, $uti, $session->get("pseudo"));
+            $controlP->affNotif('success',"Mail envoyé avec succés",);
+            $modelA = new annonceModel();
+            $controllerA = new Annonce();
+            $lUtilisateurs = $modelU->getUtilisateur();
+            $lAnnonce = $controllerA->arrDateFormat( $controllerA->getTypeAnnonce( $modelA->getAnnonce(), "bloquée" ) );
+            service('SmartyEngine')->assign('liste_annonce',$lAnnonce);
+            service('SmartyEngine')->assign('liste_utilisateur',$lUtilisateurs);
+            return service('SmartyEngine')->view('espace_admin.tpl');   
+        }
+        else
+        {
+            return service("SmartyEngine")->view("message_mail.tpl");
+        }
+
     }
 
     public function create($id_annonce, $mail, $mail2)
