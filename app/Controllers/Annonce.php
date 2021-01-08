@@ -210,9 +210,11 @@ class Annonce extends Controller
             
             $lastAnnonce = $model->getLastAnnonce($session->get("mail"));  //Récupère la dernière annonce insérée par l'utilisateur
             $imagefile = $this->request->getFiles();
+            $controllerP->create($imagefile,$lastAnnonce["A_idannonce"]);
             //return $this->returnError(print_r($lastAnnonce),'connexion');
-            
-            return redirect()->to("/annonce/mesAnnonces");
+            $controllerPa = new Pages();
+            $controllerPa->affNotif('success',"Annonce insérée avec succés");
+            return $this->mesAnnonces();
         }
         else
         {
@@ -664,7 +666,11 @@ class Annonce extends Controller
         $modelA = new annonceModel();
         $lAnnonces = $this->getTypeAnnonce( $modelA->getAnnonce(), "publiée");
         $var["totAnnonce"] = count($lAnnonces);
-
+        if($this->lAnnonceVide($lAnnonces))
+        {
+            $this->notifPasAnnonces();
+            return $this->accueil();
+        }
         $whereCond = $this->whereReqChamps($lAnnonces);
         if( $modelA->searchAnnonce($whereCond) !== NULL)
         {
@@ -689,7 +695,7 @@ class Annonce extends Controller
         } 
         else
         $lAnnonces = $this->annoncesBornees($lAnnonces,$id_debut,$nbAnnonces);
-
+        $lAnnonces = $this->arrDateFormat( $this->addPhotoArrAnnonce( $lAnnonces ) );
 
         $modelE = new energieModel();
         $energie = $modelE->getEnergie();
@@ -698,6 +704,21 @@ class Annonce extends Controller
         service('SmartyEngine')->assign('var',$var);
         service('SmartyEngine')->assign('liste_annonce',$lAnnonces);
         return service('SmartyEngine')->view('recherche_annonce.tpl');
+    }
+
+    public function addPhotoArrAnnonce($lAnnonces)
+    {
+        $newLAnn = [];
+        $modelP = new photoModel();
+        for($i=0; $i<count($lAnnonces); ++$i)
+        {
+            $photo = [];
+            $newLAnn[$i] = $lAnnonces[$i];
+            array_push( $photo , $modelP->getPhoto($lAnnonces[$i]['A_idannonce']));
+            if(isset($photo[0][0]))
+                $newLAnn[$i]["P_photo"] = $photo[0][0];
+        }
+        return $newLAnn;
     }
 
     public function annoncesBornees($lAnnonces, $id_debut, $nbAnnonces):array  //Renvoie les dernières annonces entre 2 bornes
@@ -732,6 +753,7 @@ class Annonce extends Controller
         else
         {
             $lAnnonces = $this->annoncesBornees($lAnnonces,0,6);
+            $lAnnonces = $this->arrDateFormat( $this->addPhotoArrAnnonce( $lAnnonces ) );
         }
         
         service('SmartyEngine')->assign('liste_annonce',$lAnnonces);
@@ -772,11 +794,9 @@ class Annonce extends Controller
         }
 
         $lAnnonces = $modelA->getAnnonceUti($mail);
+        $lAnnonces = $this->arrDateFormat( $this->addPhotoArrAnnonce( $lAnnonces ) );
         service('SmartyEngine')->assign('liste_annonce',$lAnnonces);
-        return service('SmartyEngine')->view('mes_annonces.tpl');
-
-
-        
+        return service('SmartyEngine')->view('mes_annonces.tpl');  
     }
 
     public function annoncesUti($mail)

@@ -291,7 +291,7 @@ class Utilisateur extends Controller
             $modelA = new annonceModel();
             $controllerA = new Annonce();
             $lUtilisateurs = $modelU->getUtilisateur();
-            $lAnnonce = $controllerA->arrDateFormat( $controllerA->getTypeAnnonce( $modelA->getAnnonce(), "bloquée" ) );
+            $lAnnonce = $controllerA->arrDateFormat( $controllerA->addPhotoArrAnnonce($controllerA->getTypeAnnonce( $modelA->getAnnonce(), "bloquée" )) );
             service('SmartyEngine')->assign('liste_annonce',$lAnnonce);
             service('SmartyEngine')->assign('liste_utilisateur',$lUtilisateurs);
 

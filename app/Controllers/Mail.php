@@ -41,7 +41,7 @@ class Mail extends Controller
         $message = '<body style="width: 100%; background-color: #56199c;">
         <div style="color: white; text-align: center;"><h1>Bonjour '.$uti["U_pseudo"].'</h1><div style="font-size:1.35rem;">'.$corps;
         if($msg!==false)  
-            $message .= '<div style="background-color:#F79F1F;width:80%;margin-left:10%;padding:.1rem;color:black;border-radius: .9rem;"><p style="text-align:left;margin-left:10%"><small>'.$msg["U_mail"].'</small> : "<i>'.$msg["M_texte_message"].'</i>"</p></div>';
+            $message .= '<div style="background-color:#F79F1F;width:80%;margin-left:10%;padding:.1rem;color:black;border-radius: .9rem;"><p style="text-align:left;margin-left:10%"><small>'.$msg["U_mail"].'</small> : "<i>'.$msg["M_texte_message"].'</i> "</p></div>';
         $message .= '</div><br/><br/><br/><br/><br/><br/><p>&copy; 2021 Andréa Duhamel & Arsène Fougerouse, IUT D\'Aix-Marseille campus d\'Arles</p></div></body>' ;
         return $message;
     }
@@ -137,6 +137,8 @@ class Mail extends Controller
         $email->setTo($dest);
         $email->setSubject($sujet);
         $email->setMessage($message);
+        $email->send(false);
+        
     }
     
 }
