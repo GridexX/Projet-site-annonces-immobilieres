@@ -137,16 +137,6 @@ class Mail extends Controller
         $email->setTo($dest);
         $email->setSubject($sujet);
         $email->setMessage($message);
-
-        if($email->send(false))
-        {
-            return service('SmartyEngine')->view('header_user.tpl');
-        }
-        else
-        {
-            $data = $email->printDebugger(['headers']);
-            print_r($data);
-        }
     }
     
 }

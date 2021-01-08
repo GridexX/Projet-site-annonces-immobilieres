@@ -108,7 +108,7 @@
                             <label class="btn--success label-form"" for="changer les photos de l'annonce" onclick="javascript:showInputButton()" >Changer les photos</label>
                         </div>
                         <div id="obj-photos">
-                        <label class="label-form" class="btn--success" for="image_uploads" style="width:auto;">Sélectionner des images à uploader (PNG, JPG)</label>
+                        <label class="label-form btn--success" for="image_uploads" style="width:auto;">Sélectionner des images à uploader (PNG, JPG)</label>
                         
                         <input class="champs" type="file" id="image_uploads" style="cursor:default;" name="images[]" accept=".jpg, .jpeg, .png" multiple value="Sélectionner des images à uploader (PNG, JPG)" >
 
@@ -128,15 +128,15 @@
                 <div class="localisation div-input">
                     <p class="h6-like">Localisation</p>
                     <div>
-                        <label class="label-form" class="label-form" for="adresse">Adresse : </label>
-                        <input class="champs" type="text" name="adresse" required value="{$annonce.A_adresse|default:''}" placeholder="15 rue des Champs Élysées" pattern="{literal} ..* ..*{/literal}"  oninvalid="this.setCustomValidity('Doit contenir 2 mots')" />
+                        <label class="label-form" for="adresse">Adresse : </label>
+                        <input class="champs" type="text" name="adresse" required value="{$annonce.A_adresse|default:''}" placeholder="15 rue des Champs Élysées" required  oninvalid="this.setCustomValidity('Ne doit pas être vide')" />
                     </div>
                     <div>
-                        <label class="label-form" class="label-form" for="ville" class="label-cp">Ville : </label>
+                        <label for="ville" class="label-cp label-form">Ville : </label>
                         <input class="champs" type="text" name="ville" value="{$annonce.A_ville|default:''}" required placeholder="Paris"/>
                     </div>
                     <div>
-                        <label class="label-form" class="label-form" for="cp" class="label-cp">Code Postal : </label>
+                        <label for="cp" class="label-form label-cp">Code Postal : </label>
                         <input class="champs " type="text" name="cp" value="{$annonce.A_CP|default:''}" required placeholder="75000" pattern="[0-9]{literal}{5}{/literal}"  oninvalid="this.setCustomValidity('5 chiffres')" />
                     </div>
                 </div>

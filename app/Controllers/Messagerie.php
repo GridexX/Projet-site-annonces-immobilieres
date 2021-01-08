@@ -59,8 +59,8 @@ class Messagerie extends Controller
             $msg["M_texte_message"] = $this->request->getVar('message');
             $uti = $modelU->getUtilisateur($mail);
             $controlM = new Mail();
-            //$controlM->mailAdmin($msg, $sujet, $uti, $session->get("pseudo"));
-            $controlP->affNotif('success',"Mail envoyé avec succés",);
+            $controlM->mailAdmin($msg, $sujet, $uti, $session->get("pseudo"));
+            $controlP->affNotif('success',"Mail envoyé avec succés","/utilisateur/view/espace_admin");
             $modelA = new annonceModel();
             $controllerA = new Annonce();
             $lUtilisateurs = $modelU->getUtilisateur();
