@@ -67,7 +67,11 @@ footer{
     border-style: solid;
     border-color: black;
     background-color: rgb(255, 255, 255);
-    padding: 3rem;    
+    padding: 3rem;  
+}
+
+.label-form {
+    width: 38%;
 }
 
 label
@@ -94,12 +98,17 @@ label
     color: lightgray;
     padding: 1rem;
     padding-left: 2rem;
+    padding-right: 2rem;
     border-top-right-radius: 1rem;
     border-bottom-right-radius: 1rem; 
     border-style: none; 
     transition-duration: .5s;
     outline-style: none;
-    width: 50%;
+    width: fit-content;
+}
+
+p.slider-title {
+    width: fit-content;
 }
 
 .formulaire select.champs:hover
@@ -145,7 +154,7 @@ label
 
 .champs-cp
 {
-    width: 15rem;
+    width: 1em;
 }
 
 ::placeholder{
