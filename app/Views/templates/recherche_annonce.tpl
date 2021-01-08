@@ -3,20 +3,7 @@
 {block name="titre_para"}Résultat de la recherche{/block}
 {block name="recherche"}
 {*Boutons pour naviguer dans les pages*}
-{if isset($lBoutons)}
-<div class="flex-container w75 center">
-    {foreach from=$lBoutons item=bouton}
-        <a href="/annonce/toutesAnnonces/{$bouton.numAnnDeb}/{$nbAnnonces}"><button class="bouton {($bSelect>=$bouton.numAnnDeb && $bSelect<$bouton.numAnnFin) ? 'btn-green' : 'btn-bleu' } center">{$bouton.numPage+1}</button></a>
-    {/foreach}
-    <select onchange="location = this.value;">
-        <option default>Afficher {$nbAnnonces} annonces par pages</option>
-        <option value="/annonce/viewListe/{$bSelect}/15">15 </option>
-        {if {$var.totAnnonce}>30}<option value="/annonce/viewListe/{$bSelect}/30">30 </option>{/if}
-        {if {$var.totAnnonce}>50}<option value="/annonce/viewListe/{$bSelect}/50">50 </option>{/if}
-        {if {$var.totAnnonce}>100}<option value="/annonce/viewListe/{$bSelect}/100">100</option>{/if}
-    </select>
-</div>
-{/if}
+
 
 <div class="flex-container w75 item-center">
     <div class="annonce-container formulaire w90 item-center">
@@ -254,6 +241,20 @@
                 </div>
             </div>
             <hr>
+            {if isset($lBoutons)}
+<div class="flex-container w75 center">
+    {foreach from=$lBoutons item=bouton}
+        <a href="/annonce/toutesAnnonces/{$bouton.numAnnDeb}/{$nbAnnonces}"><button class="bouton {($bSelect>=$bouton.numAnnDeb && $bSelect<$bouton.numAnnFin) ? 'btn-green' : 'btn-bleu' } center">{$bouton.numPage+1}</button></a>
+    {/foreach}
+    <select onchange="location = this.value;">
+        <option default>Afficher {$nbAnnonces} annonces par pages</option>
+        <option value="/annonce/viewListe/{$bSelect}/15">15 </option>
+        {if {$var.totAnnonce}>30}<option value="/annonce/viewListe/{$bSelect}/30">30 </option>{/if}
+        {if {$var.totAnnonce}>50}<option value="/annonce/viewListe/{$bSelect}/50">50 </option>{/if}
+        {if {$var.totAnnonce}>100}<option value="/annonce/viewListe/{$bSelect}/100">100</option>{/if}
+    </select>
+</div>
+{/if}
             <div class="txtcenter"><small>{$var.totAnnonceTrouvees} / {$var.totAnnonce} annonce{($var.totAnnonce>1)?'s':''}  au total {$annAff = ($nbAnnonces<$var.totAnnonceTrouvees)?$nbAnnonces:$var.totAnnonceTrouvees}{if $annAff>0}<span style="font-size:1.05rem">( {$annAff} annonce{($annAff>1)?'s':''} affichée{($annAff>1)?'s':''} sur la page)</span>{/if}</small></div>
         </form>
     </div>

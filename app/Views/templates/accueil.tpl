@@ -23,11 +23,12 @@
         </div> 
         <div class="w65"> 
             <p> {$annonce.A_titre} : {$annonce.A_cout_loyer+$annonce.A_cout_charges} €
+            {if $smarty.session.mail === $annonce.U_mail}
             {if $annonce.A_etat==='publiée'}<span style="color:green">  <i class="fas fa-check-circle"></i></span> {/if}
             {if $annonce.A_etat==='en cours'}<span style="color:orange">  <i class="fas fa-file-alt"></i></span> {/if}
             {if $annonce.A_etat==='archivée'}<span style="color:orange">  <i class="fas fa-archive"></i></span> {/if}
             {if $annonce.A_etat==='bloquée'}<span style="color:red">  <i class="fas fa-ban"></i></span> {/if}
-            </p>
+            {/if}</p>
             <p> {$annonce.A_superficie}m² {$annonce.T_type} | {$annonce.A_ville} </p>
             <small> Posté le {$annonce.A_date_maj}</small> 
             {block name="etat_bloque"}{/block}
