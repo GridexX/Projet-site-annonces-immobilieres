@@ -166,7 +166,7 @@
                     <div class="w75">
                     {if isset($smarty.session.mail) }
                         {if $smarty.session.mail===$annonce.U_mail || isset($smarty.session.admin)}
-                        <a href="/annonce/view/edition_annonce/{$annonce.A_idannonce}"><button class="btn--primary"><i class="fas fa-edit"></i> Editer l'annonce</button></a>
+                        <a href="/annonce/view/edition_annonce/{$annonce.A_idannonce}"><button class="btn--primary" {if $annonce.A_etat==="bloquée" && !isset($smarty.session.admin)}disabled{/if}><i class="fas fa-edit"></i> Editer l'annonce</button></a>
                         {/if}
                         {if $smarty.session.mail!==$annonce.U_mail}
                         <a href="/messagerie/view/{$annonce.A_idannonce}/{$annonce.U_mail}/{$smarty.session.mail}"><button class="btn--primary"><i class="fas fa-comments"></i> Envoyer un message</button></a>
@@ -189,9 +189,11 @@
                         <select name="slct" id="slct" onchange="location = '/annonce/changerEtat/{$annonce.A_idannonce}/'+this.value;">
                             <option disabled>Etat de l'annonce</option>
                             <option disabled {($annonce.A_etat==="bloquée")?'selected':''} >Bloquée</option>
+                            {if !($annonce.A_etat==="bloquée" && !isset($smarty.session.admin))}
                             <option value="en cours" {($annonce.A_etat==="en cours")?'selected':''} >Brouillon</option>
                             <option value="publiée" {($annonce.A_etat==="publiée")?'selected':''} >Publiée</option>
                             <option value="archivée" {($annonce.A_etat==="archivée")?'selected':''}>Archivée</option>
+                            {/if}
                         </select>
                     </div>
                      

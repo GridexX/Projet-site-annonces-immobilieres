@@ -56,7 +56,7 @@ class Utilisateur extends Controller
     public function estConnecte():bool
     {
         $session = \Config\Services::session();
-        $estConnecte = !empty($session->get("mail")) ? true : false;
+        $estConnecte = ($session->get("mail")!==null) ? true : false;
         //var_dump($estConnecte);
         return $estConnecte;
     }

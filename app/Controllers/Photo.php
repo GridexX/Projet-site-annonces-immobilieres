@@ -54,25 +54,7 @@ class Photo extends Controller
           } 
         }
       }
-      else if(count($lImage['images'])>5)  //Génère une erreur si plus de 5 photos veulent être insérées
-      {
-        $notification = array( 
-          "type" => "erreur",
-          "titre" => "Erreur",
-          "message" => "Vous pouvez insérer au maximum 5 photos :".count($lImage['images'])." passées en paramètres"
-        );
-        return $notification;
-      }
-      else //génère un warning si pas de photos insérées
-      {
-        $notification = array( 
-          "type" => "warning",
-          "titre" => "Attention",
-          "message" => "Vous n'avez pas inséré de photos, les photos permettent aux autres utilisateurs de voir votre logement." 
-        );
-        return $notification;
-      }
-      return null;
+      return count($lImage['images']);
     }
 
 

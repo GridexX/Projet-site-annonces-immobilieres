@@ -1,3 +1,21 @@
+{extends file="accueil.tpl"}
+{block name="titre_onglet"}Toutes les annonces{/block}
+{block name="titre para"}Résultat de la rechercher{/block}
+{block name="recherche"}
+{*Boutons pour naviguer dans les pages*}
+<div class="flex-container w75 center">
+    {foreach from=$lBoutons item=bouton}
+        <a href="/annonce/viewListe/{$bouton.numAnnDeb}/{$nbAnnonces}"><button class="bouton {($bSelect>=$bouton.numAnnDeb && $bSelect<$bouton.numAnnFin) ? 'btn-green' : 'btn-bleu' } center">{$bouton.numPage+1}</button></a>
+    {/foreach}
+    <select onchange="location = this.value;">
+        <option default>Afficher {$nbAnnonces} annonces par pages</option>
+        <option value="/annonce/viewListe/{$bSelect}/15">15 </option>
+        {if {$var.totAnnonce}>30}<option value="/annonce/viewListe/{$bSelect}/30">30 </option>{/if}
+        {if {$var.totAnnonce}>50}<option value="/annonce/viewListe/{$bSelect}/50">50 </option>{/if}
+        {if {$var.totAnnonce}>100}<option value="/annonce/viewListe/{$bSelect}/100">100</option>{/if}
+    </select>
+</div>
+
 <div class="flex-container w75 item-center">
     <div class="annonce-container formulaire w60 item-center">
         <form method="post" action="/annonce/viewListe/{$bSelect|default:''}/{$nbAnnonces|default:''}" >
@@ -302,3 +320,4 @@ function chauffageSelectCheck(nameSelect)
             }
         }
 </script>
+{/block}
