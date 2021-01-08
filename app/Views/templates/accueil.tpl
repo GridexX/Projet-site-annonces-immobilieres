@@ -14,7 +14,7 @@
 <div class="liste_annonce flex-container w75 center">
 
     {foreach from=$liste_annonce item=annonce}
-    <div style="cursor: pointer;" onclick="window.location.href='/annonce/view/annonce/{$annonce.A_idannonce}'" class="annonce flex-container center w45">
+    <div style="cursor: pointer;" onclick="window.location.href='/annonce/view/annonce/{$annonce.A_idannonce}'" class="{(isset($affBoutonsAdmin)) ? 'annonce-admin' : 'annonce'} flex-container center w45">
 
         <div class="w35 center">
         <div class="img-container">
@@ -31,15 +31,15 @@
             <p> {$annonce.A_superficie}m² {$annonce.T_type} | {$annonce.A_ville} </p>
             <small> Posté le {$annonce.A_date_maj}</small> 
             {block name="etat_bloque"}{/block}
+        </div>   
             {if isset($affBoutonsAdmin)}
                 {if $annonce.A_etat!=='bloquée'}
                     <a href="/annonce/changerEtat/{$annonce.A_idannonce}/bloquée/annoncesUti/"><button class="btn--danger"><i class="fas fa-ban"></i> Bloquer l'annonce</button></a>
                 {else}
                     <a class="btn--success" href="/annonce/changerEtat/{$annonce.A_idannonce}/en cours/annoncesUti/" ><i class="fas fa-check-double"></i> Débloquer l'annonce</a>
                 {/if}
-                <a href="/messagerie/delete/{$annonce.A_idannonce}"><button class="btn--danger"> Supprimer les messages de l'annonce</button></a>
+                <a href="/messagerie/delete/{$annonce.A_idannonce}"><button class="btn--danger"><i class="fas fa-trash-alt"></i> Supprimer les messages de l'annonce</button></a>
             {/if}
-        </div>   
     </div>
     {/foreach}
 </div>
