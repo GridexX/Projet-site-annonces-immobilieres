@@ -60,7 +60,7 @@ class Messagerie extends Controller
             $uti = $modelU->getUtilisateur($mail);
             $controlM = new Mail();
             $controlM->mailAdmin($msg, $sujet, $uti, $session->get("pseudo"));
-            $controlP->affNotif('success',"Mail envoyé avec succés");
+            $controlP->affNotif('success',"Mail envoyé avec succés", "/utilisateur/view/espace_admin");
             $controlU->view('espace_admin');
         }
         else

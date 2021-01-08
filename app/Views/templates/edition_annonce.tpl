@@ -19,8 +19,8 @@
             {/if}
             {if isset($succes)}
                 <h6 style="color:green; font-style:italic;">{$succes}</h6>
-            {/if}
-            <form class="formulaire" action="/annonce/{block name='action'}update/{$annonce.A_idannonce}{/block}" method="post" enctype="multipart/form-data" >
+            {/if} {*action="/annonce/{block name='action'}update/{$annonce.A_idannonce}{/block}*}
+            <form id="formEdition" name="formEdition" class="formulaire" action="" method="post" enctype="multipart/form-data" >
                 <div class="div-input">
                     <h3 class="txtcenter">{block name="titre_form"}Editer l'annonce{/block}</h3>
                     <div>
@@ -105,10 +105,10 @@
                                <p style="color:red">Veuillez insérer des photos</p> 
                             {/if}
                             </div>
-                            <label class="btn--success label-form"" for="changer les photos de l'annonce" onclick="javascript:showInputButton()" >Changer les photos</label>
+                            <label class="btn--success label-form" for="changer les photos de lannonce" onclick="javascript:showInputButton()" >Changer les photos</label>
                         </div>
                         <div id="obj-photos">
-                        <label class="label-form" class="btn--success" for="image_uploads" style="width:auto;">Sélectionner des images à uploader (PNG, JPG)</label>
+                        <label class="label-form btn--success" for="image_uploads" style="width:auto;">Sélectionner des images à uploader (PNG, JPG)</label>
                         
                         <input class="champs" type="file" id="image_uploads" style="cursor:default;" name="images[]" accept=".jpg, .jpeg, .png" multiple value="Sélectionner des images à uploader (PNG, JPG)" >
 
@@ -128,15 +128,15 @@
                 <div class="localisation div-input">
                     <p class="h6-like">Localisation</p>
                     <div>
-                        <label class="label-form" class="label-form" for="adresse">Adresse : </label>
-                        <input class="champs" type="text" name="adresse" required value="{$annonce.A_adresse|default:''}" placeholder="15 rue des Champs Élysées" oninvalid="this.setCustomValidity('Ne doit pas être vide')" />
+                        <label class="label-form label-cp" for="adresse"><i class="fas fa-map-marked-alt"></i> Adresse : </label>
+                        <input class=" champs" type="text" name="adresse" required value="{$annonce.A_adresse|default:''}" placeholder="15 rue des Champs Élysées" oninvalid="this.setCustomValidity('Ne doit pas être vide')" />
                     </div>
                     <div>
-                        <label class="label-form" class="label-form" for="ville" class="label-cp">Ville : </label>
+                        <label for="ville" class="label-cp label-form"><i class="fas fa-city"></i> Ville : </label>
                         <input class="champs" type="text" name="ville" value="{$annonce.A_ville|default:''}" required placeholder="Paris"/>
                     </div>
                     <div>
-                        <label class="label-form" class="label-form" for="cp" class="label-cp">Code Postal : </label>
+                        <label for="cp" class="label-form label-cp"><i class="fas fa-sign"></i> Code Postal : </label>
                         <input class="champs " type="text" name="cp" value="{$annonce.A_CP|default:''}" required placeholder="75000" pattern="[0-9]{literal}{5}{/literal}"  oninvalid="this.setCustomValidity('5 chiffres')" />
                     </div>
                 </div>
@@ -160,6 +160,7 @@
     </div>
     {/if}
     <script>
+        document.formEdition.action = "/annonce/update/{$annonce.A_idannonce|default:''}";
         document.getElementById('submit-button').disabled = true;
         var input = document.querySelector('#image_uploads');
         var preview = document.querySelector('.preview');
@@ -170,6 +171,7 @@
 
         function showInputButton()
         {
+            document.formEdition.action = "/annonce/update/{$annonce.A_idannonce|default:''}/true";
             document.getElementById("obj-photos").style.display = "block";
             document.getElementById("change-photos").style.display = "none";
             document.getElementById('submit-button').disabled = true;
@@ -222,17 +224,16 @@
                 else
                 {
                     var div = document.createElement('div');
-                    var title = document.createElement('h5');
                     var para = document.createElement('p');
                     document.getElementById('submit-button').disabled = true;
                     div.classList.add("notif-container");
 
-                    div.classList.add("warning");
+                    div.classList.add("error");
 
-                    title.textContent = "Warning : "
+
                     para.textContent = "Vous avez inséré trop de photos, veuillez en enlever";
                     
-                    div.appendChild(title);
+
                     div.appendChild(para);
                     list.appendChild(div);
                 }
@@ -314,7 +315,7 @@
             }
         }
 
-
+    
     //désactivation des champs du formulaire si admin
     {if isset($adminNoModif)}
     var inputsChamps = document.getElementsByClassName("champs");

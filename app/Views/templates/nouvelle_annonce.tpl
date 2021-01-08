@@ -7,5 +7,6 @@
 
 window.onload = showInputButton();
 document.getElementById('submit-button').disabled = true;
+document.formEdition.action = "/annonce/create";
 </script>
 {/block}

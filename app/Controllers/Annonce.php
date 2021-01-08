@@ -27,9 +27,9 @@ class Annonce extends Controller
         //service('SmartyEngine')->view($page.'.tpl');
     }
 
-    public function update($id_annonce)
+    public function update($id_annonce,$deletePhoto=false)
     {
-        $this->create($id_annonce);
+        $this->create($id_annonce,$deletePhoto);
     }
 
 
@@ -100,32 +100,9 @@ class Annonce extends Controller
                 break;
         }
     }
-    /*
-    public function createDefault()
-    {
-        $annonce = array( 
-            "A_titre" => "DEFAULT",
-            'T_type' => "T4",
-            'A_cout_loyer' => 500,
-            'A_cout_charges' => 40,
-            'A_type_chauffage'=> "collectif",
-            'A_perf_energie' => 100,
-            'A_superficie' => 100,
-            'A_est_meuble' => true,
-            'A_description' => "",
-            'A_adresse' => "XXX rue des YYY"
-            'A_ville' => "Pétaouchnok",
-            'A_CP' => 00000,
-            'A_etat' => "en cours",
-            'U_mail => ""
+   
 
-            date_default_timezone_set('Europe/Paris');
-            $annonce['A_date_maj'] = date('Y-m-d H:i:s');
-        );
-        return $this->view('nouvelle_annonce',$id_annonce);
-    } */
-
-    public function create($id_annonce=false)
+    public function create($id_annonce=false, $deletePhoto=false)
     {
         
         helper(['form', 'url']);
@@ -198,21 +175,39 @@ class Annonce extends Controller
             $model = new annonceModel();
             //Gestion des photos de l'annonce  
             $controllerP = new Photo();
-            if($id_annonce!==false) //Destruction des anciennes photos puis maj nouvelles
+            $imagefile = $this->request->getFiles();
+
+            //Vérif si l'utilisateur n'insere pas de photos
+            $controllerPa = new Pages();
+            var_dump("PHOTO:",$deletePhoto);
+            var_dump("Control:",$controllerP->estPhotoValide($imagefile));
+
+            if( (!$controllerP->estPhotoValide($imagefile) && $deletePhoto!==false) || ($id_annonce===false && !$controllerP->estPhotoValide($imagefile))  )  //On interdit l'update sans photo ou la création sans photo
+            {
+                $controllerPa->affNotif("error","Vous devez insérer au moins une photo pour l'annonce");
+                if($id_annonce!==false) return $this->view("edition_annonce",$id_annonce);
+                else return $this->view("nouvelle_annonce",$id_annonce);
+            }
+
+            if($id_annonce!==false) //Si update d'une annonce destruction des anciennes photos si nouvelles 
             {
                 $model->updateAnnonce($annonce);
-                $controllerP->delete($id_annonce);   
+                if($deletePhoto!==false)
+                    $controllerP->delete($id_annonce);   
             }
-            else
+            else  //Insertion de l'annonce si method create
             {
                 $model->insertAnnonce($annonce);
             }
+            if($deletePhoto!==false || $id_annonce===false)  //Ajout des photos si maj avec nouvelles photos ou création
+            {
+                $lastAnnonce = $model->getLastAnnonce($session->get("mail"));  //Récupère la dernière annonce insérée par l'utilisateur
+                
+                $controllerP->create($imagefile,$lastAnnonce["A_idannonce"]);
+            }
             
-            $lastAnnonce = $model->getLastAnnonce($session->get("mail"));  //Récupère la dernière annonce insérée par l'utilisateur
-            $imagefile = $this->request->getFiles();
-            $controllerP->create($imagefile,$lastAnnonce["A_idannonce"]);
             //return $this->returnError(print_r($lastAnnonce),'connexion');
-            $controllerPa = new Pages();
+            
             $controllerPa->affNotif('success',"Annonce insérée avec succés");
             return $this->mesAnnonces();
         }
@@ -235,11 +230,7 @@ class Annonce extends Controller
         $annonce = $modelA->getAnnonce($id_annonce);
         if( !(gettype($annonce)==='array' && empty($annonce['A_idannonce'])!==1) )
         {
-            $notif = array(
-                "type" => "error",
-                "titre" => "Erreur",
-                "message" => "L'annonce n'a pas été trouvée dans la BDD"
-            );
+
             $controlP = new Pages();
             $controlP->affNotif('error',"L'annonce n'a pas été trouvée dans la BDD");
         }
@@ -249,14 +240,8 @@ class Annonce extends Controller
         $controllerP->delete($id_annonce);
         $modelA->deleteAnnonce($id_annonce); 
 
-        $notif = array(
-            "type" => "success",
-            "titre" => "Success",
-            "message" => "L'annonce a bien été supprimée dans la BDD"
-        );
-        return redirect()->to('/');
-        //return $this->returnNotif($notif,false);
-        //RAJOUTER LA DESTRUCTION DES MESSAGES
+        $controllerPa->affNotif('success',"Annonce supprimée avec succés");
+        return $this->mesAnnonces();
     }
 
     public function view($page,$id_annonce=false)
@@ -660,6 +645,7 @@ class Annonce extends Controller
 
     public function toutesAnnonces(int $id_debut=0,int $nbAnnonces=15)
     {
+        $session = \Config\Services::session();
         if($id_debut===false) $id_debut = 0;
         if($nbAnnonces===false) $nbAnnonces = 15;  //15 annonces affichés par page par défaut
 
@@ -801,7 +787,34 @@ class Annonce extends Controller
 
     public function annoncesUti($mail)
     {
-        return $this->mesAnnonces($mail);
+
+        $controllerU = new Utilisateur();
+        if( ! $controllerU->existeUti( $mail ) )
+        {
+            $controlP->affNotif("error", "L'utilisateur demandé n'existe pas");
+            return $controllerU->view("espace_admin");
+        }
+        else
+        {
+            $modelU = new utilisateurModel();
+            $uti = $modelU->getUtilisateur($mail);
+            $tabVoyelle = [ 'a', 'e', 'i', 'y', 'o', 'u'];
+            //Test de voyelles pour le d'
+            $det="de ";
+            $fLet = strtolower(substr($uti["U_pseudo"],1,1));
+            var_dump($fLet);
+            for ($i=0; $i < count($tabVoyelle); ++$i) { 
+                
+                if( $fLet === $tabVoyelle[$i] )
+                {
+                    $det = "d'";
+                    break;
+                }
+            }
+            service('SmartyEngine')->assign('titrePara',"Annonces $det".$uti["U_pseudo"]);
+            return $this->mesAnnonces($mail);
+        }
+        
     }
 
     

@@ -71,7 +71,18 @@ footer{
 }
 
 .label-form {
-    width: 38%;
+    width: 40%;
+}
+
+.bouton-admin a{
+    width: 25%;
+}
+.bouton-admin button:hover{
+    color: black;
+}
+
+.annonce div a:hover {
+    text-decoration: none;
 }
 
 label
@@ -104,7 +115,7 @@ label
     border-style: none; 
     transition-duration: .5s;
     outline-style: none;
-    width: fit-content;
+    width: 15em;
 }
 
 p.slider-title {
@@ -216,6 +227,31 @@ p.slider-title {
     box-shadow: .4em .4em .9em rgba(44, 44, 44, 0.35); 
 }
 
+.annonce-admin 
+{
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    border-radius: 2rem;
+    border-width: 2px;
+    border-style: solid;
+    border-color: var(--green-dark);
+    background-color: whitesmoke;
+    margin: 1.5em;
+    padding: 2em;
+    text-align: left;
+    text-decoration: none;
+    box-shadow: .2em .2em .15em rgba(44, 44, 44, 0.5);
+    transition-duration: .5s;
+    height: fit-content;
+
+}
+
+.annonce-admin:hover
+{
+    text-decoration: none;
+    transform: translate(-.2em,-.2em) scale(1.1);
+    box-shadow: .4em .4em .9em rgba(44, 44, 44, 0.35); 
+}
+
 .txtblock
 {
     color:white;
@@ -254,8 +290,27 @@ hr.white
     position: relative;
     display: block;
     width: auto;
-    border-radius: 2rem 2rem 2rem 2rem;  
+    border-radius: 2rem 2rem 2rem 2rem;
 }
+.select-recherche {
+    width: fit-content;
+}
+.bouton-clip {
+    border-radius: 0;
+    /*clip-path: ellipse(36% 27% at 50% 50%);*/
+    clip-path: polygon(85% 0, 100% 50%, 85% 100%, 0 100%, 15% 50%, 0 0);
+
+}
+
+.a-none {
+    text-decoration: none;
+}
+
+.a-none:hover {
+    text-decoration: none;
+}
+
+
 
 .btn-bleu{
     background-color: #2e86de; 
@@ -566,7 +621,8 @@ label span{
 
 .msger-input {
     background: #E4E8FB;
-    width: 40em;
+    width: max-content;
+    min-width: 20em;
 }
 .msger-send-btn {
     margin-left: 10px;
@@ -578,7 +634,16 @@ label span{
     height: 100%;
 }
 
-.msger-send-btn:hover {
+.mail-send-btn {
+    margin-left: 10px;
+    background: #FFA500;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.23s;
+}
+
+.msger-send-btn:hover, .mail-send-btn:hover {
     background:  #FFA500;
 }
 
@@ -601,7 +666,6 @@ label span{
     overflow-y: auto;    
     border-radius: 0 0 0 10px;
 }
-
 
 .outgoing_msg, .received_msg{
     display: flex;

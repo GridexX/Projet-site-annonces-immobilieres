@@ -34,6 +34,21 @@ class Photo extends Controller
       if(is_dir($path)) rmdir($path); //Suppression du dossier
     }
 
+    public function estPhotoValide(array $lImage)
+    {
+      if(count($lImage['images'])<=5 && count($lImage['images'])>0)
+      {
+        foreach($lImage['images'] as $img)
+          if (!($img->isValid() && ! $img->hasMoved()))
+            return false;
+
+        return true;
+      }
+      else
+        return false;
+
+    }
+
     public function create(array $lImage,int $id_annonce)
     {
       $model = new photoModel();
@@ -52,9 +67,12 @@ class Photo extends Controller
               $img->move("uploads/$id_annonce/", $photo["P_titre"]);
               $model->insertPhoto($photo);
           } 
+          else  //Si il n'y a pas d'insertion d'images
+          {
+            return false;
+          }
         }
       }
-      return count($lImage['images']);
     }
 
 

@@ -2,9 +2,6 @@
 {block name="titre_onglet"}Recherche{/block}
 {block name="titre_para"}Résultat de la recherche{/block}
 {block name="recherche"}
-{*Boutons pour naviguer dans les pages*}
-
-
 <div class="flex-container w75 item-center">
     <div class="annonce-container formulaire w90 item-center">
         <form method="post" action="/annonce/toutesAnnonces/{$bSelect|default:''}/{$nbAnnonces|default:''}" >
@@ -230,33 +227,38 @@
                         </select>
                 </div>
                 <div class="w50">
-                    <label for="ville" class="label-cp">Ville : </label>
+                    <label for="ville" class="label-cp"><i class="fas fa-city"></i> Ville : </label>
                     <input class="champs champs-cp" type="text" name="A_ville" value="{$recherche.A_ville|default:''}" placeholder="Paris"/>
                         
                 </div>
                 <div class="w50">
-                    <label for="cp" class="label-cp">Code Postal : </label>
+                    <label for="cp" class="label-cp"><i class="fas fa-sign"></i> Code Postal : </label>
                     <input class="champs champs-cp" type="text" name="A_CP" value="{$recherche.A_CP|default:''}" placeholder="75000" pattern="[0-9]{literal}{5}{/literal}"  oninvalid="this.setCustomValidity('5 chiffres')" />
                         
                 </div>
             </div>
             <hr>
+            {*Boutons pour naviguer dans les pages*}
+            </form>
             {if isset($lBoutons)}
-<div class="flex-container w75 center">
-    {foreach from=$lBoutons item=bouton}
-        <a href="/annonce/toutesAnnonces/{$bouton.numAnnDeb}/{$nbAnnonces}"><button class="bouton {($bSelect>=$bouton.numAnnDeb && $bSelect<$bouton.numAnnFin) ? 'btn-green' : 'btn-bleu' } center">{$bouton.numPage+1}</button></a>
-    {/foreach}
-    <select onchange="location = this.value;">
-        <option default>Afficher {$nbAnnonces} annonces par pages</option>
-        <option value="/annonce/viewListe/{$bSelect}/15">15 </option>
-        {if {$var.totAnnonce}>30}<option value="/annonce/viewListe/{$bSelect}/30">30 </option>{/if}
-        {if {$var.totAnnonce}>50}<option value="/annonce/viewListe/{$bSelect}/50">50 </option>{/if}
-        {if {$var.totAnnonce}>100}<option value="/annonce/viewListe/{$bSelect}/100">100</option>{/if}
-    </select>
-</div>
-{/if}
+                <div class="flex-container w60 center">
+                    {foreach from=$lBoutons item=bouton}
+                        <a class="a-none" href="/annonce/toutesAnnonces/{$bouton.numAnnDeb}/{$nbAnnonces}"><button class="bouton bouton-clip bouton-recherche-annonce {($bSelect>=$bouton.numAnnDeb && $bSelect<$bouton.numAnnFin) ? 'btn-green' : 'btn-bleu' } center">{$bouton.numPage+1}</button></a>
+                    {/foreach}
+                    <div class="right select-recherche" >
+                        <select onchange="location = this.value;">
+                            <option default>Afficher {$nbAnnonces} annonces par pages</option>
+                            <option value="/annonce/viewListe/{$bSelect}/15">15 </option>
+                            {if {$var.totAnnonce}>30}<option value="/annonce/viewListe/{$bSelect}/30">30 </option>{/if}
+                            {if {$var.totAnnonce}>50}<option value="/annonce/viewListe/{$bSelect}/50">50 </option>{/if}
+                            {if {$var.totAnnonce}>100}<option value="/annonce/viewListe/{$bSelect}/100">100</option>{/if}
+                        </select>
+                    </div>
+                </div>
+            {/if} <br />
             <div class="txtcenter"><small>{$var.totAnnonceTrouvees} / {$var.totAnnonce} annonce{($var.totAnnonce>1)?'s':''}  au total {$annAff = ($nbAnnonces<$var.totAnnonceTrouvees)?$nbAnnonces:$var.totAnnonceTrouvees}{if $annAff>0}<span style="font-size:1.05rem">( {$annAff} annonce{($annAff>1)?'s':''} affichée{($annAff>1)?'s':''} sur la page)</span>{/if}</small></div>
-        </form>
+        
+        
     </div>
 </div>
 <script>

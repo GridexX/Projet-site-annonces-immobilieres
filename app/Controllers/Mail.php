@@ -137,7 +137,6 @@ class Mail extends Controller
         $email->setTo($dest);
         $email->setSubject($sujet);
         $email->setMessage($message);
-
         $email->send(false);
         
     }
