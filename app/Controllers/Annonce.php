@@ -251,7 +251,8 @@ class Annonce extends Controller
                 "titre" => "Erreur",
                 "message" => "L'annonce n'a pas été trouvée dans la BDD"
             );
-            return $this->returnNotif($notif,false);
+            $controlP = new Pages();
+            $controlP->affNotif('error',"L'annonce n'a pas été trouvée dans la BDD");
         }
         $messModel = new messagerieModel();
         $messModel->deleteM($id_annonce);
@@ -270,13 +271,18 @@ class Annonce extends Controller
     }
 
     public function view($page,$id_annonce=false)
-    {        
+    {      
+        $session = \Config\Services::session();
+        $controlP = new Pages();
+        if($session->get("mail") === null && $page === 'nouvelle_annonce') {
+            $controlP->affNotif("error","Vous devez être connecté pour créer une annonce !");
+            return $this->accueil(); 
+        }  
         $modelA = new annonceModel();
         $annonce = $modelA->getAnnonce($id_annonce);
         if( $page!=='nouvelle_annonce' && !($id_annonce!==false && gettype($annonce)==='array' && empty($annonce['A_idannonce'])!==1)) //Lance une erreur si annonce n'existe pas pour édition où la vue
             return $this->returnError('L\'annonce n\'a pas été trouvée','connexion');
              
-        $session = \Config\Services::session();
         if($page === 'edition_annonce' && !($session->get('mail')===$annonce['U_mail'] || $session->get('admin') ) )  //Vérifie que l'annonce appartient à l'utilisateur et 
             return $this->returnError('Vous n\'étes pas autorisé à modifier cette annonce','connexion');
         
@@ -600,17 +606,13 @@ class Annonce extends Controller
 
         if(count($lAnnonces)===0)  //Affichage du message de warning si pas d'annonces dans la BDD
         {
-            $notification = array( 
-                "type" => "error",
-                "titre" => "Warning",
-                "message" => "Pas d'annonces dans la BDD"
-            );
-            service('SmartyEngine')->assign('notification',$notification);
+            $controlP = new Pages();
+            $controlP->affNotif('error',"Pas d'annonce dans la BDD");
         }
-        else
-        {
-            //$nbAnnonces = count($lAnnonces);
-            //Modification de la variable id_debut si dépassement du nombre d'annonce ou borne trop petite
+        else{
+        //$nbAnnonces = count($lAnnonces);
+        //Modification de la variable id_debut si dépassement du nombre d'annonce ou borne trop petite
+        if($nbAnnonces > 15)
             if($id_debut>count($lAnnonces) - count($lAnnonces)%$nbAnnonces ) $id_debut = count($lAnnonces) - count($lAnnonces)%$nbAnnonces;
 
             if(count($lAnnonces)>15)  //On affiche les boutons pour switch d'annonce si le nombre est supérieur à 15 et différent page accueil
@@ -657,26 +659,54 @@ class Annonce extends Controller
         return service('SmartyEngine')->view('liste_annonce.tpl');
     }
 
+    public function annoncesBornees($lAnnonces, $id_debut, $nbAnnonces):array  //Renvoie les dernières annonces entre 2 bornes
+    {
+        $modelP = new photoModel(); 
+        for($i=0; $i<$nbAnnonces && $i+$id_debut<count($lAnnonces); ++$i)
+        {
+            $lConcatAnn[$i] = $lAnnonces[$i+$id_debut];
+
+            $photo = [];
+            array_push( $photo , $modelP->getPhoto($lConcatAnn[$i]['A_idannonce']));
+            if(isset($photo[0][0]))
+                $lConcatAnn[$i]["P_photo"] = $photo[0][0];
+        }
+        return $lConcatAnn;
+    }
+
     public function accueil()
     {
         $controllerU = new Utilisateur();
         if(! $controllerU->existeAdmin())
             return service('SmartyEngine')->view('create_admin.tpl');
 
+        $modelA = new annonceModel();
+        $lAnnonces = $this->getTypeAnnonce( $modelA->getAnnonce(), "publiée");
+        $lAnnonces = $this->annoncesBornees($lAnnonces,0,6);
+        
+        service('SmartyEngine')->assign('liste_annonce',$lAnnonces);
         service('SmartyEngine')->assign('estAccueil',true);
-        $this->viewListe(0,6);
+        return service('SmartyEngine')->view('accueil.tpl');
     }
 
     public function mesAnnonces($mail=false)
     {
         $session = \Config\Services::session();
         service('SmartyEngine')->assign('mesAnnonces',true);
+        $controllerU = new Utilisateur();
+        //vérifie si l'utilisateur est connecté
+        if(! $controllerU->estConnecte() )
+        {
+            $controlP = new Pages();
+            $controlP->addNotif("error","Vous devez être conneccté pour accéder à vos annonces");
+            return $this->accueil();
+        }
+
         if( !empty($session->get("mail")))  
         {
             return ($mail===false) ? $this->viewListe($session->get("mail")) : $this->viewListe($mail);
         }
-        return $this->accueil();
-        
+        return $this->accueil();   
     }
 
     public function annoncesUti($mail)

@@ -2,7 +2,7 @@
 {block name="divBtnConnexion"}
 
         <div class="w33 navbar-div item-center dropdown txtcenter">
-                <button onclick="myFunction()" id="dropdown-button" class="dropdown-button center w40">{$smarty.session.pseudo} {if isset($smarty.session.admin)}<small onclick="myFunction()">(Mode Admin)</small>{/if}</button>
+                <button onclick="myFunction()" id="dropdown-button" class="dropdown-button center w40">{$smarty.session.pseudo} {if isset($smarty.session.admin)} (Mode Admin) {/if}</button>
                 <div id="dropdown-content" class="dropdown-content w40">
                     <a href="/annonce/view/nouvelle_annonce">Créer une annonce <i class="fas fa-plus"></i></a>
                     <a href="/utilisateur/view/edition_profil">Gérer le Profil <i class="fas fa-user-edit"></i></a>

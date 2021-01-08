@@ -3,8 +3,6 @@
 use App\Models\annonceModel;
 use App\Models\energieModel;
 use App\Models\utilisateurModel;
-use App\Models\messagerieModel;
-use App\Models\photoModel;
 use App\Controllers\Pages;
 use CodeIgniter\Controller;
 use App\Controllers\Photo;
@@ -117,24 +115,59 @@ class Messagerie extends Controller
     {
         helper(['form', 'url']);
         $session = \Config\Services::session();
+        $controlP = new Pages();
+        $annonce = new Annonce();
+        if($session->get("mail") === null) {
+            $controlP->affNotif("error","Vous devez être connecté pour accèder à vos messages !","/pages/view/connexion");
+            return $annonce->accueil(); 
+        } 
+        $controlP = new Pages();
+        if($mail != $session->get("mail")) {
+            $tmp = $session->get("mail");
+            $controlP->affNotif("error","Vous n'avez pas accès à cette page !","/messagerie/createConv/$tmp");
+            return $this->createConv($session->get("mail")); 
+        }
         service('SmartyEngine')->assign('convs',$this->getConv($mail));
         return service('SmartyEngine')->view('liste_messagerie.tpl');  
     }
 
     public function view($id_annonce, $mail, $mail2) {
-
+        $controllerU = new Utilisateur();
+        $controlP = new Pages();
+        $session = \Config\Services::session();
+        if(!$controllerU->estDansMessagerie($mail, $mail2)) {
+            $tmp = $session->get("mail");
+            $controlP->affNotif("error","Vous n'avez pas accès à cette messagerie !","/messagerie/createConv/$tmp");
+            return $this->createConv($session->get("mail"));            
+        }
+        $modelUser = new utilisateurModel();
         $messagerie = new messagerieModel();
         $modelAnnonce = new annonceModel();
-        $modelUser = new utilisateurModel();
-        $annonce = $modelAnnonce->getAnnonce($id_annonce);
 
-        $session = \Config\Services::session();
+        if(empty($modelUser->getUtilisateur($mail)) || empty($modelUser->getUtilisateur($mail2))) {
+            $tmp = $session->get("mail");
+            $controlP->affNotif("error","Un des utilisateurs n'est pas répertorié !","/messagerie/createConv/$tmp");
+            return $this->createConv($session->get("mail")); 
+        }
+        
+        $annonce = $modelAnnonce->getAnnonce($id_annonce);  
+        
+        if($annonce['U_mail']!=$mail && $annonce['U_mail']!=$mail2) {
+            $tmp = $session->get("mail");
+            $controlP->affNotif("error","L'annonce n'appartient à aucun des 2 utilisateurs !","/messagerie/createConv/$tmp");
+            return $this->createConv($session->get("mail"));
+        }
 
         if( $session->get("mail") === null ) return $this->returnError('Vous devez être connecté pour envoyer un message','connexion');
         $annonce = $modelAnnonce->getAnnonce($id_annonce);
         
         if(!($id_annonce!==false && gettype($annonce)==='array' && empty($annonce['A_idannonce'])!==1)) //Lance une erreur si annonce n'existe pas pour édition où la vue
-            return $this->returnError('L\'annonce n\'a pas été trouvée','connexion');
+        {
+            $controlP = new Pages();
+            $tmp = $session->get("mail");
+            $controlP->affNotif("error","L'annonce est introuvable !", "/messagerie/createConv/$tmp");
+            return $this->createConv($session->get("mail"));  
+        }
 
         service('SmartyEngine')->assign('annonce',$annonce);
         service('SmartyEngine')->assign('messages',$this->getMessage($id_annonce, $mail, $mail2));

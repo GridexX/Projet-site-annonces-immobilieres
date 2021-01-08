@@ -47,6 +47,12 @@ class Utilisateur extends Controller
         return $annonce["U_mail"] = $uti["U_mail"];
     }
 
+    public function estDansMessagerie($mail,$mail2):bool
+    {
+        $session = \Config\Services::session();
+        return $session->get('mail') === $mail || $session->get('mail') === $mail2;
+    }
+
     public function estConnecte():bool
     {
         $session = \Config\Services::session();
@@ -77,6 +83,7 @@ class Utilisateur extends Controller
             );
             return $controllerA->returnNotif($notif,false);
         }
+        
         if($confirm===false)
         {
             service('SmartyEngine')->assign('confirmation',true);
