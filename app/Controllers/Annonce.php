@@ -664,7 +664,11 @@ class Annonce extends Controller
         $modelA = new annonceModel();
         $lAnnonces = $this->getTypeAnnonce( $modelA->getAnnonce(), "publiée");
         $var["totAnnonce"] = count($lAnnonces);
-
+        if($this->lAnnonceVide($lAnnonces))
+        {
+            $this->notifPasAnnonces();
+            return $this->accueil();
+        }
         $whereCond = $this->whereReqChamps($lAnnonces);
         if( $modelA->searchAnnonce($whereCond) !== NULL)
         {
