@@ -1,7 +1,7 @@
 <div class="navbar navbar-fixed_top">
     <div class="flex-container">
         <div class="w33 navbar-div item-center txtcenter">
-            {if isset($estAccueil)}<button class="bouton btn-bleu center"><a class="lien" href="/annonce/viewListe">Afficher toutes les annonces</a></button>{/if}
+            {if isset($estAccueil)}<button class="bouton btn-bleu center"><a class="lien" href="/annonce/viewListe/">Afficher toutes les annonces</a></button>{/if}
         </div>
         <span class="w33 navbar-div item-center txtcenter">
             <a href="/"><img src="/Images/logo_house.png" alt="House logo"></a>

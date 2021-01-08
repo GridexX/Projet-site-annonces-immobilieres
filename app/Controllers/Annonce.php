@@ -18,11 +18,13 @@ class Annonce extends Controller
         return service('SmartyEngine')->view($view.'.tpl');
     }
 
-    public function returnNotif(array $notif, $page=false)
+    public function loadNotif($type, $message, $page=false)
     {
-        service('SmartyEngine')->assign('notification',$notif);
-        if($page===false) return $this->accueil();
-        return service('SmartyEngine')->view($page.'.tpl');
+
+        $controlP = new Pages();
+        $controlP->affNotif($type,$message);
+        //if($page===false) return $this->accueil();
+        //service('SmartyEngine')->view($page.'.tpl');
     }
 
     public function update($id_annonce)
@@ -398,6 +400,11 @@ class Annonce extends Controller
         return $currentMin;
     }
 
+    function lAnnonceVide($lAnnonce):bool  //renvoie si il y a des annonces selon un type dans la BDD
+    {
+        return (count($lAnnonce)===0 ) ? true : false;
+    }
+
     public function whereReqChamps($lAnnonces):string
     {
         helper(['form', 'url']);
@@ -453,25 +460,122 @@ class Annonce extends Controller
         }
         service('SmartyEngine')->assign('recherche',$recherche);
         service('SmartyEngine')->assign('borne',$borne);
-        var_dump($recherche);
-        var_dump($borne);
         $whereCond = empty($whereCond) ? '' : 'WHERE '.substr($whereCond,3);
         return $whereCond;
+    }
+
+    public function assignButton($lAnnonces,$id_debut,$nbAnnonces)
+    {
+        $lBoutons = [] ;
+        $debut = 0;
+        if($id_debut>count($lAnnonces) - count($lAnnonces)%$nbAnnonces ) $id_debut = count($lAnnonces) - count($lAnnonces)%$nbAnnonces;
+
+        //Gestion des boutons en fonction du nombre d'annonces
+        if($nbAnnonces>5)
+        {
+            for($i=0; $i<ceil(count($lAnnonces)/$nbAnnonces); ++$i)
+            {
+                $lBoutons[$i]["numPage"] = $i;
+                $lBoutons[$i]["numAnnDeb"] = $debut;
+                //Modification du nb d'annonces pour le dernier boutons si le nombre dépasse le nombre dans la BDD
+                $lBoutons[$i]["numAnnFin"] = ($nbAnnonces*($i+1) > count($lAnnonces)) ? count($lAnnonces)-$nbAnnonces*($i)+$debut : $nbAnnonces+$debut;
+                $debut += $nbAnnonces;
+            }
+            service('SmartyEngine')->assign('lBoutons',$lBoutons);
+            service('SmartyEngine')->assign('bSelect',$id_debut);
+            service('SmartyEngine')->assign('nbAnnonces',$nbAnnonces);
+        }
+    }
+
+    public function viewListe2(string $type, $id_debut=false, $nbAnnonces=false)
+    {
+        $modelA = new annonceModel();
+        $modelU = new utilisateurModel();
+        $controlU = new Utilisateur();
+        $session = $session = \Config\Services::session();
+        var_dump($type);
+        if(!$id_debut) $id_debut = 0;
+        if(!$nbAnnonces) $nbAnnonces = 15;
+        //Si on recherche les annonces d'un utilisateur, on vérifie que son mail est valide
+        //Si admin veut voir annonce de quelqu'un ajouter fait pouvoir bloquer
+        if($type==="accueil"){
+        $lAnnonces = $modelA->getAnnonce();
+        $lAnnonces = $this->arrDateFormat( $this->getTypeAnnonce($lAnnonces,"publiée") ); 
+        
+        if( count($lAnnonces)===0)
+        {
+            $this->notifPasAnnonces();
+        }
+        }
+        //if($type==="accueil") service('SmartyEngine')->view('liste_annonce.tpl');
+        
+
+        else if($type==="all")
+        {
+            //affichage du champ de recherche avec les valeurs spécifiques dedans
+            $lAnnonces = $modelA->getAnnonce();
+            $lAnnonces = $this->arrDateFormat( $this->getTypeAnnonce($lAnnonces,"publiée") );
+            $var["totAnnonce"] = count($lAnnonces);
+            $whereCond = $this->whereReqChamps($lAnnonces);
+            var_dump($whereCond);
+            $lAnnonces = ($modelA->searchAnnonce($whereCond) !== NULL) ? $this->getTypeAnnonce($modelA->searchAnnonce($whereCond),"publiée" ) : array();
+            $var["totAnnonceTrouvees"] = count($lAnnonces);
+            service('SmartyEngine')->assign('var',$var);
+            $modelE = new energieModel();
+            $energie = $modelE->getEnergie();
+            service('SmartyEngine')->assign('energie',$energie);
+
+            //affichage des boutons si nbAnnonces>15
+            if(count($lAnnonces)>15)
+                $this->assignButton($lAnnonces,$id_debut,$nbAnnonces);
+        }
+
+        
+
+        $lConcatAnn = [] ;
+        //affichage des annonces avec bornes passées en paramètres
+        $modelP = new photoModel();
+        for($i=0; $i<$nbAnnonces && $i+$id_debut<count($lAnnonces); ++$i)
+        {
+            $lConcatAnn[$i] = $lAnnonces[$i+$id_debut];
+            $lPhoto = [];
+            array_push( $lPhoto , $modelP->getPhoto($lConcatAnn[$i]['A_idannonce']));
+            if(isset($lPhoto[0][0]))  //Ajoute la miniature si une photo est définit pour l'annonce
+                $lConcatAnn[$i]["P_photo"] = $lPhoto[0][0];  
+        }
+        
+
+        service('SmartyEngine')->assign('liste_annonce',$lConcatAnn);
+        service('SmartyEngine')->assign('session',$session);
+        service('SmartyEngine')->view('liste_annonce.tpl');
+        
+        
+
+
+    }
+
+    public function notifPasAnnonces()
+    {
+        return $this->loadNotif('error', "Il n'y a pas encore d'annonces sur ce site");
     }
 
     public function viewListe(int $id_debut=0,int $nbAnnonces=15,$annUti=false)
     {
         $session = \Config\Services::session();
         $modelA = new annonceModel();
-        if(!empty($annUti))
+        var_dump($annUti);
+        $lAnnonces = $modelA->getAnnonce();
+        $lAnnonces = $this->getTypeAnnonce($lAnnonces,"publiée"); 
+
+        if(!$annUti)
         {
-            $lAnnonces = $modelA->getAnnonce();
             
+            var_dump($annUti);
             $modelE = new energieModel();
             $energie = $modelE->getEnergie();
             
             //return $this->returnError( var_dump( $modelA->searchAnnonce($recherche)), 'connexion' );
-            $lAnnonces = $this->getTypeAnnonce($lAnnonces,"publiée"); 
+            
             $var["totAnnonce"] = count($lAnnonces);
             $whereCond = $this->whereReqChamps($lAnnonces);
             if( $modelA->searchAnnonce($whereCond) !== NULL)
@@ -488,8 +592,7 @@ class Annonce extends Controller
 
         }
         else
-        {
-            
+        { 
             $lAnnonces = $modelA->getAnnonceUti($annUti);
             $lAnnonces = !empty($session->get("admin")) ? $lAnnonces : $this->getTypeAnnonce($lAnnonces, "débloquée");
             $nbAnnonces = count($lAnnonces);
@@ -498,39 +601,40 @@ class Annonce extends Controller
         if(count($lAnnonces)===0)  //Affichage du message de warning si pas d'annonces dans la BDD
         {
             $notification = array( 
-                "type" => "warning",
+                "type" => "error",
                 "titre" => "Warning",
                 "message" => "Pas d'annonces dans la BDD"
             );
             service('SmartyEngine')->assign('notification',$notification);
         }
-        else{
-        //$nbAnnonces = count($lAnnonces);
-        //Modification de la variable id_debut si dépassement du nombre d'annonce ou borne trop petite
-        if($id_debut>count($lAnnonces) - count($lAnnonces)%$nbAnnonces ) $id_debut = count($lAnnonces) - count($lAnnonces)%$nbAnnonces;
+        else
+        {
+            //$nbAnnonces = count($lAnnonces);
+            //Modification de la variable id_debut si dépassement du nombre d'annonce ou borne trop petite
+            if($id_debut>count($lAnnonces) - count($lAnnonces)%$nbAnnonces ) $id_debut = count($lAnnonces) - count($lAnnonces)%$nbAnnonces;
 
-        if(count($lAnnonces)>15)  //On affiche les boutons pour switch d'annonce si le nombre est supérieur à 15 et différent page accueil
-        { 
-            $lBoutons = [] ;
-            $debut = 0;
+            if(count($lAnnonces)>15)  //On affiche les boutons pour switch d'annonce si le nombre est supérieur à 15 et différent page accueil
+            { 
+                $lBoutons = [] ;
+                $debut = 0;
 
-            //Gestion des boutons en fonction du nombre d'annonces
-            if($nbAnnonces>5)
-            {
-                for($i=0; $i<ceil(count($lAnnonces)/$nbAnnonces); ++$i)
+                //Gestion des boutons en fonction du nombre d'annonces
+                if($nbAnnonces>5)
                 {
-                    $lBoutons[$i]["numPage"] = $i;
-                    $lBoutons[$i]["numAnnDeb"] = $debut;
-                    //Modification du nb d'annonces pour le dernier boutons si le nombre dépasse le nombre dans la BDD
-                    $lBoutons[$i]["numAnnFin"] = ($nbAnnonces*($i+1) > count($lAnnonces)) ? count($lAnnonces)-$nbAnnonces*($i)+$debut : $nbAnnonces+$debut;
-                    $debut += $nbAnnonces;
+                    for($i=0; $i<ceil(count($lAnnonces)/$nbAnnonces); ++$i)
+                    {
+                        $lBoutons[$i]["numPage"] = $i;
+                        $lBoutons[$i]["numAnnDeb"] = $debut;
+                        //Modification du nb d'annonces pour le dernier boutons si le nombre dépasse le nombre dans la BDD
+                        $lBoutons[$i]["numAnnFin"] = ($nbAnnonces*($i+1) > count($lAnnonces)) ? count($lAnnonces)-$nbAnnonces*($i)+$debut : $nbAnnonces+$debut;
+                        $debut += $nbAnnonces;
+                    }
+                    service('SmartyEngine')->assign('lBoutons',$lBoutons);
+                    service('SmartyEngine')->assign('bSelect',$id_debut);
+                    service('SmartyEngine')->assign('nbAnnonces',$nbAnnonces);
                 }
-                service('SmartyEngine')->assign('lBoutons',$lBoutons);
-                service('SmartyEngine')->assign('bSelect',$id_debut);
-                service('SmartyEngine')->assign('nbAnnonces',$nbAnnonces);
             }
         }
-    }
         //Gestion des dates pour chaque annonce
         $lConcatAnn = [] ;
         //affichage des annonces avec bornes passées en paramètres
@@ -558,9 +662,7 @@ class Annonce extends Controller
         $controllerU = new Utilisateur();
         if(! $controllerU->existeAdmin())
             return service('SmartyEngine')->view('create_admin.tpl');
-        $session = \Config\Services::session();
-        $modelA = new annonceModel();
-        $lAnnonces = $modelA->getAnnonce();
+
         service('SmartyEngine')->assign('estAccueil',true);
         $this->viewListe(0,6);
     }
@@ -571,7 +673,7 @@ class Annonce extends Controller
         service('SmartyEngine')->assign('mesAnnonces',true);
         if( !empty($session->get("mail")))  
         {
-            return ($mail===false) ? $this->viewListe(0,0,$session->get("mail")) : $this->viewListe(0,0,$mail);
+            return ($mail===false) ? $this->viewListe($session->get("mail")) : $this->viewListe($mail);
         }
         return $this->accueil();
         

@@ -1,24 +1,25 @@
 {extends 'main.tpl'}
 {block name="titre_onglet"}Accueil{/block}
 {block name="output_area"}
-{if isset($lBoutons) && !isset($estAccueil)}
-    <div class="flex-container w75 center">
-    {foreach from=$lBoutons item=bouton}
-        <a href="/annonce/viewListe/{$bouton.numAnnDeb}/{$nbAnnonces}"><button class="bouton {($bSelect>=$bouton.numAnnDeb && $bSelect<$bouton.numAnnFin) ? 'btn-green' : 'btn-bleu' } center">{$bouton.numPage+1}</button></a>
-    {/foreach}
-        <select onchange="location = this.value;">
-            <option default>Afficher {$nbAnnonces} annonces par pages</option>
-            <option value="/annonce/viewListe/{$bSelect}/15">15 </option>
-            {if $nb_annonces>30}<option value="/annonce/viewListe/{$bSelect}/30">30 </option>{/if}
-            {if $nb_annonces>50}<option value="/annonce/viewListe/{$bSelect}/50">50 </option>{/if}
-            {if $nb_annonces>100}<option value="/annonce/viewListe/{$bSelect}/100">100</option>{/if}
-        </select>
-    </div>
+{if !isset($estAccueil)}
+    {if isset($lBoutons) && $var.totAnnonce > 15}
+        <div class="flex-container w75 center">
+        {foreach from=$lBoutons item=bouton}
+            <a href="/annonce/viewListe/{$bouton.numAnnDeb}/{$nbAnnonces}"><button class="bouton {($bSelect>=$bouton.numAnnDeb && $bSelect<$bouton.numAnnFin) ? 'btn-green' : 'btn-bleu' } center">{$bouton.numPage+1}</button></a>
+        {/foreach}
+            <select onchange="location = this.value;">
+                <option default>Afficher {$nbAnnonces} annonces par pages</option>
+                <option value="/annonce/viewListe/{$bSelect}/15">15 </option>
+                {if {$var.totAnnonce}>30}<option value="/annonce/viewListe/{$bSelect}/30">30 </option>{/if}
+                {if {$var.totAnnonce}>50}<option value="/annonce/viewListe/{$bSelect}/50">50 </option>{/if}
+                {if {$var.totAnnonce}>100}<option value="/annonce/viewListe/{$bSelect}/100">100</option>{/if}
+            </select>
+        </div>
     {/if}
-    {if !isset($estAccueil) && (isset($recherche) || isset($borne) )}
-        <p>Yo</p>
+    {if (isset($recherche) || isset($borne) )}
         {include file="recherche_annonce.tpl"}
     {/if}
+{/if}
 
 {if isset($liste_annonce)}
 <div class="liste_annonce flex-container w75 center">
