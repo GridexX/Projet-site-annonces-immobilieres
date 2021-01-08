@@ -74,6 +74,17 @@ footer{
     width: 38%;
 }
 
+.bouton-admin a{
+    width: 25%;
+}
+.bouton-admin button:hover{
+    color: black;
+}
+
+.annonce div a:hover {
+    text-decoration: none;
+}
+
 label
 {
     text-align: start;
@@ -566,7 +577,8 @@ label span{
 
 .msger-input {
     background: #E4E8FB;
-    width: 40em;
+    width: max-content;
+    min-width: 20em;
 }
 .msger-send-btn {
     margin-left: 10px;
@@ -578,7 +590,16 @@ label span{
     height: 100%;
 }
 
-.msger-send-btn:hover {
+.mail-send-btn {
+    margin-left: 10px;
+    background: #FFA500;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.23s;
+}
+
+.msger-send-btn:hover, .mail-send-btn:hover {
     background:  #FFA500;
 }
 
@@ -601,7 +622,6 @@ label span{
     overflow-y: auto;    
     border-radius: 0 0 0 10px;
 }
-
 
 .outgoing_msg, .received_msg{
     display: flex;

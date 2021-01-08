@@ -9,21 +9,22 @@
             </div>
         </div>
     </div>
-    <div class="liste_annonce flex-container w50 center itemcenter">
+    <div class="liste_annonce flex-container w50 center item-center">
 
         {foreach from=$liste_utilisateur item=uti}
-        <div class="w25 ">
-            <div class="annonce-container w80 center txtcenter">
+            <div class="annonce-container w35 center txt-center">
+            <div class="w100 item-center">
             <i class="fas fa-user fa-4x blue"></i>
             <h5>{$uti.U_pseudo}</h5>
             <small>{$uti.U_prenom} {$uti.U_nom}</small>
-            <a href="/utilisateur/view/edition_profil/{$uti.U_mail}" ><button class="btn--primary">Editer</button></a>
-            <a href="/annonce/annoncesUti/{$uti.U_mail}" ><button class="btn--primary"><small><i class="fas fa-eye"></i> Voir ses annonces</small></button></a>
-            <a href="/annonce/bloquerAnnonces/{$uti.U_mail}" ><button class="btn--danger"><small><i class="fas fa-ban"></i> Bloquer les annonces</small></button></a>
-            <a href="/messagerie/sendMail/{$uti.U_mail}" ><button class="btn--success"><small><i class="fas fa-envelope"></i> Envoyer un mail</small></button></a>
-            
             </div>
-        </div>
+            <div class="flex-container bouton-admin">
+            <a href="/utilisateur/view/edition_profil/{$uti.U_mail}" ><abbr title="Editer le profil"><button class="btn--primary"><small><i class="fas fa-edit"></i></small></button></abbr></a>
+            <a href="/annonce/annoncesUti/{$uti.U_mail}" ><abbr title="Voir ses annonces"><button class="btn--primary"><small><i class="fas fa-eye"></i></small></button></abbr></a>
+            <a href="/annonce/bloquerAnnonces/{$uti.U_mail}" ><abbr title="Bloquer les annonces"><button class="btn--danger"><small><i class="fas fa-ban"></i></small></button></abbr></a>
+            <a href="/messagerie/sendMail/{$uti.U_mail}" ><abbr title="Envoyer un mail"><button class="btn--success"><small><i class="fas fa-envelope"></i></small></button></abbr></a>
+            </div>
+            </div>
         {/foreach}
 
     </div>

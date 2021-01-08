@@ -28,8 +28,8 @@
   </div>
   <div class="send right">
       <form action="/messagerie/create/{$annonce.A_idannonce}/{$user.U_mail}/{$mail}" method="post" >
-        <input name="message" type="text" class="msger-input" placeholder="Enter your message...">
-        <button type="submit" class="msger-send-btn">Send</button>
+        <input name="message" type="text" class="msger-input" placeholder="Entrez votre message...">
+        <button type="submit" class="msger-send-btn">Envoyer</button>
       </form>
   </div>
 </div>
