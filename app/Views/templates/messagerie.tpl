@@ -20,7 +20,8 @@
               <span class="time_date">{$mess.M_dateheure_message}</span> 
           </div>
         {/if}        
-        {/foreach}    
+        {/foreach} 
+        <div id="ancre"></div>   
         </div>
       </div>
     </div>    
@@ -33,3 +34,7 @@
   </div>
 </div>
 {/block}
+<script>
+element = document.getElementById('ancre');
+element.scrollTop = element.scrollHeight;
+</script>

@@ -249,7 +249,8 @@ class Annonce extends Controller
                 "titre" => "Erreur",
                 "message" => "L'annonce n'a pas été trouvée dans la BDD"
             );
-            return $this->returnNotif($notif,false);
+            $controlP = new Pages();
+            return $controlP->affNotif('error',"L'annonce n'a pas été trouvée dans la BDD");
         }
         $messModel = new messagerieModel();
         $messModel->deleteM($id_annonce);
@@ -272,7 +273,7 @@ class Annonce extends Controller
         $session = \Config\Services::session();
         $controlP = new Pages();
         if($session->get("mail") === null && $page === 'nouvelle_annonce') {
-            $controlP->affNotif("error","Vous devez être connecté pour créer une annonce !","/");
+            $controlP->affNotif("error","Vous devez être connecté pour créer une annonce !");
             return $this->accueil(); 
         }  
         $modelA = new annonceModel();
@@ -468,7 +469,7 @@ class Annonce extends Controller
     {
         $session = \Config\Services::session();
         $modelA = new annonceModel();
-        if(!empty($annUti))
+        if(true)
         {
             $lAnnonces = $modelA->getAnnonce();
             
@@ -502,12 +503,8 @@ class Annonce extends Controller
 
         if(count($lAnnonces)===0)  //Affichage du message de warning si pas d'annonces dans la BDD
         {
-            $notification = array( 
-                "type" => "warning",
-                "titre" => "Warning",
-                "message" => "Pas d'annonces dans la BDD"
-            );
-            service('SmartyEngine')->assign('notification',$notification);
+            $controlP = new Pages();
+            return $controlP->affNotif('error',"Pas d'annonce dans la BDD","/");
         }
         else{
         //$nbAnnonces = count($lAnnonces);
