@@ -16,7 +16,6 @@
     </div>
     {/if}
     {if !isset($estAccueil) && (isset($recherche) || isset($borne) )}
-        <p>Yo</p>
         {include file="recherche_annonce.tpl"}
     {/if}
 

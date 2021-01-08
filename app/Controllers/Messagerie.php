@@ -91,15 +91,6 @@ class Messagerie extends Controller
         
         $annonce = $modelAnnonce->getAnnonce($id_annonce);  
         
-        if($annonce['U_mail']!=$mail && $annonce['U_mail']!=$mail2) {
-            $tmp = $session->get("mail");
-            $controlP->affNotif("error","L'annonce n'appartient à aucun des 2 utilisateurs !","/messagerie/createConv/$tmp");
-            return $this->createConv($session->get("mail"));
-        }
-
-        if( $session->get("mail") === null ) return $this->returnError('Vous devez être connecté pour envoyer un message','connexion');
-        $annonce = $modelAnnonce->getAnnonce($id_annonce);
-        
         if(!($id_annonce!==false && gettype($annonce)==='array' && empty($annonce['A_idannonce'])!==1)) //Lance une erreur si annonce n'existe pas pour édition où la vue
         {
             $controlP = new Pages();
@@ -107,6 +98,16 @@ class Messagerie extends Controller
             $controlP->affNotif("error","L'annonce est introuvable !", "/messagerie/createConv/$tmp");
             return $this->createConv($session->get("mail"));  
         }
+
+        if($annonce['U_mail']!=$mail && $annonce['U_mail']!=$mail2) {
+            $tmp = $session->get("mail");
+            $controlP->affNotif("error","L'annonce n'appartient à aucun des 2 utilisateurs !","/messagerie/createConv/$tmp");
+            return $this->createConv($session->get("mail"));
+        }
+
+        if( $session->get("mail") === null ) return $this->returnError('Vous devez être connecté pour envoyer un message','connexion');
+        
+
 
         service('SmartyEngine')->assign('annonce',$annonce);
         service('SmartyEngine')->assign('messages',$this->getMessage($id_annonce, $mail, $mail2));

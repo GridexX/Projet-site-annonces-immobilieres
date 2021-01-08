@@ -1,20 +1,22 @@
 <div class="flex-container w75 item-center">
-    <div class="annonce-container formulaire w60 item-center">
+    <div class="annonce-container formulaire w90 item-center">
         <form method="post" action="/annonce/viewListe/{$bSelect|default:''}/{$nbAnnonces|default:''}" >
             <div>
                 <span><p class="h5-like">Rechercher des annonces</p>
+                <label for="titre"> Titre : </label>
                     <input class="champs" type="text" name="A_titre" placeholder="Titre de l'annonce" />
                     <button class="btn--primary" id="submit-button" type="submit" value="Valider" name="recherche"><i class="fas fa-search"></i></button>              
                 </span>
                 
             </div>
             <hr>
-            <div class="flex-container ">
-            <span class="w10 item-center"><p class="h6-like">Fourchette A_cout_loyer : </p></span>
+            <div class="flex-container">
+            <div class="w50">
+            <p class="h6-like slider-title">Fourchette loyer : </p>
             
               
             <!-- Range Slider HTML -->
-            <span class="w40">
+            <div>
                   <div slider id="slider-distance" class="w90">
                     <div>
                         <div inverse-left style="width:70%;"></div>
@@ -48,12 +50,13 @@
                     children[13].childNodes[1].innerHTML=this.value+' €';" />
                     </div>
                   <!-- End Range Slider HTML -->
-    		</span>
-            <span class="w10 item-center"><p class="h6-like">Fourchette A_cout_charges : </p></span>
+    		</div>
+            </div>
+            <div class="w50">
+            <p class="h6-like slider-title">Fourchette charges : </p>
             
               
             <!-- Range Slider HTML -->
-            <span class="w40">
                   <div slider id="slider-distance">
                     <div>
                         <div inverse-left style="width:70%;"></div>
@@ -87,15 +90,13 @@
                     children[13].childNodes[1].innerHTML=this.value+' €';" />
                     </div>
                   <!-- End Range Slider HTML -->
-    		</span>
             </div>
 
-            <div class="flex-container ">
-            <span class="w10 item-center"><p class="h6-like">Fourchette A_superficie : </p></span>
+            <div class="w50">
+            <p class="h6-like slider-title">Fourchette superficie : </p>
             
               
             <!-- Range Slider HTML -->
-            <span class="w40">
                   <div slider id="slider-distance" class="w90">
                     <div>
                         <div inverse-left style="width:70%;"></div>
@@ -129,13 +130,12 @@
                     children[13].childNodes[1].innerHTML=this.value+' m²';" />
                     </div>
                   <!-- End Range Slider HTML -->
-    		</span>
-            
-            <span class="w10 item-center"><p class="h6-like">Fourchette Energie : </p></span>
+            </div>
+            <div class="w50">
+            <p class="h6-like slider-title">Fourchette énergie : </p>
             
               
             <!-- Range Slider HTML -->
-            <span class="w40">
                   <div slider id="slider-distance">
                     <div>
                         <div inverse-left style="width:70%;"></div>
@@ -173,27 +173,26 @@
                     bgGradient(1, tabColor2[parseInt(this.value)]);" />
                     </div>
                   <!-- End Range Slider HTML -->
-    		</span>
-
             </div>
-            <div class="flex-container">
-                <span class="w33">
+            </div>
+            <div class="flex-container ">
+                <div class="w50 center">
                     <label for="meuble"><i class="fas fa-couch"></i> Meublé : </label>
                     <select class="champs" name="A_est_meuble">                 
                         <option value="TRUE" {(($recherche.A_est_meuble)?'selected':'')|default:''} >Oui</option>
                         <option value="FALSE" {(($recherche.A_est_meuble)?'':'selected')|default:''} >Non</option>
                         <option value="indifférent" {( !isset($recherche.A_est_meuble) || $recherche.A_est_meuble==='indifférent')?'selected':''}>Indifférent</option>     
                     </select>
-                </span>
-                <span class="w33">
+                </div>
+                <div class="w50">
                     <label for="chauffage"><i class="fas fa-burn"></i> Chauffage : </label>
                     <select class="champs" name="A_type_chauffage" onchange="chauffageSelectCheck(this);" > 
                         <option value="indifférent" {(isset($recherche.A_type_chauffage))?'':'selected'}>Indifférent</option>                
                         <option value="individuel" id="chauffageIndOption" {(($recherche.A_type_chauffage==='individuel')?'selected':'')|default:''} >Individuel</option>
                         <option value="collectif" {(($recherche.A_type_chauffage==='collectif')?'selected':'')|default:''} >Collectif</option>
                     </select>
-                </span>
-                <span class="w33">
+                </div>
+                <div class="w50">
                 <div id="chauffageDivCheck" style="display: {($recherche.A_type_chauffage==='individuel')?'block;':'none;'}" >
                         <label for="chauffage"><i class="fas fa-burn"></i> Type Chauffage : </label>
                         <select class="champs" name="E_id_engie" onchange="engieSelectCheck(this);" >   
@@ -207,11 +206,11 @@
                         </select>
                        
                 </div>
-                </span>
+                </div>
                 
             </div>
-            <div class="flex-container">
-                <span class="w33">
+            <div class="flex-container ">
+                <div class="w50">
                  <label for="type"><i class="fas fa-home"></i></i> Type : </label>
                         <select class="champs" name="T_type">                 
                             <option value="T1" {(($recherche.T_type==='T1')?'selected':'')|default:''}>T1</option>
@@ -222,20 +221,21 @@
                             <option value="T6" {(($recherche.T_type==='T6')?'selected':'')|default:''}>T6</option>
                             <option value="indifférent" {(empty($recherche.T_type) || $recherche.T_type==='indifférent')?'selected':''}>Indifférent</option>
                         </select>
-                </span>
-                <span class="w33">
+                </div>
+                <div class="w50">
                     <label for="ville" class="label-cp">Ville : </label>
                     <input class="champs champs-cp" type="text" name="A_ville" value="{$recherche.A_ville|default:''}" placeholder="Paris"/>
                         
-                </span>
-                <span class="w33">
+                </div>
+                <div class="w50">
                     <label for="cp" class="label-cp">Code Postal : </label>
                     <input class="champs champs-cp" type="text" name="A_CP" value="{$recherche.A_CP|default:''}" placeholder="75000" pattern="[0-9]{literal}{5}{/literal}"  oninvalid="this.setCustomValidity('5 chiffres')" />
                         
-                </span>
+                </div>
             </div>
-        </form><hr>
-        <div class="txtcenter"><small>{$var.totAnnonceTrouvees} / {$var.totAnnonce} annonces au total</small></div>
+            <hr>
+            <div class="txtcenter"><small>{$var.totAnnonceTrouvees} / {$var.totAnnonce} annonces au total</small></div>
+        </form>
     </div>
 </div>
 <script>
