@@ -185,7 +185,7 @@
                     {/if}
                     </div>
                     {if isset($smarty.session.mail)}
-                    {if $smarty.session.mail!==$annonce.U_mail || isset($smarty.session.admin)}
+                    {if $smarty.session.mail===$annonce.U_mail || isset($smarty.session.admin)}
                     <span class="w15">
                     <div class="select">          
                         <select name="slct" id="slct" onchange="location = '/annonce/changerEtat/{$annonce.A_idannonce}/'+this.value+'/annonce';">

@@ -129,7 +129,7 @@
                     <p class="h6-like">Localisation</p>
                     <div>
                         <label class="label-form" class="label-form" for="adresse">Adresse : </label>
-                        <input class="champs" type="text" name="adresse" required value="{$annonce.A_adresse|default:''}" placeholder="15 rue des Champs Élysées" pattern="{literal} ..* ..*{/literal}"  oninvalid="this.setCustomValidity('Doit contenir 2 mots')" />
+                        <input class="champs" type="text" name="adresse" required value="{$annonce.A_adresse|default:''}" placeholder="15 rue des Champs Élysées" oninvalid="this.setCustomValidity('Ne doit pas être vide')" />
                     </div>
                     <div>
                         <label class="label-form" class="label-form" for="ville" class="label-cp">Ville : </label>

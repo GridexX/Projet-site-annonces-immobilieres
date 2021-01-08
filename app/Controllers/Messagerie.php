@@ -59,15 +59,9 @@ class Messagerie extends Controller
             $msg["M_texte_message"] = $this->request->getVar('message');
             $uti = $modelU->getUtilisateur($mail);
             $controlM = new Mail();
-            //$controlM->mailAdmin($msg, $sujet, $uti, $session->get("pseudo"));
-            $controlP->affNotif('success',"Mail envoyé avec succés",);
-            $modelA = new annonceModel();
-            $controllerA = new Annonce();
-            $lUtilisateurs = $modelU->getUtilisateur();
-            $lAnnonce = $controllerA->arrDateFormat( $controllerA->getTypeAnnonce( $modelA->getAnnonce(), "bloquée" ) );
-            service('SmartyEngine')->assign('liste_annonce',$lAnnonce);
-            service('SmartyEngine')->assign('liste_utilisateur',$lUtilisateurs);
-            return service('SmartyEngine')->view('espace_admin.tpl');   
+            $controlM->mailAdmin($msg, $sujet, $uti, $session->get("pseudo"));
+            $controlP->affNotif('success',"Mail envoyé avec succés");
+            $controlU->view('espace_admin');
         }
         else
         {
