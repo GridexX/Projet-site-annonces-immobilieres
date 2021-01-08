@@ -728,7 +728,15 @@ class Annonce extends Controller
 
         $modelA = new annonceModel();
         $lAnnonces = $this->getTypeAnnonce( $modelA->getAnnonce(), "publiée");
-        $lAnnonces = $this->annoncesBornees($lAnnonces,0,6);
+        if($this->lAnnonceVide($lAnnonces))
+        {
+            $controlP = new Pages();
+            $controlP->affNotif('error', "pas encore d'annonces publiées sur le site");
+        }
+        else
+        {
+            $lAnnonces = $this->annoncesBornees($lAnnonces,0,6);
+        }
         
         service('SmartyEngine')->assign('liste_annonce',$lAnnonces);
         service('SmartyEngine')->assign('estAccueil',true);

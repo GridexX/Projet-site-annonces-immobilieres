@@ -186,7 +186,7 @@
                     </div>
                     <span class="w15">
                     <div class="select">          
-                        <select name="slct" id="slct" onchange="location = '/annonce/changerEtat/{$annonce.A_idannonce}/'+this.value;">
+                        <select name="slct" id="slct" onchange="location = '/annonce/changerEtat/{$annonce.A_idannonce}/'+this.value+'/annonce';">
                             <option disabled>Etat de l'annonce</option>
                             <option disabled {($annonce.A_etat==="bloquée")?'selected':''} >Bloquée</option>
                             {if !($annonce.A_etat==="bloquée" && !isset($smarty.session.admin))}
