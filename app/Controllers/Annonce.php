@@ -250,7 +250,7 @@ class Annonce extends Controller
                 "message" => "L'annonce n'a pas été trouvée dans la BDD"
             );
             $controlP = new Pages();
-            return $controlP->affNotif('error',"L'annonce n'a pas été trouvée dans la BDD");
+            $controlP->affNotif('error',"L'annonce n'a pas été trouvée dans la BDD");
         }
         $messModel = new messagerieModel();
         $messModel->deleteM($id_annonce);
@@ -504,7 +504,7 @@ class Annonce extends Controller
         if(count($lAnnonces)===0)  //Affichage du message de warning si pas d'annonces dans la BDD
         {
             $controlP = new Pages();
-            return $controlP->affNotif('error',"Pas d'annonce dans la BDD","/");
+            $controlP->affNotif('error',"Pas d'annonce dans la BDD");
         }
         else{
         //$nbAnnonces = count($lAnnonces);
