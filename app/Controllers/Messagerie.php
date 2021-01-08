@@ -3,6 +3,7 @@
 use App\Models\annonceModel;
 use App\Models\energieModel;
 use App\Models\utilisateurModel;
+use App\Models\messagerieModel;
 use App\Controllers\Pages;
 use CodeIgniter\Controller;
 use App\Controllers\Photo;
