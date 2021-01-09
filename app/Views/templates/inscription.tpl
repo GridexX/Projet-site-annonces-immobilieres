@@ -25,7 +25,8 @@
     {block name="nv_mdp"}{/block}
     <div>
     <label style="width:24rem;" for="confirmation">Confirmation mot de passe : </label>
-    <input class="champs" type="password" name="confirmation" required oninvalid="this.setCustomValidity('Doit être identique au mot de passe')" />
+    <input class="champs" type="password" name="confirmation" oninvalid="this.setCustomValidity('Doit être identique au mot de passe')" />
+    <br /><small><i>* 2 derniers champs non obligatoires si pas de modification du mot de passe</i></small>
     </div>
 
 {/block}

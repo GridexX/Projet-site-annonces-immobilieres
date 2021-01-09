@@ -28,11 +28,10 @@ class utilisateurModel extends Model
         return $this->asArray()->where(['U_mail' => $mail])->first();
     }
 
-    public function updateUtilisateur($mail, $mdp, $pseudo, $nom, $prenom)
+    public function updateUtilisateur(array $utilisateur)
     {
-        $mdp = sha1($mdp);
-        $requete = 'UPDATE '.$this->table.' SET U_mdp = "'.$mdp.'", U_pseudo = "'.$pseudo.'", U_nom = "'.$nom.'", U_prenom = "'.$prenom.'"WHERE U_mail = "'.$mail.'";';
-        return $this->simpleQuery($requete);
+        $db = \Config\Database::connect();
+        return $db->table($this->table)->where(['U_mail' => $utilisateur['U_mail']])->update($utilisateur);
     }
 
     public function deleteUtilisateur($mail)

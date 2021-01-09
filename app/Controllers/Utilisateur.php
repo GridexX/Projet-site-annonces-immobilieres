@@ -107,16 +107,16 @@ class Utilisateur extends Controller
 
         //Suppression du compte
         $modelU->deleteUtilisateur($session->get("mail"));
-        $notif = array(
-            "type" => "success",
-            "titre" => "Success",
-            "message" => "Votre compte à bien été supprimé"
-        );
 
         $session->destroy();
         service('SmartyEngine')->assign('session',$session);
-        return redirect()->to('/');
-        return $controllerA->returnNotif($notif,false);
+
+        $controllerPa = new Pages();
+        $controllerA = new Annonce();
+        $controllerPa->affNotif("success","Votre compte à bien été supprimé","/");
+        return $controllerA->accueil();
+
+
     }
 
     public function create($admin=false)
@@ -224,18 +224,31 @@ class Utilisateur extends Controller
         }
     }  
 
-    public function update()
+    public function update2()
     {
         helper(['form','url']);
+        $session = \Config\Services::session();  
+        if( $this->estAdmin() && $session->get("mail")!==$this->request->getVar('mail') )  //Si admin edite un autre compte
+        {
+            $user = $this->validate([
+                'nom' => 'required',
+                'prenom' => 'required',
+                'pseudo' => 'required',
+                ]);
+                $estRequeteVal=true;
+        }   
+        else
+        {
+            $user = $this->validate([
+                'nom' => 'required',
+                'prenom' => 'required',
+                'pseudo' => 'required',
+                'password' => 'required'
+                ]);
+                $estRequeteVal=false;
+        }
 
-        $user = $this->validate([
-            'nom' => 'required',
-            'prenom' => 'required',
-            'pseudo' => 'required',
-            'password' => 'required'
-            ]);
-
-        $session = \Config\Services::session();   
+        $controlP = new Pages();
         if ($user)
         {
             $mdp = $this->request->getVar('password');
@@ -243,26 +256,33 @@ class Utilisateur extends Controller
             $newMdp = $this->request->getVar('new-password');
             $model = new utilisateurModel();
             $res = $model->getUtilisateur($session->get("mail"));
+
+            
+            //Si admin edite un autre compte
+            if(!$estRequeteVal){
             if(! $this->sontMdpEgaux(sha1($mdp),$res["U_mdp"])) $this->returnError('Le mot de passe est incorrect','edition_profil');
             else if(! $this->sontMdpEgaux($confirmation,$newMdp)) $this->returnError('Le nouveau mot de passe n\'a pas été bien ressaisit','edition_profil');
             else if($this->sontMdpEgaux($mdp,$newMdp)) $this->returnError('Le nouveau mot de passe ressemble trop à l\'ancien','edition_profil');
-            else  if($this->sontMdpEgaux(sha1($mdp),$res["U_mdp"]) && $this->sontMdpEgaux($confirmation,$newMdp)) //Le mdp est bon et les 2 nouveaux mots de passes sont égaux
+            }
+            //$this->sontMdpEgaux(sha1($mdp),$res["U_mdp"]) && $this->sontMdpEgaux($confirmation,$newMdp)
+            else if( $estRequeteVal) //Le mdp est bon et les 2 nouveaux mots de passes sont égaux
             {
                 $data['pseudo'] = $this->request->getVar('pseudo'); 
                 $data['nom'] = $this->request->getVar('nom');
                 $data['prenom'] = $this->request->getVar('prenom');
                 
-                if(! empty($newMdp)) $mdp = $newMdp; //Pour garder le même mdp quand on enregistre le formulaire
+                if(! empty($newMdp)) $mdp = $this->estAdmin() && $session->get("mail")!==$this->request->getVar('mail') ? $res["U_mdp"] : sha1($newMdp); //Pour garder le même mdp quand on enregistre le formulaire
+
                 $model->updateUtilisateur($session->get("mail"), $mdp, $data['pseudo'], $data['nom'] , $data['prenom']);
                 $session->set($data); 
 
                 //Envoi du mail de d'information
                 $controllerM = new Mail();
-                $controllerM->accountModified($res, !empty($session->get("admin")) );
-
-                service('SmartyEngine')->assign('succes','Profil mis à jour !');
-                service('SmartyEngine')->assign('session',$session);
-                //service('SmartyEngine')->view('edition_profil');
+                //$controllerM->accountModified($res, !empty($session->get("admin")) );
+                var_dump("SESSION :",$session->get("mail"),"FORM:",$this->request->getVar('mail'));
+                $controlA = new Annonce();
+                $controlP->affNotif("success","Profil édité avec succès !");
+                return ($this->estAdmin() && $session->get("mail")!==$this->request->getVar('mail') ) ?  $this->view("espace_admin") : $this->view("edition_profil");
             }
 
         }
@@ -270,6 +290,84 @@ class Utilisateur extends Controller
         {
             return $this->returnError('Veuillez vous connecter pour effectuer cette action','connexion');
         }
+    }
+
+    public function update($mail)
+    {
+        //Renvoie une erreur si l'utilisateur n'est pas admin et qu'il edit un autre profil
+        helper(['form','url']);
+        $session = \Config\Services::session();  
+        $controllerP = new Pages();
+        $modelU = new utilisateurModel();
+        $uti = $modelU->getUtilisateur($mail);
+        if( !$this->existeUti($mail))
+        {
+            $controllerP->affNotif('error',"Aucun utilisateur ne correspond à ce mail !");
+            return $this->view("edition_profil");
+        }
+        if(! $this->estAdmin() && $mail!==$session->get('mail'))
+        {
+            $controllerP->affNotif('error',"Vous ne pouvez pas modifier un autre compte que le votre");
+            return $this->view("edition_profil");
+        }
+        $adminModifUti = $this->estAdmin() && $session->get("mail")!==$mail;  //booléen pour savoir admin modif un autre compte
+        //vérification du champ du mot de passe si user modifie son compte
+        $user =  ($adminModifUti ) ? $this->validate([
+            'nom' => 'required',
+            'prenom' => 'required',
+            'pseudo' => 'required',
+            ])
+            : $this->validate([
+                'nom' => 'required',
+                'prenom' => 'required',
+                'pseudo' => 'required',
+                'password' => 'required'
+            ]);
+        
+        //gestion des erreurs de mots de passe si c'est le cas
+        $mdp = $this->request->getVar('password');
+        $confirmation = $this->request->getVar('confirmation');
+        $newMdp = $this->request->getVar('new-password');
+
+        if(!$adminModifUti)
+        {
+            if(! $this->sontMdpEgaux(sha1($mdp),$uti["U_mdp"])) 
+            {
+                $controllerP->affNotif('error','Le mot de passe est incorrect','/utilisateur/view/edition_profil');
+                return $this->view("edition_profil");
+            }
+            else if(! $this->sontMdpEgaux($confirmation,$newMdp)) 
+            {
+                $controllerP->affNotif('error','Les mots de passes ne correspondent pas','/utilisateur/view/edition_profil');
+                return $this->view("edition_profil");
+            }
+            else if($this->sontMdpEgaux($mdp,$newMdp))
+            {
+                $controllerP->affNotif('error','Le nouveau mot de passe ressemble trop à l\'ancien','/utilisateur/view/edition_profil');
+                return $this->view("edition_profil");
+            }
+        }
+        if($user)  //Si la requête est valide
+        {
+            $data['U_pseudo'] = $this->request->getVar('pseudo'); 
+            $data['U_nom'] = $this->request->getVar('nom');
+            $data['U_prenom'] = $this->request->getVar('prenom');
+            $data['U_mail'] = $mail;
+            if( !$adminModifUti && !empty($newMdp) ) $data['U_mdp'] = sha1($newMdp);
+            var_dump($data);
+            $modelU->updateUtilisateur($data);
+            
+            $data['pseudo'] = $data['U_pseudo']; 
+            $data['nom'] = $data['U_nom'];
+            $data['prenom'] = $data['U_prenom'];
+            $session->set($data);
+            service('SmartyEngine')->assign('session',$session);
+
+            $controllerP->affNotif("success","Profil édité avec succès !");
+            return ( $adminModifUti ) ?  $this->view("espace_admin") : $this->view("edition_profil");
+        
+        }
+            
     }
 
 
