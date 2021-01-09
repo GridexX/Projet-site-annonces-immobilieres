@@ -10,7 +10,7 @@
 		<link rel="stylesheet" href="/Css/stylesheet.css" /> <!-- Mettre /public avant tout -->
         <link rel="stylesheet" href="/Css/semantic.min.css" />
         <link rel="stylesheet" href="/Css/knacss.css" />
-        <link rel="icon" type="image/png" href="/Images/logo_site.png" />
+        <link rel="icon" type="image/png" href="/Images/shareloc_purple.png" />
         <title>{block name="titre_onglet"}{/block} - Site de petites annonces</title>
 	</head>
     <body>
