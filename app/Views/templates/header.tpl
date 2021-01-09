@@ -4,7 +4,7 @@
             {if isset($estAccueil)}<button class="bouton btn-bleu center"><a class="lien" href="/annonce/toutesAnnonces/">Afficher toutes les annonces</a></button>{/if}
         </div>
         <span class="w33 navbar-div item-center txtcenter">
-            <a href="/"><img src="/Images/logo_house.png" alt="House logo"></a>
+            <a href="/"><img src="/Images/shareloc_purple.png" alt="Logo du site"></a>
         </span>
         {block name="divBtnConnexion"}
         <span class="w33 navbar-div item-center txtcenter">
