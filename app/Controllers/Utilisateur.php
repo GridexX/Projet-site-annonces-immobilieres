@@ -4,6 +4,7 @@ use App\Models\utilisateurModel;
 use CodeIgniter\Controller;
 use App\Controllers\Annonce;
 use App\Models\annonceModel;
+use App\Models\messagerieModel;
 use App\Controllers\Mail;
 use App\Controllers\Pages;
 
@@ -69,51 +70,64 @@ class Utilisateur extends Controller
         return service('SmartyEngine')->view($view.'.tpl');
     }
 
-    public function delete($confirm=false)
+    public function delete($mail=false,$confirm=false)
     {
         $session = \Config\Services::session();
         service('SmartyEngine')->assign('session',$session);
         $controllerA = new Annonce();
-        if( $session->get("mail") === null)
+        $controllerP = new Pages();
+        if( !$this->estConnecte())
         {
-            $notif = array(
-                "type" => "error",
-                "titre" => "Erreur",
-                "message" => "Vous devez etre connecté pour supprimer un compte !"
-            );
-            return $controllerA->returnNotif($notif,false);
+            $controllerPa->affNotif('error','Vous devez etre connecté pour supprimer un compte !','/pages/view/connexion');
+            return $controllerPa->view("connexion");
         }
-        
+        $adminDelAutre = $this->estAdmin() && $mail !== $session->get("mail");
+
+        if(! $this->estAdmin() && $mail !== $session->get("mail"))  //empeche la suppression d'autre comptes
+        {
+            $controllerPa->affNotif('error',"Vous ne pouvez pas supprimer d'autres comptes !");
+            return $this->view("edition_profil");
+        }
+        $modelU = new utilisateurModel();
         if($confirm===false)
         {
+            service('SmartyEngine')->assign('uti', $modelU->getUtilisateur($mail) );
             service('SmartyEngine')->assign('confirmation',true);
-            return service('SmartyEngine')->view('edition_profil');
+            if($adminDelAutre)
+                return $this->view("edition_profil",$mail);
+            else
+                return service('SmartyEngine')->view("edition_profil");
         }
 
         //Suppression de toutes les annonces de l'utilisateur
         $modelA = new annonceModel();
         $controllerP = new Photo();
-        $lAnnonce = $modelA->getAnnonceUti($session->get("mail"));
+        $lAnnonce = $modelA->getAnnonceUti($mail);
+        $modelM = new messagerieModel();
         foreach($lAnnonce as $annonce)
         {
-            $controllerP->delete($annonce["A_idannonce"]);
-            $modelA->deleteAnnonce($annonce["A_idannonce"]);
+            $controllerP->delete($annonce["A_idannonce"]);  //Suppression des photos
+            $modelM->deleteM($annonce["A_idannonce"]);  //Suppressions des messages
+            $modelA->deleteAnnonce($annonce["A_idannonce"]);  //Suppression de l'annonce    
         }
 
         //Envoi d'un mail à l'utilisateur pour lui dire que son compte à bien été supprimé
         $controllerM = new Mail();
-        $modelU = new utilisateurModel();
-        $controllerM->mailDelAccount($modelU->getUtilisateur($session->get("mail")));
+        $controllerM->delAccount($modelU->getUtilisateur($mail),$adminDelAutre);
 
         //Suppression du compte
-        $modelU->deleteUtilisateur($session->get("mail"));
+        $modelU->deleteUtilisateur($mail);
 
-        $session->destroy();
-        service('SmartyEngine')->assign('session',$session);
+        if(!$adminDelAutre)
+        {
+            $session->destroy();
+            service('SmartyEngine')->assign('session',$session);
+        }
 
         $controllerPa = new Pages();
         $controllerA = new Annonce();
-        $controllerPa->affNotif("success","Votre compte à bien été supprimé","/");
+        $msg = ($adminDelAutre) ? 'Ce compte' : 'Votre compte'; 
+        $controllerPa->affNotif("success","$msg a bien été supprimé","/");
         return $controllerA->accueil();
 
 
@@ -358,11 +372,11 @@ class Utilisateur extends Controller
             $modelU->updateUtilisateur($data);
             if( !$adminModifUti)
             {
-            $data['pseudo'] = $data['U_pseudo']; 
-            $data['nom'] = $data['U_nom'];
-            $data['prenom'] = $data['U_prenom'];
-            $session->set($data);
-            service('SmartyEngine')->assign('session',$session);
+                $data['pseudo'] = $data['U_pseudo']; 
+                $data['nom'] = $data['U_nom'];
+                $data['prenom'] = $data['U_prenom'];
+                $session->set($data);
+                service('SmartyEngine')->assign('session',$session);
             }
             else
             {
@@ -372,7 +386,8 @@ class Utilisateur extends Controller
                 service('SmartyEngine')->assign('uti',$uti);
             }
            
-
+            $controllerM = new Mail();
+            $controllerM->accountModified($data, $adminModifUti );
             $controllerP->affNotif("success","Profil édité avec succès !");
             return ( $adminModifUti ) ?  $this->view("espace_admin") : $this->view("edition_profil");
         

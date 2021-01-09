@@ -5,8 +5,8 @@
     {if isset($confirmation)}
         <div class="flex-container">
             <div class="annonce-container formulaire w40 item-center txtcenter">
-                <p>Etes vous sur de vouloir supprimer votre compte ?</p>
-                <a href="/utilisateur/delete/true"><button class="btn--primary" >Oui</button></a>
+                <p>Etes vous sur de vouloir supprimer {if isset($smarty.session.admin) && isset($uti.U_mail) }ce{else}votre{/if} compte ?</p>
+                <a href="/utilisateur/delete/{($uti.U_mail|default:($smarty.session.mail|default:''))}/true"><button class="btn--primary" >Oui</button></a>
                 <a href="/pages/view/edition_profil"><button class="btn--danger" >Non</button></a>
                 
             </div>

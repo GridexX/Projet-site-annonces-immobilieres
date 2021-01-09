@@ -54,8 +54,9 @@ class Mail extends Controller
 
     public function accountModified($uti, $actionAdmin=false)
     {
+        var_dump($uti);
         $modelU = new utilisateurModel();
-        $uti = $modelU->getUtilisateur('fr.annonce.immobiliere@gmail.com');
+        //$uti = $modelU->getUtilisateur('fr.annonce.immobiliere@gmail.com');
         $sujet = "Modification de votre compte";
         $dest = $uti['U_mail'];
         $corps = "<p> Vous recevez ce mail de confirmation car votre compte à été modifié. </p>";
@@ -137,7 +138,15 @@ class Mail extends Controller
         $email->setTo($dest);
         $email->setSubject($sujet);
         $email->setMessage($message);
-        $email->send(false);
+        if($email->send(false))
+        {
+
+        }
+        else
+        {   
+            $data = $email->printDebugger(['header']);
+            print_r($data);
+        }
         
     }
     

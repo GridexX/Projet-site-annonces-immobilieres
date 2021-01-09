@@ -16,7 +16,7 @@
     {if isset($uti) && isset($smarty.session.admin) || !isset($smarty.session.admin)}
     <div class="flex-container" style="margin-top: 2rem;">
         <div class="formulaire-container w40 item-center txtcenter">
-            <form class="formulaire" action="/utilisateur/delete/" method="post">
+            <form class="formulaire" action="/utilisateur/delete/{($uti.U_mail|default:($smarty.session.mail|default:''))}" method="post">
                 <input class="btn--dark" id="submit-button" type="submit" value="Supprimer le profil" name="suppression" />
             </form>
         </div>
