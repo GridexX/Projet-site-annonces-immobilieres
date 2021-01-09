@@ -128,6 +128,17 @@ class Mail extends Controller
         return $this->sendMail($sujet, $message, $dest);
     }
 
+    public function delMessages($annonce)
+    {
+        $sujet = "Des messages ont été supprimés";
+        $dest = $annonce["U_mail"];
+        $corps = "<p>Les messages de votre annonce ".$annonce["A_titre"]." ont été supprimés par l'administrateur du site. </p><br/><br/><small>Soyez certains que cette nouvelle nous attriste grandement...</small></p>";
+        $modelU = new utilisateurModel();
+        $uti = $modelU->getUtilisateur($annonce["U_mail"]);
+        $message = $this->text($uti,$corps);
+        return $this->sendMail($sujet, $message, $dest);
+    }
+
 
     public function annoncesBloquées($uti)
     {

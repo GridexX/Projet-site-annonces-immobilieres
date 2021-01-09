@@ -250,9 +250,26 @@ class Messagerie extends Controller
     public function delete($id_annonce)
     {
         $model = new messagerieModel();
-        $model->deleteM($id_annonce);
-        $tmp = "/annonce/view/$id_annonce";
-        return redirect()->to('/utilisateur/view/espace_admin');
+        $controllerP = new Pages();
+        $controllerU = new Utilisateur();
+
+        //envoie du mail à l'utilisateur si pas de messages
+        $controllerM = new Mail();
+        $modelA = new annonceModel();
+
+
+        $aMess = !empty( $model->getMessageAnnonce($id_annonce) );
+        
+        if($aMess)  //envoie du mail si contient des messages
+        {
+            $controllerM->delMessages( $modelA->getAnnonce($id_annonce) );
+            $controllerP->affNotif("success","Les messages de l'annonce ont bien été supprimés");
+            $model->deleteM($id_annonce);
+        }
+        else
+            $controllerP->affNotif("error","Aucun message lié a cette annonce");
+
+        return $controllerU->view("espace_admin");
     }
     
 }

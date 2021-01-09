@@ -30,6 +30,19 @@ class MessagerieModel extends Model
     }
     */
 
+    public function getMessageAnnonce($id_annonce)
+    {
+        $db = \Config\Database::connect();
+        return $db->table($this->table)
+        ->select('*')
+        ->where('A_idannonce', $id_annonce)
+        ->get()->getResultArray();
+        return $this->select('A_idannonce')->where(['A_idannonce' => $id_annonce])->asArray();
+        return $db->table($this->table)->select('*')->where(['A_idannonce' => $id_annonce])->get()->getResultArray();
+
+        
+    }
+
     public function getMessage($id_annonce, $mail, $mail2) 
     {
         $db = \Config\Database::connect();
