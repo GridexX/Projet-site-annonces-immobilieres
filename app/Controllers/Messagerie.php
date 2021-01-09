@@ -200,7 +200,6 @@ class Messagerie extends Controller
                   
             $bool = false;      
         }
-        //var_dump($allConv);
         $modelAnnonce = new annonceModel();
         $mess = [];
         $convs = [];
@@ -247,11 +246,13 @@ class Messagerie extends Controller
         $numMois =  substr($date,5,2);
         return substr($date,8,2).' '.$tabMois[$numMois-1].' '.substr($date,0,4).' à '.substr($date,11,2).'h'.substr($date,14,2);  
     }
+
     public function delete($id_annonce)
     {
         $model = new messagerieModel();
         $model->deleteM($id_annonce);
-        return redirect()->to("/annonce/view/$id_annonce"); 
+        $tmp = "/annonce/view/$id_annonce";
+        return redirect()->to('/utilisateur/view/espace_admin');
     }
     
 }

@@ -31,7 +31,6 @@ class Utilisateur extends Controller
     {
         $model = new utilisateurModel();
         $uti = $model->getUtilisateur($mail);
-        //var_dump(!empty($uti));
         return ! empty($uti);
     }
 
@@ -39,7 +38,6 @@ class Utilisateur extends Controller
     {
         $session = \Config\Services::session();
         $estAdmin = $session->get('admin')===NULL ? false : true;
-        //var_dump( $estAdmin );
         return $estAdmin;
     }
 
@@ -58,7 +56,6 @@ class Utilisateur extends Controller
     {
         $session = \Config\Services::session();
         $estConnecte = ($session->get("mail")!==null) ? true : false;
-        //var_dump($estConnecte);
         return $estConnecte;
     }
 
@@ -160,7 +157,6 @@ class Utilisateur extends Controller
                     $data['pseudo'] = $this->request->getVar('pseudo');
                     $data['nom'] = $this->request->getVar('nom');
                     $data['prenom'] = $this->request->getVar('prenom');
-                    //var_dump($data);
                     if($this->existeAdmin())
                         $model->insertUtilisateur($data['mail'], $mdp, $data['pseudo'], $data['nom'], $data['prenom']);
                     else{
@@ -293,7 +289,6 @@ class Utilisateur extends Controller
                 //Envoi du mail de d'information
                 $controllerM = new Mail();
                 //$controllerM->accountModified($res, !empty($session->get("admin")) );
-                var_dump("SESSION :",$session->get("mail"),"FORM:",$this->request->getVar('mail'));
                 $controlA = new Annonce();
                 $controlP->affNotif("success","Profil édité avec succès !");
                 return ($this->estAdmin() && $session->get("mail")!==$this->request->getVar('mail') ) ?  $this->view("espace_admin") : $this->view("edition_profil");
@@ -368,7 +363,6 @@ class Utilisateur extends Controller
             $data['U_prenom'] = $this->request->getVar('prenom');
             $data['U_mail'] = $mail;
             if( !$adminModifUti && !empty($newMdp) ) $data['U_mdp'] = sha1($newMdp);
-            var_dump($data);
             $modelU->updateUtilisateur($data);
             if( !$adminModifUti)
             {

@@ -7,7 +7,6 @@ class Pages extends Controller
     public function affNotif($type, $message, $lien=false)
     {
         $notification = array( "type" => $type, "message" => $message, "lien" => $lien);
-        var_dump($lien);
         service('SmartyEngine')->assign('notification',$notification);
     }
 
