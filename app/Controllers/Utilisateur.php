@@ -356,12 +356,22 @@ class Utilisateur extends Controller
             if( !$adminModifUti && !empty($newMdp) ) $data['U_mdp'] = sha1($newMdp);
             var_dump($data);
             $modelU->updateUtilisateur($data);
-            
+            if( !$adminModifUti)
+            {
             $data['pseudo'] = $data['U_pseudo']; 
             $data['nom'] = $data['U_nom'];
             $data['prenom'] = $data['U_prenom'];
             $session->set($data);
             service('SmartyEngine')->assign('session',$session);
+            }
+            else
+            {
+                $uti['pseudo'] = $data['U_pseudo']; 
+                $uti['nom'] = $data['U_nom'];
+                $uti['prenom'] = $data['U_prenom'];
+                service('SmartyEngine')->assign('uti',$uti);
+            }
+           
 
             $controllerP->affNotif("success","Profil édité avec succès !");
             return ( $adminModifUti ) ?  $this->view("espace_admin") : $this->view("edition_profil");
