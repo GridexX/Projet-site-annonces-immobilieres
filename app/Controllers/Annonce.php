@@ -239,8 +239,8 @@ class Annonce extends Controller
         $controllerP = new Photo();
         $controllerP->delete($id_annonce);
         $modelA->deleteAnnonce($id_annonce); 
-
-        $controllerPa->affNotif('success',"Annonce supprimée avec succés");
+        $controlP = new Pages();
+        $controlP->affNotif('success',"Annonce supprimée avec succés","/");
         return $this->mesAnnonces();
     }
 
