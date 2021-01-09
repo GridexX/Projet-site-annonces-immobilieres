@@ -801,7 +801,7 @@ class Annonce extends Controller
             $tabVoyelle = [ 'a', 'e', 'i', 'y', 'o', 'u'];
             //Test de voyelles pour le d'
             $det="de ";
-            $fLet = strtolower(substr($uti["U_pseudo"],1,1));
+            $fLet = strtolower(substr($uti["U_pseudo"],0,1));
             var_dump($fLet);
             for ($i=0; $i < count($tabVoyelle); ++$i) { 
                 
