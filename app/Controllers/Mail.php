@@ -54,7 +54,6 @@ class Mail extends Controller
 
     public function accountModified($uti, $actionAdmin=false)
     {
-        var_dump($uti);
         $modelU = new utilisateurModel();
         //$uti = $modelU->getUtilisateur('fr.annonce.immobiliere@gmail.com');
         $sujet = "Modification de votre compte";

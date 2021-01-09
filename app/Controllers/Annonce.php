@@ -81,7 +81,7 @@ class Annonce extends Controller
             {
                 $modelU = new utilisateurModel();
                 $controllerMail = new Mail();
-                //$controllerMail->annonceBloquée($modelU->getUtilisateur($annonce["U_mail"]),$annonce);
+                $controllerMail->annonceBloquée($modelU->getUtilisateur($annonce["U_mail"]),$annonce);
             }
         }
         switch ($page) {
@@ -179,8 +179,6 @@ class Annonce extends Controller
 
             //Vérif si l'utilisateur n'insere pas de photos
             $controllerPa = new Pages();
-            var_dump("PHOTO:",$deletePhoto);
-            var_dump("Control:",$controllerP->estPhotoValide($imagefile));
 
             if( (!$controllerP->estPhotoValide($imagefile) && $deletePhoto!==false) || ($id_annonce===false && !$controllerP->estPhotoValide($imagefile))  )  //On interdit l'update sans photo ou la création sans photo
             {
@@ -492,7 +490,6 @@ class Annonce extends Controller
         $modelU = new utilisateurModel();
         $controlU = new Utilisateur();
         $session = $session = \Config\Services::session();
-        var_dump($type);
         if(!$id_debut) $id_debut = 0;
         if(!$nbAnnonces) $nbAnnonces = 15;
         //Si on recherche les annonces d'un utilisateur, on vérifie que son mail est valide
@@ -516,7 +513,6 @@ class Annonce extends Controller
             $lAnnonces = $this->arrDateFormat( $this->getTypeAnnonce($lAnnonces,"publiée") );
             $var["totAnnonce"] = count($lAnnonces);
             $whereCond = $this->whereReqChamps($lAnnonces);
-            var_dump($whereCond);
             $lAnnonces = ($modelA->searchAnnonce($whereCond) !== NULL) ? $this->getTypeAnnonce($modelA->searchAnnonce($whereCond),"publiée" ) : array();
             $var["totAnnonceTrouvees"] = count($lAnnonces);
             service('SmartyEngine')->assign('var',$var);
@@ -562,14 +558,12 @@ class Annonce extends Controller
     {
         $session = \Config\Services::session();
         $modelA = new annonceModel();
-        var_dump($annUti);
         $lAnnonces = $modelA->getAnnonce();
         $lAnnonces = $this->getTypeAnnonce($lAnnonces,"publiée"); 
 
         if(!$annUti)
         {
             
-            var_dump($annUti);
             $modelE = new energieModel();
             $energie = $modelE->getEnergie();
             
@@ -811,7 +805,6 @@ class Annonce extends Controller
             //Test de voyelles pour le d'
             $det="de ";
             $fLet = strtolower(substr($uti["U_pseudo"],0,1));
-            var_dump($fLet);
             for ($i=0; $i < count($tabVoyelle); ++$i) { 
                 
                 if( $fLet === $tabVoyelle[$i] )
