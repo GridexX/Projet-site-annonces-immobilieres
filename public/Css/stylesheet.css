@@ -519,6 +519,7 @@ body, html{
     padding-top: auto;
     padding-bottom: auto;
     bottom: 0px;
+    background-color: transparent;
 }
 
 .next{
