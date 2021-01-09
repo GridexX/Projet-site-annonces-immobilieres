@@ -87,7 +87,7 @@ class Mail extends Controller
     {
         $sujet = "Creation de votre compte";
         $dest = $uti['U_mail'];
-        $corps = '<p>Votre compte à bien été crée sur notre Site. Nous sommes ravis de vous accueillir parmis nous !</p>';
+        $corps = '<p>Votre compte à bien été crée sur notre site. Nous sommes ravis de vous accueillir parmis nous !</p>';
         $message = $this->text($uti,$corps);
         return $this->sendMail($sujet, $message, $dest);
     }
@@ -117,10 +117,25 @@ class Mail extends Controller
         return $this->sendMail($sujet, $message, $dest);
     }
 
+    public function delAnnonce($annonce, $actionAdmin=false)
+    {
+        $sujet = "Votre annonce a été supprimée";
+        $dest = $annonce["U_mail"];
+        $admMsg = ($actionAdmin) ? " par l'administrateur du site. </p><br/><br/><small>Soyez certains que cette nouvelle nous attriste grandement...</small>" : "</p>";
+        $corps = "<p>Votre annonce ".$annonce["A_titre"]." a été supprimée".$admMsg;
+        $modelU = new utilisateurModel();
+        $uti = $modelU->getUtilisateur($annonce["U_mail"]);
+        $message = $this->text($uti,$corps);
+        return $this->sendMail($sujet, $message, $dest);
+    }
+
+
     public function annoncesBloquées($uti)
     {
         return $this->annonceBloquée($uti,false);
     }
+
+
 
     public function mailAdmin($msg, $sujet, $uti, $send)
     {

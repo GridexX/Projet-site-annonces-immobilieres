@@ -232,13 +232,22 @@ class Annonce extends Controller
         {
 
             $controlP = new Pages();
-            $controlP->affNotif('error',"L'annonce n'a pas été trouvée dans la BDD");
+            $controlP->affNotif('error',"L'annonce n'a pas été trouvée sur le site");
         }
-        $messModel = new messagerieModel();
-        $messModel->deleteM($id_annonce);
+        $modelM = new messagerieModel();
+        $modelM->deleteM($id_annonce);
         $controllerP = new Photo();
         $controllerP->delete($id_annonce);
+        
+        $session = \Config\Services::session();
+        //Envoie du mail de suppression
+        $controllerU = new Utilisateur();
+        $adminDelAutre = $controllerU->estAdmin() && $annonce['U_mail'] !== $session->get("mail");
+        $controllerM = new Mail();
+        $controllerM->delAnnonce($annonce, $adminDelAutre);
         $modelA->deleteAnnonce($id_annonce); 
+
+        //Affichage de la notification
         $controlP = new Pages();
         $controlP->affNotif('success',"Annonce supprimée avec succés","/");
         return $this->mesAnnonces();
